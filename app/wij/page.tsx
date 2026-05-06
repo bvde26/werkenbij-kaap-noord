@@ -4,6 +4,26 @@ export default function WijPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Floating Buttons */}
+      <a
+        href={whatsappLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full flex items-center justify-center text-3xl hover:scale-110 transition-transform shadow-lg"
+        style={{ backgroundColor: '#25D366' }}
+        title="WhatsApp"
+      >
+        💬
+      </a>
+      <a
+        href={phoneLink}
+        className="fixed bottom-6 right-24 z-50 w-16 h-16 rounded-full flex items-center justify-center text-3xl hover:scale-110 transition-transform shadow-lg"
+        style={{ backgroundColor: '#3b696d' }}
+        title="Bel ons"
+      >
+        ☎️
+      </a>
+
       {/* Header */}
       <header className="sticky top-0 z-40 bg-white shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
