@@ -2,6 +2,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Kodchasan:wght@200;300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap');
 
+/* Custom Fonts */
+@font-face {
+  font-family: 'Pana Summer';
+  src: url('/fonts/PanaSummer.woff') format('woff'),
+       url('/fonts/PanaSummer.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Iconfont';
+  src: url('/fonts/icomoon.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'slick';
+  src: url('/fonts/slick.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   --primary: #3b696d;
   --primary-light: #bdeffc;
