@@ -88,47 +88,62 @@ export default function Rollen() {
       {/* Rollen grid */}
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-8">
             {rollen.map((rol) => (
               <div key={rol.id}>
-                {/* Card */}
+
+                {/* Card — ingeklapt: alleen titel + foto die uitspringt */}
                 <div
-                  className="flex overflow-hidden rounded-lg shadow-md cursor-pointer transition-shadow hover:shadow-lg"
-                  style={{ backgroundColor: '#3b696d' }}
+                  className="relative cursor-pointer"
+                  style={{ paddingRight: rol.image ? '120px' : '0' }}
                   onClick={() => setExpanded(expanded === rol.id ? null : rol.id)}
                 >
-                  <div className="flex-1 p-6">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#bdeffc' }}>
-                        ⏱ {rol.uren} &nbsp;📍 Texel
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-3">{rol.title}</h3>
-                    <p className="text-sm mb-5" style={{ color: '#d0f0fa' }}>{rol.summary}</p>
-                    <div className="flex items-center gap-3">
-                      <button
-                        className="px-5 py-2 text-sm font-bold uppercase tracking-wider"
-                        style={{ backgroundColor: '#ddd95a', color: '#3b696d', fontFamily: "'Pana Summer', serif" }}
-                      >
-                        {expanded === rol.id ? 'Inklappen ↑' : 'Meer lezen ↓'}
-                      </button>
-                    </div>
+                  {/* Groene kaart */}
+                  <div
+                    className="rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 min-h-[100px] flex flex-col justify-center"
+                    style={{ backgroundColor: '#3b696d' }}
+                  >
+                    <span className="text-xs font-semibold uppercase tracking-widest mb-2 block" style={{ color: '#bdeffc' }}>
+                      ⏱ {rol.uren} &nbsp;📍 Texel
+                    </span>
+                    <h3
+                      className="font-bold text-white uppercase leading-tight"
+                      style={{ fontSize: '1.25rem', fontFamily: "'Kodchasan', sans-serif" }}
+                    >
+                      {rol.title}
+                    </h3>
+                    <span className="mt-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#ddd95a' }}>
+                      {expanded === rol.id ? '▲ Inklappen' : '▼ Meer lezen'}
+                    </span>
                   </div>
+
+                  {/* Foto — uitspringend rechts */}
                   {rol.image && (
-                    <div className="w-32 md:w-40 flex-shrink-0 overflow-hidden">
+                    <div
+                      className="absolute right-0 overflow-hidden rounded-lg shadow-xl"
+                      style={{
+                        top: '-14px',
+                        bottom: '-14px',
+                        width: '110px',
+                        zIndex: 10,
+                      }}
+                    >
                       <img src={rol.image} alt={rol.title} className="w-full h-full object-cover" />
                     </div>
                   )}
                   {!rol.image && (
-                    <div className="w-32 md:w-40 flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: '#2a5558' }}>
+                    <div
+                      className="absolute right-0 overflow-hidden rounded-lg shadow-xl flex items-center justify-center"
+                      style={{ top: '-14px', bottom: '-14px', width: '110px', zIndex: 10, backgroundColor: '#2a5558' }}
+                    >
                       <span className="text-5xl">{rol.icon}</span>
                     </div>
                   )}
                 </div>
 
-                {/* Expanded detail */}
+                {/* Uitklapt — volledige beschrijving */}
                 {expanded === rol.id && (
-                  <div className="rounded-b-lg p-6 shadow-md -mt-1" style={{ backgroundColor: '#f0fafe', borderTop: '3px solid #bdeffc' }}>
+                  <div className="rounded-b-lg px-6 pt-5 pb-6 shadow-md" style={{ backgroundColor: '#f0fafe', borderTop: '3px solid #bdeffc' }}>
                     <p className="text-base leading-relaxed mb-6" style={{ color: '#3b696d' }}>
                       {rol.description}
                     </p>
@@ -152,6 +167,7 @@ export default function Rollen() {
                     </div>
                   </div>
                 )}
+
               </div>
             ))}
           </div>

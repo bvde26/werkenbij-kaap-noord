@@ -75,126 +75,43 @@ export default function Home() {
             </svg>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Bediening */}
-            <div className="flex overflow-hidden rounded-lg shadow-md" style={{ backgroundColor: '#3b696d' }}>
-              <div className="flex-1 p-6">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#bdeffc' }}>⏱ 38 uur &nbsp;📍 Texel</span>
+          <div className="grid md:grid-cols-2 gap-8">
+            {[
+              { uren: '38 uur', title: 'Zelfstandig medewerker bediening', img: '/assets/IMG_7031.jpg', tekst: "Wil jij werken in een team waarbij gastvrijheid hoog in het vaandel staat? Samen met je collega's zorg je voor een enthousiaste, ongedwongen service die onze gasten doet terugkeren." },
+              { uren: 'Jouw uren', title: 'Weekendhulpen en vakantiekrachten', img: '/assets/IMG_7115.jpg', tekst: "Op zoek naar een leuke bijbaan op Texel? Ervaring is niet nodig — wij leren je alles wat je moet weten! In overleg is vrijwel alles mogelijk bij ons." },
+              { uren: '38 uur', title: 'Tussenjaars op Texel', img: '/assets/Tussenjaar-horeca-op-Texel.jpg', tekst: "Zin in een avontuurlijk tussenjaar in een van de mooiste omgevingen van Nederland? Van bedienen tot koken — er is volop ruimte om te groeien." },
+              { uren: '38 uur', title: 'Zelfstandig werkend kok', img: '/assets/Sous-chef-kaap-noord-small-image.jpg', tekst: "Wil jij werken als kok waar de zee altijd dichtbij is? Een afwisselende functie met een nadruk op verse en lokale producten." },
+              { uren: '38 uur', title: 'Chef de Partie', img: '/assets/Sous-chef-kaap-noord-small-image.jpg', tekst: "Een dynamische functie als essentiële rol binnen ons keukenteam. Focus op verse en lokale producten, op een prachtig eiland." },
+              { uren: 'In overleg', title: 'Open sollicitatie', img: null, tekst: "Staat jouw ideale baan er niet bij? We zijn altijd op zoek naar enthousiaste mensen met een positieve instelling." },
+            ].map((r, i) => (
+              <div key={i} className="relative" style={{ paddingRight: r.img ? '120px' : '0' }}>
+                {/* Groene kaart */}
+                <div className="rounded-lg shadow-md p-6" style={{ backgroundColor: '#3b696d' }}>
+                  <span className="text-xs font-semibold uppercase tracking-widest mb-2 block" style={{ color: '#bdeffc' }}>
+                    ⏱ {r.uren} &nbsp;📍 Texel
+                  </span>
+                  <h3 className="text-xl font-bold text-white mb-3">{r.title}</h3>
+                  <p className="text-sm mb-5" style={{ color: '#d0f0fa' }}>{r.tekst}</p>
+                  <Link href="/contact" className="inline-block px-5 py-2 text-sm font-bold uppercase tracking-wider"
+                    style={{ backgroundColor: '#ddd95a', color: '#3b696d', fontFamily: "'Pana Summer', serif" }}>
+                    Solliciteer direct
+                  </Link>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">Zelfstandig medewerker bediening</h3>
-                <p className="text-sm mb-5" style={{ color: '#d0f0fa' }}>
-                  Wil jij werken in een team waarbij gastvrijheid hoog in het vaandel staat? Samen met je collega's zorg je voor een enthousiaste, ongedwongen service die onze gasten doet terugkeren.
-                </p>
-                <Link href="/contact" className="inline-block px-5 py-2 text-sm font-bold uppercase tracking-wider"
-                  style={{ backgroundColor: '#ddd95a', color: '#3b696d', fontFamily: "'Pana Summer', serif" }}>
-                  Solliciteer direct
-                </Link>
+                {/* Foto uitspringend */}
+                {r.img && (
+                  <div className="absolute right-0 overflow-hidden rounded-lg shadow-xl"
+                    style={{ top: '-14px', bottom: '-14px', width: '110px', zIndex: 10 }}>
+                    <img src={r.img} alt={r.title} className="w-full h-full object-cover" />
+                  </div>
+                )}
+                {!r.img && (
+                  <div className="absolute right-0 overflow-hidden rounded-lg shadow-xl flex items-center justify-center"
+                    style={{ top: '-14px', bottom: '-14px', width: '110px', zIndex: 10, backgroundColor: '#2a5558' }}>
+                    <span className="text-4xl">❓</span>
+                  </div>
+                )}
               </div>
-              <div className="w-32 md:w-40 flex-shrink-0 overflow-hidden">
-                <img src="/assets/IMG_7031.jpg" alt="Bediening" className="w-full h-full object-cover" />
-              </div>
-            </div>
-
-            {/* Weekend/vakantie */}
-            <div className="flex overflow-hidden rounded-lg shadow-md" style={{ backgroundColor: '#3b696d' }}>
-              <div className="flex-1 p-6">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#bdeffc' }}>⏱ Jouw uren &nbsp;📍 Texel</span>
-                </div>
-                <h3 className="text-xl font-bold text-white mb-3">Weekendhulpen en vakantiekrachten</h3>
-                <p className="text-sm mb-5" style={{ color: '#d0f0fa' }}>
-                  Op zoek naar een leuke bijbaan op Texel? Ervaring is niet nodig — wij leren je alles wat je moet weten! In overleg is vrijwel alles mogelijk bij ons.
-                </p>
-                <Link href="/contact" className="inline-block px-5 py-2 text-sm font-bold uppercase tracking-wider"
-                  style={{ backgroundColor: '#ddd95a', color: '#3b696d', fontFamily: "'Pana Summer', serif" }}>
-                  Solliciteer direct
-                </Link>
-              </div>
-              <div className="w-32 md:w-40 flex-shrink-0 overflow-hidden">
-                <img src="/assets/IMG_7115.jpg" alt="Weekendhulp" className="w-full h-full object-cover" />
-              </div>
-            </div>
-
-            {/* Tussenjaars */}
-            <div className="flex overflow-hidden rounded-lg shadow-md" style={{ backgroundColor: '#3b696d' }}>
-              <div className="flex-1 p-6">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#bdeffc' }}>⏱ 38 uur &nbsp;📍 Texel</span>
-                </div>
-                <h3 className="text-xl font-bold text-white mb-3">Tussenjaars op Texel</h3>
-                <p className="text-sm mb-5" style={{ color: '#d0f0fa' }}>
-                  Zin in een avontuurlijk tussenjaar in een van de mooiste omgevingen van Nederland? Bij ons kun je diverse taken uitproberen — van bedienen tot koken. Er is volop ruimte om te groeien.
-                </p>
-                <Link href="/contact" className="inline-block px-5 py-2 text-sm font-bold uppercase tracking-wider"
-                  style={{ backgroundColor: '#ddd95a', color: '#3b696d', fontFamily: "'Pana Summer', serif" }}>
-                  Solliciteer direct
-                </Link>
-              </div>
-              <div className="w-32 md:w-40 flex-shrink-0 overflow-hidden">
-                <img src="/assets/Tussenjaar-horeca-op-Texel.jpg" alt="Tussenjaars" className="w-full h-full object-cover" />
-              </div>
-            </div>
-
-            {/* Kok */}
-            <div className="flex overflow-hidden rounded-lg shadow-md" style={{ backgroundColor: '#3b696d' }}>
-              <div className="flex-1 p-6">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#bdeffc' }}>⏱ 38 uur &nbsp;📍 Texel</span>
-                </div>
-                <h3 className="text-xl font-bold text-white mb-3">Zelfstandig werkend kok</h3>
-                <p className="text-sm mb-5" style={{ color: '#d0f0fa' }}>
-                  Wil jij werken als kok waar de zee altijd dichtbij is? Een afwisselende functie met een nadruk op verse en lokale producten. Uniek leven en werken op een prachtig eiland.
-                </p>
-                <Link href="/contact" className="inline-block px-5 py-2 text-sm font-bold uppercase tracking-wider"
-                  style={{ backgroundColor: '#ddd95a', color: '#3b696d', fontFamily: "'Pana Summer', serif" }}>
-                  Solliciteer direct
-                </Link>
-              </div>
-              <div className="w-32 md:w-40 flex-shrink-0 overflow-hidden">
-                <img src="/assets/Sous-chef-kaap-noord-small-image.jpg" alt="Kok" className="w-full h-full object-cover" />
-              </div>
-            </div>
-
-            {/* Chef de Partie */}
-            <div className="flex overflow-hidden rounded-lg shadow-md" style={{ backgroundColor: '#3b696d' }}>
-              <div className="flex-1 p-6">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#bdeffc' }}>⏱ 38 uur &nbsp;📍 Texel</span>
-                </div>
-                <h3 className="text-xl font-bold text-white mb-3">Chef de Partie</h3>
-                <p className="text-sm mb-5" style={{ color: '#d0f0fa' }}>
-                  Een dynamische functie als essentiële rol binnen ons keukenteam. Focus op verse en lokale producten, op een prachtig eiland omgeven door de natuur van Texel.
-                </p>
-                <Link href="/contact" className="inline-block px-5 py-2 text-sm font-bold uppercase tracking-wider"
-                  style={{ backgroundColor: '#ddd95a', color: '#3b696d', fontFamily: "'Pana Summer', serif" }}>
-                  Solliciteer direct
-                </Link>
-              </div>
-              <div className="w-32 md:w-40 flex-shrink-0 overflow-hidden">
-                <img src="/assets/Sous-chef-kaap-noord-small-image.jpg" alt="Chef de Partie" className="w-full h-full object-cover" />
-              </div>
-            </div>
-
-            {/* Open sollicitatie */}
-            <div className="flex overflow-hidden rounded-lg shadow-md" style={{ backgroundColor: '#3b696d' }}>
-              <div className="flex-1 p-6">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#bdeffc' }}>⏱ In overleg &nbsp;📍 Texel</span>
-                </div>
-                <h3 className="text-xl font-bold text-white mb-3">Open sollicitatie</h3>
-                <p className="text-sm mb-5" style={{ color: '#d0f0fa' }}>
-                  Staat jouw ideale baan er niet bij? We zijn altijd op zoek naar enthousiaste mensen die met hun vaardigheden en positieve instelling bijdragen aan het succes van ons paviljoen.
-                </p>
-                <Link href="/contact" className="inline-block px-5 py-2 text-sm font-bold uppercase tracking-wider"
-                  style={{ backgroundColor: '#ddd95a', color: '#3b696d', fontFamily: "'Pana Summer', serif" }}>
-                  Solliciteer direct
-                </Link>
-              </div>
-              <div className="w-32 md:w-40 flex-shrink-0 overflow-hidden bg-teal-800 flex items-center justify-center">
-                <span className="text-5xl">?</span>
-              </div>
-            </div>
+            ))}
           </div>
 
           <div className="text-center mt-10">
