@@ -64,36 +64,42 @@ export default function Home() {
       </section>
 
       {/* Jij / Wij Sections */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12">
             {/* JIJ */}
-            <div className="text-center">
-              <h2 className="text-4xl font-bold mb-4" style={{ color: '#3b696d' }}>Jij</h2>
-              <p className="text-gray-700 mb-6 leading-relaxed">
+            <div>
+              <h2 className="text-3xl md:text-4xl uppercase mb-4" style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', letterSpacing: '0.05em' }}>Jij</h2>
+              <svg className="w-32 h-2 mb-6" viewBox="0 0 100 10" style={{ color: '#bdeffc' }}>
+                <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1"/>
+              </svg>
+              <p className="text-lg mb-6 leading-relaxed" style={{ color: '#3b696d' }}>
                 Je zoekt een plek waar je jezelf kan zijn. Waar werk leuk is. Waar het voelt als een tweede thuis.
               </p>
               <a
                 href="/jij"
-                className="inline-block px-6 py-3 font-bold rounded transition"
-                style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}
+                className="inline-block px-6 py-3 font-medium uppercase transition border-2"
+                style={{ backgroundColor: '#bdeffc', color: '#3b696d', borderColor: '#3b696d', fontSize: '0.9rem', letterSpacing: '0.05em' }}
               >
-                Lees meer over jij →
+                Meer over jij
               </a>
             </div>
 
             {/* WIJ */}
-            <div className="text-center">
-              <h2 className="text-4xl font-bold mb-4" style={{ color: '#3b696d' }}>Wij</h2>
-              <p className="text-gray-700 mb-6 leading-relaxed">
+            <div>
+              <h2 className="text-3xl md:text-4xl uppercase mb-4" style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', letterSpacing: '0.05em' }}>Wij</h2>
+              <svg className="w-32 h-2 mb-6" viewBox="0 0 100 10" style={{ color: '#bdeffc' }}>
+                <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1"/>
+              </svg>
+              <p className="text-lg mb-6 leading-relaxed" style={{ color: '#3b696d' }}>
                 We zijn een team dat gepassioneerd is. Dat elkaar helpt. Dat samen iets moois creëert op Texel.
               </p>
               <a
                 href="/wij"
-                className="inline-block px-6 py-3 font-bold rounded transition"
-                style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}
+                className="inline-block px-6 py-3 font-medium uppercase transition border-2"
+                style={{ backgroundColor: '#bdeffc', color: '#3b696d', borderColor: '#3b696d', fontSize: '0.9rem', letterSpacing: '0.05em' }}
               >
-                Lees meer over ons →
+                Meer over ons
               </a>
             </div>
           </div>

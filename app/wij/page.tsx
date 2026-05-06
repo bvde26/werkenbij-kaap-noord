@@ -59,6 +59,9 @@ export default function WijPage() {
             <h2 className="text-4xl font-bold mb-6" style={{ color: '#3b696d' }}>
               Over ons
             </h2>
+            <svg className="w-32 h-2 mb-6" viewBox="0 0 100 10" style={{ color: '#bdeffc' }}>
+              <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1"/>
+            </svg>
             <p className="text-gray-700 mb-6 text-lg leading-relaxed">
               We zijn een strandpaviljoen op Texel. Familie-gerund. Klein. Gezellig. Echt.
             </p>
@@ -69,6 +72,9 @@ export default function WijPage() {
             <h2 className="text-4xl font-bold mb-6 mt-12" style={{ color: '#3b696d' }}>
               Onze waarden
             </h2>
+            <svg className="w-32 h-2 mb-6" viewBox="0 0 100 10" style={{ color: '#bdeffc' }}>
+              <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1"/>
+            </svg>
 
             <div className="grid md:grid-cols-2 gap-8 my-12">
               <div className="p-6 rounded-lg bg-gray-50">
@@ -92,6 +98,9 @@ export default function WijPage() {
             <h2 className="text-4xl font-bold mb-6 mt-12" style={{ color: '#3b696d' }}>
               Dit zoeken we
             </h2>
+            <svg className="w-32 h-2 mb-6" viewBox="0 0 100 10" style={{ color: '#bdeffc' }}>
+              <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1"/>
+            </svg>
 
             <p className="text-gray-700 text-lg mb-8 leading-relaxed">
               We zoeken mensen die willen samenwerken. Die energie hebben. Die van gasten houden.
@@ -108,6 +117,9 @@ export default function WijPage() {
             <h2 className="text-4xl font-bold mb-6 mt-12" style={{ color: '#3b696d' }}>
               Ons team
             </h2>
+            <svg className="w-32 h-2 mb-6" viewBox="0 0 100 10" style={{ color: '#bdeffc' }}>
+              <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1"/>
+            </svg>
             <p className="text-gray-700 text-lg leading-relaxed">
               Van jong tot oud. Van student tot family-mentaliteit. Iedereen brengt iets unieks. Dat maken we samen speciaal.
             </p>
@@ -142,6 +154,9 @@ export default function WijPage() {
           {/* Vacancies */}
           <div className="mt-16">
             <h2 className="text-4xl font-bold mb-8" style={{ color: '#3b696d' }}>Waar kunnen we je gebruiken?</h2>
+            <svg className="w-32 h-2 mb-6" viewBox="0 0 100 10" style={{ color: '#bdeffc' }}>
+              <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1"/>
+            </svg>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="p-6 bg-gray-50 rounded-lg border-l-4" style={{ borderColor: '#3b696d' }}>
                 <h3 className="text-2xl font-bold mb-2" style={{ color: '#3b696d' }}>Bediening</h3>

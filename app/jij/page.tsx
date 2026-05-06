@@ -59,6 +59,9 @@ export default function JijPage() {
             <h2 className="text-4xl font-bold mb-6" style={{ color: '#3b696d' }}>
               Wat zoeken we in jou?
             </h2>
+            <svg className="w-32 h-2 mb-6" viewBox="0 0 100 10" style={{ color: '#bdeffc' }}>
+              <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1"/>
+            </svg>
             <p className="text-gray-700 mb-6 text-lg leading-relaxed">
               Je hoeft niet perfect te zijn. Je hoeft geen ervaring te hebben. Je hoeft alleen maar jezelf te zijn.
             </p>
@@ -85,6 +88,9 @@ export default function JijPage() {
             <h2 className="text-4xl font-bold mb-6 mt-12" style={{ color: '#3b696d' }}>
               Wat krijg jij van ons?
             </h2>
+            <svg className="w-32 h-2 mb-6" viewBox="0 0 100 10" style={{ color: '#bdeffc' }}>
+              <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1"/>
+            </svg>
 
             <div className="space-y-4 mb-12">
               <p className="text-gray-700 text-lg">✓ <strong>Flexibel rooster</strong> — Jij bepaalt mee</p>
@@ -124,6 +130,9 @@ export default function JijPage() {
           {/* FAQ */}
           <div className="mt-16">
             <h2 className="text-4xl font-bold mb-8" style={{ color: '#3b696d' }}>Veelgestelde vragen</h2>
+            <svg className="w-32 h-2 mb-6" viewBox="0 0 100 10" style={{ color: '#bdeffc' }}>
+              <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1"/>
+            </svg>
             <div className="space-y-6">
               <div className="p-6 border-l-4 bg-gray-50" style={{ borderColor: '#3b696d' }}>
                 <h4 className="text-xl font-bold mb-2" style={{ color: '#3b696d' }}>Hoeveel uren per week?</h4>
