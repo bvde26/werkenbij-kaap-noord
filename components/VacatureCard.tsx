@@ -4,6 +4,85 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface Vacature {
+          id: string;
+          title: string;
+          description: string;
+          image?: string;
+          link: string;
+}
+
+interface VacatureCardProps {
+          vacature: Vacature;
+          isExpanded: boolean;
+          onToggle: () => void;
+}
+
+export default function VacatureCard({
+          vacature,
+          isExpanded,
+          onToggle,
+}: VacatureCardProps) {
+          return (
+                      <div
+                                    className={`bg-[#3b696d] text-white overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all cursor-pointer ${
+                                                    isExpanded ? 'flex flex-col' : 'flex flex-col'
+                                    }`}
+                                    onClick={onToggle}
+                                  >
+                              {/* FOTO PLACEMENT */}
+                              {vacature.image && (
+                                                  <div className={isExpanded ? 'w-full h-80 relative' : 'w-40 h-48 absolute -top-12 -right-8 relative'}>
+                                                            <Image
+                                                                                src={vacature.image}
+                                                                                alt={vacature.title}
+                                                                                fill
+                                                                                className="object-cover"
+                                                                              />
+                                                  </div>div>
+                            )}
+                      
+                              {/* CONTENT - geklapt: rechts van foto, uitgeklapt: onder foto */}
+                            <div className={isExpanded ? 'p-8 flex flex-col' : 'p-8 pr-52'}>
+                                    {/* FUNCTIENAAM - wit, Pana Summer font */}
+                                    <h3 className="text-xl font-bold mb-4" style={{ color: '#fff', fontFamily: '"Pana Summer", serif' }}>
+                                            {vacature.title}
+                                    </h3>h3>
+                            
+                                    {/* BESCHRIJVING - lichter grijs */}
+                                    <p className="text-sm mb-6 text-gray-200 leading-relaxed flex-grow">
+                                            {vacature.description}
+                                    </p>p>
+                            
+                                    {/* CTA BUTTON */}
+                                    <Link
+                                                      href={vacature.link}
+                                                      className="inline-block bg-[#fcf8bd] text-[#3b696d] px-5 py-2 font-bold hover:bg-white transition"
+                                                      onClick={(e) => e.stopPropagation()}
+                                                    >
+                                              Solliciteer direct
+                                    </Link>Link>
+                            </div>div>
+                      
+                              {/* CLOSE BUTTON - only in expanded */}
+                              {isExpanded && (
+                                                  <button
+                                                                    className="absolute top-4 right-4 w-8 h-8 bg-[#fcf8bd] text-[#3b696d] rounded-full font-bold text-lg hover:bg-white transition z-10"
+                                                                    onClick={(e) => {
+                                                                                        e.stopPropagation();
+                                                                                        onToggle();
+                                                                    }}
+                                                                  >
+                                                            ×
+                                                  </button>button>
+                            )}
+                      </div>div>
+                    );
+}</div>'use client';
+
+import Image from 'next/image';
+import Link from 'next/link';
+
+interface Vacature {
         id: string;
         title: string;
         description: string;
