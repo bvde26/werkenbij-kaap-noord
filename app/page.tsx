@@ -24,7 +24,7 @@ export default function Home() {
           <h1 className="text-5xl md:text-6xl mb-6 uppercase" style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, letterSpacing: '0.1em', color: '#3b696d' }}>
             Jij bent leuk,<br />wij ook.
           </h1>
-          <p className="text-2xl md:text-3xl" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 500, color: '#3b696d' }}>
+          <p className="text-2xl md:text-3xl uppercase" style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', letterSpacing: '0.05em' }}>
             Ontdek Kaap Noord, loop een dagje mee.
           </p>
         </div>
