@@ -3,7 +3,7 @@ export default function Home() {
   const phoneLink = "tel:+31623823324";
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ backgroundColor: '#f5f5f5' }}>
       {/* Floating Buttons */}
       <a
         href={whatsappLink}
@@ -27,7 +27,7 @@ export default function Home() {
       </a>
 
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white shadow-sm" style={{ backgroundColor: '#bdeffc', height: '80px' }}>
+      <header className="sticky top-0 z-40 bg-white shadow-sm" style={{ backgroundColor: '#bdeffc', height: '60px' }}>
         <div className="max-w-6xl mx-auto px-4 h-full flex justify-between items-center">
           <div className="flex items-center gap-2">
             <img src="/logo.svg" alt="Kaap Noord" style={{ height: '45px' }} />
@@ -40,49 +40,27 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero with Video */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Video Background */}
+      {/* Hero Section - Text Above Video */}
+      <section className="py-16">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h1 className="text-6xl md:text-7xl font-bold mb-6 uppercase" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 500, letterSpacing: '0.05em', color: '#3b696d' }}>
+            Jij bent leuk,<br />wij ook.
+          </h1>
+          <p className="text-2xl md:text-3xl" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 500, color: '#3b696d' }}>
+            Ontdek Kaap Noord, loop een dagje mee.
+          </p>
+        </div>
+      </section>
+
+      {/* Video Section */}
+      <section className="h-96 md:h-screen overflow-hidden">
         <iframe
-          className="absolute inset-0 w-full h-full"
+          className="w-full h-full"
           src="https://player.vimeo.com/video/711355612?background=1&muted=1&autoplay=1&dnt=1"
           frameBorder="0"
           allow="autoplay; fullscreen"
           allowFullScreen
         />
-
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/30" />
-
-        {/* Content */}
-        <div className="relative z-10 text-center text-white px-4 max-w-3xl">
-          <h1 className="text-6xl md:text-8xl font-bold mb-8 uppercase" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 500, letterSpacing: '0.05em' }}>
-            Jij bent leuk,<br />wij ook.
-          </h1>
-          <p className="text-2xl md:text-4xl mb-12 opacity-95" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 500 }}>
-            Ontdek Kaap Noord, loop een dagje mee.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col md:flex-row gap-4 justify-center">
-            <a
-              href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-4 text-white font-bold rounded text-lg transition hover:opacity-90"
-              style={{ backgroundColor: '#25D366' }}
-            >
-              💬 WhatsApp
-            </a>
-            <a
-              href={phoneLink}
-              className="px-8 py-4 text-white font-bold rounded text-lg transition hover:opacity-90"
-              style={{ backgroundColor: '#3b696d' }}
-            >
-              ☎️ Bel ons
-            </a>
-          </div>
-        </div>
       </section>
 
       {/* Jij / Wij Sections */}
