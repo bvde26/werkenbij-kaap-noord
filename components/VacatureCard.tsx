@@ -2,6 +2,86 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+
+interface Vacature {
+      id: string;
+      title: string;
+      description: string;
+      image?: string;
+      link: string;
+}
+
+interface VacatureCardProps {
+      vacature: Vacature;
+      isExpanded: boolean;
+      onToggle: () => void;
+}
+
+export default function VacatureCard({
+      vacature,
+      isExpanded,
+      onToggle,
+}: VacatureCardProps) {
+      return (
+              <div
+                        className={`bg-[#3b696d] text-white overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer ${
+                                    isExpanded ? '' : ''
+                        }`}
+                        onClick={onToggle}
+                      >
+                  {/* Image section */}
+                  {vacature.image && (
+                                  <div
+                                                className={`relative ${
+                                                                isExpanded ? 'w-full h-64' : 'w-40 h-48 absolute -top-12 -right-8'
+                                                }`}
+                                              >
+                                            <Image
+                                                            src={vacature.image}
+                                                            alt={vacature.title}
+                                                            fill
+                                                            className="object-cover"
+                                                          />
+                                  </div>div>
+                    )}
+              
+                  {/* Content */}
+                    <div className={isExpanded ? 'p-8' : 'p-8 pr-56'}>
+                            <h3 className="text-xl font-bold mb-3" style={{ color: '#fff' }}>
+                                {vacature.title}
+                            </h3>h3>
+                    
+                            <p className="text-sm mb-4 text-gray-100 leading-relaxed">
+                                {vacature.description}
+                            </p>p>
+                    
+                            <Link
+                                          href={vacature.link}
+                                          className="inline-block bg-[#fcf8bd] text-[#3b696d] px-5 py-2 font-bold hover:bg-white transition"
+                                          onClick={(e) => e.stopPropagation()}
+                                        >
+                                      Solliciteer direct
+                            </Link>Link>
+                    </div>div>
+              
+                  {/* Close button - only in expanded */}
+                  {isExpanded && (
+                                  <button
+                                                className="absolute top-4 right-4 w-8 h-8 bg-[#fcf8bd] text-[#3b696d] rounded-full font-bold text-lg hover:bg-white transition z-10"
+                                                onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                onToggle();
+                                                }}
+                                              >
+                                            ×
+                                  </button>button>
+                    )}
+              </div>div>
+            );
+}</div>'use client';
+
+import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 
 interface Vacature {
