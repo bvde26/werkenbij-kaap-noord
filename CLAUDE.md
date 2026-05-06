@@ -142,16 +142,28 @@ NEXT_PUBLIC_SITE_URL=https://werkenbijkaapnoord.nl
 
 ## Typography & Fonts
 
-**Custom Fonts (from original werkenbijkaapnoord.nl):**
-- **Pana Summer** - Main headings (h1), koppen, navigatie, knoppen. Stored: `/public/fonts/PanaSummer.woff` + `.ttf`
-- **Kodchasan** - Body text, subkoppen, formulieren. Google Fonts: `Kodchasan:wght@200;300;400;500;600;700`
-- **Iconfont** (icomoon) - Icon font. Stored: `/public/fonts/icomoon.woff`
-- **slick** - Slider/carousel icons. Stored: `/public/fonts/slick.woff`
+**From strandpaviljoenkaapnoord.nl:**
 
-**Usage:**
-- Homepage hero h1 "Werken bij Kaap Noord" uses Pana Summer
-- Apply Pana Summer to other main headings as needed
-- All fonts imported via @font-face in `globals.css`
+- **Pana Summer** (Regular) - h1, h3, a, nav-links, knoppen
+  - Stored: `/public/fonts/PanaSummer-Regular.woff2` + `.woff`
+  - Usage: "Werken bij Kaap Noord" hero heading, main headings
+
+- **Pana Summer Outline** - Variant available
+  - Stored: `/public/fonts/PanaSummer-Outline.woff2` + `.woff`
+
+- **Kodchasan** - h2, p, ul li, body text, subkoppen, formulieren
+  - Google Fonts: `Kodchasan:wght@200;300;400;500;600;700`
+
+- **Iconfont** (icomoon) - Icon font
+  - Stored: `/public/fonts/icomoon.woff`
+
+- **slick** - Slider/carousel icons
+  - Stored: `/public/fonts/slick.woff`
+
+**@font-face format:**
+- woff2 (primary - modern, best compression)
+- woff (fallback - broader browser support)
+- All imported in `globals.css`
 
 ---
 

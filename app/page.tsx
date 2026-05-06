@@ -1,161 +1,294 @@
-export default function Home() {
-  const whatsappLink = "https://wa.me/31623823324?text=Hoi!%20Ik%20wil%20graag%20Kaap%20Noord%20ontdekken!";
-  const phoneLink = "tel:+31623823324";
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import FloatingButtons from '@/components/FloatingButtons';
+import Link from 'next/link';
 
+export default function Home() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f5f5f5' }}>
-      {/* Floating Buttons */}
-      <a
-        href={whatsappLink}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full flex items-center justify-center text-3xl hover:scale-110 transition-transform shadow-lg"
-        style={{ backgroundColor: '#25D366' }}
-        title="WhatsApp"
-      >
-        💬
-      </a>
-      <a
-        href={phoneLink}
-        className="fixed bottom-6 right-24 z-50 w-16 h-16 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-lg"
-        style={{ backgroundColor: '#3b696d' }}
-        title="Bel ons"
-      >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-        </svg>
-      </a>
-{/* Header */}
-      <header className="sticky top-0 z-40 bg-white shadow-sm" style={{ backgroundColor: '#bdeffc', height: '60px' }}>
-        <div className="max-w-6xl mx-auto px-4 h-full flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <img src="/logo.svg" alt="Kaap Noord" style={{ height: '45px' }} />
-          </div>
-          <nav className="hidden md:flex gap-8 text-sm font-medium" style={{ color: '#3b696d' }}>
-            <a href="/jij" className="hover:opacity-70">Voor jou</a>
-            <a href="/over-ons" className="hover:opacity-70">Over ons</a>
-            <a href="#contact" className="hover:opacity-70">Contact</a>
-          </nav>
-        </div>
-      </header>
+      <Header active="/" />
+      <FloatingButtons />
 
-      {/* Hero Section - Text Above Video */}
-      <section className="py-16">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl mb-6 uppercase" style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.02em', color: '#3b696d' }}>
-            Werken bij Kaap Noord
-          </h1>
-          <p className="text-lg md:text-xl" style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', lineHeight: '1.6' }}>
+      {/* Hero */}
+      <section className="relative">
+        <div className="h-[80vh] md:h-screen overflow-hidden">
+          <iframe
+            className="w-full h-full"
+            src="https://player.vimeo.com/video/711355612?background=1&muted=1&autoplay=1&loop=1&dnt=1"
+            frameBorder="0"
+            allow="autoplay; fullscreen"
+            allowFullScreen
+          />
+          {/* Overlay */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
+            style={{ background: 'rgba(0,0,0,0.35)' }}>
+            <h1
+              className="text-5xl md:text-7xl uppercase mb-4 text-white"
+              style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em' }}
+            >
+              Werken bij Kaap Noord
+            </h1>
+            <p className="text-lg md:text-2xl text-white mb-8 max-w-2xl"
+              style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300 }}>
+              Kom je een dagje meelopen in ons team op het mooiste eiland?
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link
+                href="/contact"
+                className="px-8 py-3 font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-90"
+                style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}
+              >
+                Ik wil meelopen →
+              </Link>
+              <Link
+                href="/over-ons"
+                className="px-8 py-3 font-bold text-sm uppercase tracking-widest border-2 border-white text-white transition-opacity hover:opacity-80"
+              >
+                Vertel me meer
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Intro quote */}
+      <section className="py-16" style={{ backgroundColor: '#bdeffc' }}>
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <p className="text-xl md:text-2xl leading-relaxed" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif", fontWeight: 300 }}>
             Zie jij jezelf al werken op een unieke plek met een fantastisch uitzicht? Is het helemaal jouw ding om onze gasten naar hun zin te maken en ze het huiskamer gevoel te laten beleven?
           </p>
         </div>
       </section>
 
-      {/* Video Section */}
-      <section className="h-96 md:h-screen overflow-hidden">
-        <iframe
-          className="w-full h-full"
-          src="https://player.vimeo.com/video/711355612?background=1&muted=1&autoplay=1&dnt=1"
-          frameBorder="0"
-          allow="autoplay; fullscreen"
-          allowFullScreen
-        />
-      </section>
+      {/* Functies */}
+      <section className="py-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          <h2
+            className="text-3xl md:text-4xl text-center mb-2 uppercase"
+            style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', letterSpacing: '0.05em' }}
+          >
+            Ontdek alle functies
+          </h2>
+          <div className="flex justify-center mb-10">
+            <svg className="w-32 h-2" viewBox="0 0 100 10" style={{ color: '#3b696d' }}>
+              <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1.5" />
+            </svg>
+          </div>
 
-      {/* Jij / Wij Sections */}
-      <section className="py-16">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12">
-            {/* VOOR JOU */}
-            <div>
-              <h2 className="text-3xl md:text-4xl uppercase mb-4" style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', letterSpacing: '0.05em' }}>Voor jou</h2>
-              <svg className="w-32 h-2 mb-6" viewBox="0 0 100 10" style={{ color: '#bdeffc' }}>
-                <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1"/>
-              </svg>
-              <p className="text-lg mb-6 leading-relaxed" style={{ color: '#3b696d' }}>
-                Je zoekt een plek waar je jezelf kan zijn. Waar werk leuk is. Waar het voelt als een tweede thuis.
-              </p>
-              <a
-                href="/jij"
-                className="inline-block px-6 py-3 font-medium uppercase transition border-2"
-                style={{ backgroundColor: '#bdeffc', color: '#3b696d', borderColor: '#3b696d', fontSize: '0.9rem', letterSpacing: '0.05em' }}
-              >
-                Voor jou
-              </a>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Bediening */}
+            <div className="flex overflow-hidden rounded-lg shadow-md" style={{ backgroundColor: '#3b696d' }}>
+              <div className="flex-1 p-6">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#bdeffc' }}>⏱ 38 uur &nbsp;📍 Texel</span>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">Zelfstandig medewerker bediening</h3>
+                <p className="text-sm mb-5" style={{ color: '#d0f0fa' }}>
+                  Wil jij werken in een team waarbij gastvrijheid hoog in het vaandel staat? Samen met je collega's zorg je voor een enthousiaste, ongedwongen service die onze gasten doet terugkeren.
+                </p>
+                <Link href="/contact" className="inline-block px-5 py-2 text-sm font-bold uppercase tracking-wider"
+                  style={{ backgroundColor: '#ddd95a', color: '#3b696d', fontFamily: "'Pana Summer', serif" }}>
+                  Solliciteer direct
+                </Link>
+              </div>
+              <div className="w-32 md:w-40 flex-shrink-0 overflow-hidden">
+                <img src="/assets/IMG_7031.jpg" alt="Bediening" className="w-full h-full object-cover" />
+              </div>
             </div>
 
-            {/* OVER ONS */}
-            <div>
-              <h2 className="text-3xl md:text-4xl uppercase mb-4" style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', letterSpacing: '0.05em' }}>Over ons</h2>
-              <svg className="w-32 h-2 mb-6" viewBox="0 0 100 10" style={{ color: '#bdeffc' }}>
-                <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1"/>
-              </svg>
-              <p className="text-lg mb-6 leading-relaxed" style={{ color: '#3b696d' }}>
-                We zijn een team dat gepassioneerd is. Dat elkaar helpt. Dat samen iets moois creëert op Texel.
-              </p>
-              <a
-                href="/over-ons"
-                className="inline-block px-6 py-3 font-medium uppercase transition border-2"
-                style={{ backgroundColor: '#bdeffc', color: '#3b696d', borderColor: '#3b696d', fontSize: '0.9rem', letterSpacing: '0.05em' }}
-              >
-                Over ons
-              </a>
+            {/* Weekend/vakantie */}
+            <div className="flex overflow-hidden rounded-lg shadow-md" style={{ backgroundColor: '#3b696d' }}>
+              <div className="flex-1 p-6">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#bdeffc' }}>⏱ Jouw uren &nbsp;📍 Texel</span>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">Weekendhulpen en vakantiekrachten</h3>
+                <p className="text-sm mb-5" style={{ color: '#d0f0fa' }}>
+                  Op zoek naar een leuke bijbaan op Texel? Ervaring is niet nodig — wij leren je alles wat je moet weten! In overleg is vrijwel alles mogelijk bij ons.
+                </p>
+                <Link href="/contact" className="inline-block px-5 py-2 text-sm font-bold uppercase tracking-wider"
+                  style={{ backgroundColor: '#ddd95a', color: '#3b696d', fontFamily: "'Pana Summer', serif" }}>
+                  Solliciteer direct
+                </Link>
+              </div>
+              <div className="w-32 md:w-40 flex-shrink-0 overflow-hidden">
+                <img src="/assets/IMG_7115.jpg" alt="Weekendhulp" className="w-full h-full object-cover" />
+              </div>
+            </div>
+
+            {/* Tussenjaars */}
+            <div className="flex overflow-hidden rounded-lg shadow-md" style={{ backgroundColor: '#3b696d' }}>
+              <div className="flex-1 p-6">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#bdeffc' }}>⏱ 38 uur &nbsp;📍 Texel</span>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">Tussenjaars op Texel</h3>
+                <p className="text-sm mb-5" style={{ color: '#d0f0fa' }}>
+                  Zin in een avontuurlijk tussenjaar in een van de mooiste omgevingen van Nederland? Bij ons kun je diverse taken uitproberen — van bedienen tot koken. Er is volop ruimte om te groeien.
+                </p>
+                <Link href="/contact" className="inline-block px-5 py-2 text-sm font-bold uppercase tracking-wider"
+                  style={{ backgroundColor: '#ddd95a', color: '#3b696d', fontFamily: "'Pana Summer', serif" }}>
+                  Solliciteer direct
+                </Link>
+              </div>
+              <div className="w-32 md:w-40 flex-shrink-0 overflow-hidden">
+                <img src="/assets/Tussenjaar-horeca-op-Texel.jpg" alt="Tussenjaars" className="w-full h-full object-cover" />
+              </div>
+            </div>
+
+            {/* Kok */}
+            <div className="flex overflow-hidden rounded-lg shadow-md" style={{ backgroundColor: '#3b696d' }}>
+              <div className="flex-1 p-6">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#bdeffc' }}>⏱ 38 uur &nbsp;📍 Texel</span>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">Zelfstandig werkend kok</h3>
+                <p className="text-sm mb-5" style={{ color: '#d0f0fa' }}>
+                  Wil jij werken als kok waar de zee altijd dichtbij is? Een afwisselende functie met een nadruk op verse en lokale producten. Uniek leven en werken op een prachtig eiland.
+                </p>
+                <Link href="/contact" className="inline-block px-5 py-2 text-sm font-bold uppercase tracking-wider"
+                  style={{ backgroundColor: '#ddd95a', color: '#3b696d', fontFamily: "'Pana Summer', serif" }}>
+                  Solliciteer direct
+                </Link>
+              </div>
+              <div className="w-32 md:w-40 flex-shrink-0 overflow-hidden">
+                <img src="/assets/Sous-chef-kaap-noord-small-image.jpg" alt="Kok" className="w-full h-full object-cover" />
+              </div>
+            </div>
+
+            {/* Chef de Partie */}
+            <div className="flex overflow-hidden rounded-lg shadow-md" style={{ backgroundColor: '#3b696d' }}>
+              <div className="flex-1 p-6">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#bdeffc' }}>⏱ 38 uur &nbsp;📍 Texel</span>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">Chef de Partie</h3>
+                <p className="text-sm mb-5" style={{ color: '#d0f0fa' }}>
+                  Een dynamische functie als essentiële rol binnen ons keukenteam. Focus op verse en lokale producten, op een prachtig eiland omgeven door de natuur van Texel.
+                </p>
+                <Link href="/contact" className="inline-block px-5 py-2 text-sm font-bold uppercase tracking-wider"
+                  style={{ backgroundColor: '#ddd95a', color: '#3b696d', fontFamily: "'Pana Summer', serif" }}>
+                  Solliciteer direct
+                </Link>
+              </div>
+              <div className="w-32 md:w-40 flex-shrink-0 overflow-hidden">
+                <img src="/assets/Sous-chef-kaap-noord-small-image.jpg" alt="Chef de Partie" className="w-full h-full object-cover" />
+              </div>
+            </div>
+
+            {/* Open sollicitatie */}
+            <div className="flex overflow-hidden rounded-lg shadow-md" style={{ backgroundColor: '#3b696d' }}>
+              <div className="flex-1 p-6">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#bdeffc' }}>⏱ In overleg &nbsp;📍 Texel</span>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">Open sollicitatie</h3>
+                <p className="text-sm mb-5" style={{ color: '#d0f0fa' }}>
+                  Staat jouw ideale baan er niet bij? We zijn altijd op zoek naar enthousiaste mensen die met hun vaardigheden en positieve instelling bijdragen aan het succes van ons paviljoen.
+                </p>
+                <Link href="/contact" className="inline-block px-5 py-2 text-sm font-bold uppercase tracking-wider"
+                  style={{ backgroundColor: '#ddd95a', color: '#3b696d', fontFamily: "'Pana Summer', serif" }}>
+                  Solliciteer direct
+                </Link>
+              </div>
+              <div className="w-32 md:w-40 flex-shrink-0 overflow-hidden bg-teal-800 flex items-center justify-center">
+                <span className="text-5xl">?</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mt-10">
+            <Link href="/rollen" className="inline-block px-8 py-3 font-semibold border-2 text-sm uppercase tracking-wider transition-colors hover:text-white hover:bg-[#3b696d]"
+              style={{ borderColor: '#3b696d', color: '#3b696d' }}>
+              Alle functies bekijken →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonial */}
+      <section className="py-12 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-col md:flex-row overflow-hidden rounded-xl shadow-md" style={{ backgroundColor: '#bdeffc' }}>
+            <div className="flex-1 p-8 md:p-10 flex items-center">
+              <div>
+                <span className="text-5xl font-bold mb-4 block" style={{ color: '#3b696d', fontFamily: 'Georgia, serif' }}>"</span>
+                <p className="text-lg md:text-xl font-semibold uppercase" style={{ color: '#3b696d', fontFamily: "'Pana Summer', serif", letterSpacing: '0.02em' }}>
+                  Van Bonaire naar Texel. Wie had dat gedacht! Een wereld van verschil, maar ik werk al een jaar met veel plezier bij Kaap Noord!
+                </p>
+              </div>
+            </div>
+            <div className="w-full md:w-64 flex-shrink-0 h-56 md:h-auto overflow-hidden">
+              <img src="/assets/IMG_7115.jpg" alt="Medewerker Kaap Noord" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Benefits */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12" style={{ color: '#3b696d' }}>
+      {/* 3 Quick USPs */}
+      <section className="py-16 px-4" style={{ backgroundColor: '#f0fafe' }}>
+        <div className="max-w-5xl mx-auto">
+          <h2
+            className="text-3xl text-center mb-10 uppercase"
+            style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', letterSpacing: '0.05em' }}
+          >
             Waarom Kaap Noord?
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-6 rounded-lg bg-white shadow-sm">
-              <div className="text-4xl mb-4">🏝️</div>
-              <h3 className="text-xl font-bold mb-3" style={{ color: '#3b696d' }}>Texel</h3>
-              <p className="text-gray-700">Werk op een eiland met uitzicht. Zee in je hart.</p>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="text-4xl mb-3">🏝️</div>
+              <h3 className="font-bold text-lg mb-2" style={{ color: '#3b696d' }}>Werken op een eiland</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">Werk op een van de mooiste plekken van Nederland. Zilt water, zonsondergangen en natuur om je heen.</p>
             </div>
-            <div className="text-center p-6 rounded-lg bg-white shadow-sm">
-              <div className="text-4xl mb-4">👥</div>
-              <h3 className="text-xl font-bold mb-3" style={{ color: '#3b696d' }}>Team</h3>
-              <p className="text-gray-700">Hechte groep. Elkaar helpen. Samen sterker.</p>
+            <div className="text-center">
+              <div className="text-4xl mb-3">👥</div>
+              <h3 className="font-bold text-lg mb-2" style={{ color: '#3b696d' }}>Echt team</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">Fijne werksfeer in een hecht team. Bij ons geen formele setting maar het huiskamer gevoel.</p>
             </div>
-            <div className="text-center p-6 rounded-lg bg-white shadow-sm">
-              <div className="text-4xl mb-4">📅</div>
-              <h3 className="text-xl font-bold mb-3" style={{ color: '#3b696d' }}>Flexibel</h3>
-              <p className="text-gray-700">Je bepaalt mee je rooster. Werk-leven balans.</p>
+            <div className="text-center">
+              <div className="text-4xl mb-3">🎯</div>
+              <h3 className="font-bold text-lg mb-2" style={{ color: '#3b696d' }}>Jij bepaalt mee</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">Flexibele tijden in overleg. Vakantie ook in het hoogseizoen. Jij brengt het voorstel, wij regelen het.</p>
             </div>
+          </div>
+          <div className="text-center mt-10">
+            <Link href="/voor-jou" className="inline-block px-8 py-3 font-semibold text-sm uppercase tracking-wider text-white transition-opacity hover:opacity-85"
+              style={{ backgroundColor: '#3b696d' }}>
+              Alle voordelen →
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Contact Footer */}
-      <footer id="contact" className="py-12 text-white" style={{ backgroundColor: '#2a4a4d' }}>
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
-            <div>
-              <h3 className="text-xl font-bold mb-4">Contact</h3>
-              <p className="mb-2">📞 06-23823324 (Marije)</p>
-              <p className="mb-2">✉️ vacatures@strandpaviljoenkaapnoord.nl</p>
-              <p>📍 Volharding 4, Texel</p>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-4">Snelle link</h3>
-              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="block mb-2 hover:opacity-70">
-                💬 WhatsApp
-              </a>
-              <a href={phoneLink} className="block hover:opacity-70">
-                ☎️ Bel ons
-              </a>
-            </div>
-          </div>
-          <div className="border-t border-gray-600 pt-8 text-center text-sm text-gray-300">
-            <p>Strandpaviljoen Kaap Noord © 2026</p>
+      {/* CTA Banner */}
+      <section className="py-16 px-4 text-center" style={{ backgroundColor: '#3b696d' }}>
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-4xl text-white uppercase mb-4"
+            style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400 }}>
+            Kom je kennismaken?
+          </h2>
+          <p className="text-lg mb-8" style={{ color: '#bdeffc' }}>
+            Geen lange sollicitatie. Geen gekke tests. Gewoon een gesprek of een dagje meelopen.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="https://wa.me/31623823324?text=Hoi!%20Ik%20wil%20graag%20Kaap%20Noord%20ontdekken!"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-3 font-bold text-sm uppercase tracking-wider transition-opacity hover:opacity-90"
+              style={{ backgroundColor: '#25D366', color: 'white' }}
+            >
+              💬 WhatsApp Marije
+            </a>
+            <Link href="/contact"
+              className="px-8 py-3 font-bold text-sm uppercase tracking-wider border-2 border-white text-white transition-opacity hover:opacity-80">
+              Of stuur een bericht
+            </Link>
           </div>
         </div>
-      </footer>
+      </section>
+
+      <Footer />
     </div>
   );
 }
