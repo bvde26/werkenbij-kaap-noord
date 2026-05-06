@@ -25,10 +25,10 @@ export default function WijPage() {
       </a>
 
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <header className="sticky top-0 z-40 bg-white shadow-sm" style={{ backgroundColor: '#bdeffc', height: '80px' }}>
+        <div className="max-w-6xl mx-auto px-4 h-full flex justify-between items-center">
           <a href="/" className="flex items-center gap-2 hover:opacity-70">
-            <img src="/logo.svg" alt="Kaap Noord" className="h-12" />
+            <img src="/logo.svg" alt="Kaap Noord" style={{ height: '45px' }} />
           </a>
           <nav className="hidden md:flex gap-8 text-sm font-medium" style={{ color: '#3b696d' }}>
             <a href="/jij" className="hover:opacity-70">Jij</a>
