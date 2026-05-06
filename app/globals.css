@@ -1,10 +1,6 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Kodchasan:wght@200;300;400;500;600;700&display=swap');
-
-@font-face {
-  font-family: 'Pana Summer';
-  src: url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
-}
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap');
 
 :root {
   --primary: #3b696d;
@@ -45,24 +41,28 @@ header {
 }
 
 /* Heading Styling */
-h1, h2, h3, h4, h5, h6 {
+h2, h3, h4, h5, h6 {
   font-family: 'Kodchasan', sans-serif;
   color: #3b696d;
   font-weight: 800;
 }
 
 h1 {
-  font-size: 2.5rem;
-  line-height: 1.2;
+  font-family: 'Playfair Display', serif;
+  color: #3b696d;
+  font-weight: 500;
+  font-size: 3rem;
+  line-height: 1.1;
+  text-transform: uppercase;
 }
 
 h2 {
   font-size: 2rem;
-  line-height: 1.3;
+  line-height: 1.1;
 }
 
 h3 {
-  font-size: 1.5rem;
+  font-size: 1.375rem;
 }
 
 /* Button Styling */
