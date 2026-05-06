@@ -4,6 +4,95 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface Vacature {
+        id: string;
+        title: string;
+        description: string;
+        image?: string;
+        link: string;
+}
+
+interface VacatureCardProps {
+        vacature: Vacature;
+        isExpanded: boolean;
+        onToggle: () => void;
+}
+
+export default function VacatureCard({
+        vacature,
+        isExpanded,
+        onToggle,
+}: VacatureCardProps) {
+        return (
+                  <div
+                              className="bg-[#3b696d] text-white overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                              onClick={onToggle}
+                            >
+                        {/* Image - Right side when collapsed, full width banner when expanded */}
+                        {vacature.image && (
+                                          <>
+                                                {isExpanded ? (
+                                                            // Expanded: Full width banner at top
+                                                            <div className="relative w-full h-64 bg-gray-300">
+                                                                          <Image
+                                                                                                src={vacature.image}
+                                                                                                alt={vacature.title}
+                                                                                                fill
+                                                                                                className="object-cover"
+                                                                                              />
+                                                            </div>div>
+                                                          ) : (
+                                                            // Collapsed: Small image positioned right
+                                                            <div className="absolute -right-8 -top-16 w-40 h-56 relative">
+                                                                          <Image
+                                                                                                src={vacature.image}
+                                                                                                alt={vacature.title}
+                                                                                                fill
+                                                                                                className="object-cover"
+                                                                                              />
+                                                            </div>div>
+                                                    )}
+                                          </>>
+                                        )}
+                  
+                        {/* Content */}
+                        <div className={isExpanded ? 'p-8' : 'p-8 pr-48'}>
+                                <h3 className="text-lg font-bold mb-3 text-white">
+                                      {vacature.title}
+                                </h3>h3>
+                        
+                                <p className="text-sm mb-4 text-gray-200 leading-relaxed line-clamp-4">
+                                      {vacature.description}
+                                </p>p>
+                        
+                                <Link
+                                                href={vacature.link}
+                                                className="inline-block bg-[#fcf8bd] text-[#3b696d] px-4 py-2 font-bold hover:bg-white transition text-sm"
+                                                onClick={(e) => e.stopPropagation()}
+                                              >
+                                          Solliciteer direct
+                                </Link>Link>
+                        </div>div>
+                  
+                        {/* Close button */}
+                        {isExpanded && (
+                                          <button
+                                                          className="absolute top-4 right-4 w-8 h-8 bg-[#fcf8bd] text-[#3b696d] rounded-full font-bold text-lg hover:bg-white transition z-20"
+                                                          onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            onToggle();
+                                                          }}
+                                                        >
+                                                    ×
+                                          </button>button>
+                        )}
+                  </div>div>
+                );
+}</></div>'use client';
+
+import Image from 'next/image';
+import Link from 'next/link';
+
+interface Vacature {
       id: string;
       title: string;
       description: string;
