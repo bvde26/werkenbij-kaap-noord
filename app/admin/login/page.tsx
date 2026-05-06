@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -15,18 +14,23 @@ export default function AdminLogin() {
     setError('');
     setMessage('');
 
-    const { error: signInError } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/admin/dashboard`,
-      },
-    });
+    try {
+      const { supabase } = await import('@/lib/supabase');
+      const { error: signInError } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/admin/dashboard`,
+        },
+      });
 
-    if (signInError) {
-      setError(signInError.message);
-    } else {
-      setMessage(`✅ Check je email! Link naar dashboard is verstuurd naar ${email}`);
-      setEmail('');
+      if (signInError) {
+        setError(signInError.message);
+      } else {
+        setMessage(`✅ Check je email! Link naar dashboard is verstuurd naar ${email}`);
+        setEmail('');
+      }
+    } catch (err) {
+      setError('Er is een fout opgetreden. Probeer opnieuw.');
     }
     setLoading(false);
   };
