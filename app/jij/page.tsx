@@ -33,8 +33,8 @@ export default function JijPage() {
             <img src="/logo.svg" alt="Kaap Noord" style={{ height: '45px' }} />
           </a>
           <nav className="hidden md:flex gap-8 text-sm font-medium" style={{ color: '#3b696d' }}>
-            <a href="/jij" className="hover:opacity-70 font-bold">Jij</a>
-            <a href="/wij" className="hover:opacity-70">Wij</a>
+            <a href="/jij" className="hover:opacity-70 font-bold">Voor jou</a>
+            <a href="/wij" className="hover:opacity-70">Over ons</a>
             <a href="/#contact" className="hover:opacity-70">Contact</a>
           </nav>
         </div>
@@ -44,7 +44,7 @@ export default function JijPage() {
       <section className="py-20 text-center" style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}>
         <div className="max-w-4xl mx-auto px-4">
           <h1 className="text-5xl md:text-6xl font-bold mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Jij
+            Voor jou
           </h1>
           <p className="text-xl md:text-2xl mb-8">
             Ben je op zoek naar meer? Naar een plek waar je jezelf kan zijn?
