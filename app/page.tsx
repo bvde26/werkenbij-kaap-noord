@@ -43,7 +43,7 @@ export default function Home() {
       {/* Hero Section - Text Above Video */}
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-6xl md:text-7xl font-bold mb-6 uppercase" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 500, letterSpacing: '0.05em', color: '#3b696d' }}>
+          <h1 className="text-5xl md:text-6xl mb-6 uppercase" style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, letterSpacing: '0.1em', color: '#3b696d' }}>
             Jij bent leuk,<br />wij ook.
           </h1>
           <p className="text-2xl md:text-3xl" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 500, color: '#3b696d' }}>
