@@ -5,8 +5,16 @@
 /* Custom Fonts */
 @font-face {
   font-family: 'Pana Summer';
-  src: url('/fonts/PanaSummer.woff') format('woff'),
-       url('/fonts/PanaSummer.ttf') format('truetype');
+  src: url('/fonts/PanaSummer-Regular.woff2') format('woff2'),
+       url('/fonts/PanaSummer-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pana Summer Outline';
+  src: url('/fonts/PanaSummer-Outline.woff2') format('woff2'),
+       url('/fonts/PanaSummer-Outline.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
