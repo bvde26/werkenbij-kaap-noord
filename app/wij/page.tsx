@@ -106,27 +106,9 @@ export default function WijPage() {
           {/* CTA Section */}
           <div className="text-center py-12 px-6 rounded-lg my-12" style={{ backgroundColor: '#bdeffc' }}>
             <h3 className="text-3xl font-bold mb-4" style={{ color: '#3b696d' }}>Wil je bij ons horen?</h3>
-            <p className="text-lg mb-8" style={{ color: '#3b696d' }}>
+            <p className="text-lg" style={{ color: '#3b696d' }}>
               Neem contact op. Laten we kennismaken!
             </p>
-            <div className="flex flex-col md:flex-row gap-4 justify-center">
-              <a
-                href={whatsappLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-8 py-4 text-white font-bold rounded text-lg transition hover:opacity-90"
-                style={{ backgroundColor: '#25D366' }}
-              >
-                💬 WhatsApp
-              </a>
-              <a
-                href={phoneLink}
-                className="px-8 py-4 text-white font-bold rounded text-lg transition hover:opacity-90"
-                style={{ backgroundColor: '#3b696d' }}
-              >
-                ☎️ Bel ons
-              </a>
-            </div>
           </div>
 
           {/* Vacancies */}
