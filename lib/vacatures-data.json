@@ -3,35 +3,35 @@
     "id": "job-1",
     "title": "Zelfstandig medewerker bediening",
     "description": "38 uur per week",
-    "image": "https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/IMG_7031.jpg?fit=200%2C300&ssl=1",
+    "image": "/assets/IMG_7031.jpg",
     "link": "/vacatures/1"
   },
   {
     "id": "job-2",
     "title": "Weekendhulpen en vakantiekrachten",
     "description": "Flexibel werken",
-    "image": "https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/IMG_7115.jpg?fit=200%2C300&ssl=1",
+    "image": "/assets/IMG_7115.jpg",
     "link": "/vacatures/2"
   },
   {
     "id": "job-3",
     "title": "TUSSENJAARS OP TEXEL",
     "description": "Seizoenswerk",
-    "image": "https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/08/Tussenjaar-horeca-op-Texel.jpg?fit=142%2C216&ssl=1",
+    "image": "/assets/Tussenjaar-horeca-op-Texel.jpg",
     "link": "/vacatures/3"
   },
   {
     "id": "job-4",
     "title": "Zelfstandig werkend kok",
     "description": "Keuken team",
-    "image": "https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/Sous-chef-kaap-noord-small-image.jpg?fit=142%2C216&ssl=1",
+    "image": "/assets/Sous-chef-kaap-noord-small-image.jpg",
     "link": "/vacatures/4"
   },
   {
     "id": "job-5",
     "title": "Chef de Partie",
     "description": "Senior keuken",
-    "image": "https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/06/Chef-de-Partie-vacature.jpg?fit=142%2C216&ssl=1",
+    "image": "/assets/Sous-chef-kaap-noord-small-image.jpg",
     "link": "/vacatures/5"
   },
   {
