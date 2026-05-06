@@ -43,10 +43,10 @@ export default function Home() {
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-6xl mb-6 uppercase" style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, letterSpacing: '0.02em', color: '#3b696d' }}>
-            Onbezorgd genieten op het Texelse strand
+            Werken bij Kaap Noord
           </h1>
-          <p className="text-2xl md:text-3xl" style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', letterSpacing: '0.05em' }}>
-            Dat doe je natuurlijk bij Strandpaviljoen Kaap Noord
+          <p className="text-lg md:text-xl" style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', lineHeight: '1.6' }}>
+            Zie jij jezelf al werken op een unieke plek met een fantastisch uitzicht? Is het helemaal jouw ding om onze gasten naar hun zin te maken en ze het huiskamer gevoel te laten beleven?
           </p>
         </div>
       </section>
