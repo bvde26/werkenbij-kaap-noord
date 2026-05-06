@@ -86,84 +86,77 @@ export default function Rollen() {
             {rollen.map((rol) => (
               <div key={rol.id}>
 
-                {/* Card — ingeklapt: alleen titel + foto die uitspringt */}
+                {/* Wrapper: foto absoluut, groen blok als één geheel */}
                 <div
-                  className="relative cursor-pointer"
-                  style={{ paddingRight: rol.image ? '120px' : '0' }}
-                  onClick={() => setExpanded(expanded === rol.id ? null : rol.id)}
+                  className="relative"
+                  style={{ paddingRight: rol.image ? '130px' : '0', marginBottom: '8px' }}
                 >
-                  {/* Groene kaart */}
-                  <div
-                    className="rounded-lg shadow-md hover:shadow-lg transition-all p-6 min-h-[100px] flex flex-col justify-center group"
-                    style={{ backgroundColor: expanded === rol.id ? '#2a5558' : '#3b696d' }}
-                  >
-                    <span className="text-xs font-semibold uppercase tracking-widest mb-3 block" style={{ color: '#bdeffc' }}>
-                      ⏱ {rol.uren} &nbsp;📍 Texel
-                    </span>
-                    <h3
-                      className="font-bold text-white uppercase leading-tight flex items-center justify-between gap-2"
-                      style={{ fontSize: '1.2rem', fontFamily: "'Kodchasan', sans-serif" }}
-                    >
-                      <span>{rol.title}</span>
-                      <span className="flex-shrink-0 text-base transition-transform duration-200"
-                        style={{ color: '#ddd95a', transform: expanded === rol.id ? 'rotate(180deg)' : 'rotate(0deg)' }}>
-                        ▼
-                      </span>
-                    </h3>
-                  </div>
-
-                  {/* Foto — uitspringend rechts */}
+                  {/* Foto — strekt zich over volledige hoogte (titel + uitklapdeel) */}
                   {rol.image && (
                     <div
                       className="absolute right-0 overflow-hidden rounded-lg shadow-xl"
-                      style={{
-                        top: '-14px',
-                        bottom: '-14px',
-                        width: '110px',
-                        zIndex: 10,
-                      }}
+                      style={{ top: '-14px', bottom: '-14px', width: '118px', zIndex: 10 }}
                     >
-                      <img src={rol.image} alt={rol.title} className="w-full h-full object-cover" />
+                      <img src={rol.image} alt={rol.title} className="w-full h-full object-cover object-top" />
                     </div>
                   )}
                   {!rol.image && (
                     <div
                       className="absolute right-0 overflow-hidden rounded-lg shadow-xl flex items-center justify-center"
-                      style={{ top: '-14px', bottom: '-14px', width: '110px', zIndex: 10, backgroundColor: '#2a5558' }}
+                      style={{ top: '-14px', bottom: '-14px', width: '118px', zIndex: 10, backgroundColor: '#2a5558' }}
                     >
                       <span className="text-5xl">{rol.icon}</span>
                     </div>
                   )}
+
+                  {/* Groen blok: titel + uitklapinhoud = 1 geheel */}
+                  <div className="rounded-lg overflow-hidden shadow-md" style={{ backgroundColor: '#3b696d' }}>
+
+                    {/* Titel balk — klikbaar */}
+                    <div
+                      className="px-6 py-5 cursor-pointer flex items-center justify-between hover:brightness-110 transition-all"
+                      onClick={() => setExpanded(expanded === rol.id ? null : rol.id)}
+                    >
+                      <h3
+                        className="font-bold text-white uppercase leading-tight"
+                        style={{ fontSize: '1.1rem', fontFamily: "'Kodchasan', sans-serif', letterSpacing: '0.03em'" }}
+                      >
+                        {rol.title}
+                      </h3>
+                      <span
+                        className="flex-shrink-0 ml-3 transition-transform duration-200 text-sm"
+                        style={{ color: '#ddd95a', transform: expanded === rol.id ? 'rotate(180deg)' : 'rotate(0deg)', display: 'inline-block' }}
+                      >
+                        ▼
+                      </span>
+                    </div>
+
+                    {/* Uitklapinhoud — zelfde achtergrond */}
+                    {expanded === rol.id && (
+                      <div className="px-6 pb-7" style={{ borderTop: '1px solid rgba(255,255,255,0.15)' }}>
+                        <div className="flex items-center gap-4 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#bdeffc' }}>
+                          <span>⏱ {rol.uren}</span>
+                          <span>📍 Texel</span>
+                        </div>
+                        <div className="space-y-3 mb-6">
+                          {rol.description.split('\n\n').map((p, i) => (
+                            <p key={i} className="text-sm leading-relaxed text-white">{p}</p>
+                          ))}
+                        </div>
+                        <Link
+                          href="/contact"
+                          className="inline-block px-6 py-2 font-bold text-sm uppercase tracking-wider"
+                          style={{ backgroundColor: '#ddd95a', color: '#3b696d', fontFamily: "'Pana Summer', serif" }}
+                        >
+                          Solliciteer direct
+                        </Link>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
-                {/* Uitklapt — volledige beschrijving */}
-                {expanded === rol.id && (
-                  <div className="rounded-b-lg px-6 pt-5 pb-6 shadow-md" style={{ backgroundColor: '#f0fafe', borderTop: '3px solid #bdeffc' }}>
-                    <div className="mb-6 space-y-3">
-                      {rol.description.split('\n\n').map((p, i) => (
-                        <p key={i} className="text-base leading-relaxed" style={{ color: '#3b696d' }}>{p}</p>
-                      ))}
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <Link
-                        href="/contact"
-                        className="inline-block px-6 py-3 font-bold text-white text-sm uppercase tracking-wider text-center transition-opacity hover:opacity-85"
-                        style={{ backgroundColor: '#3b696d' }}
-                      >
-                        Ik wil meelopen →
-                      </Link>
-                      <a
-                        href="https://wa.me/31623823324?text=Hoi!%20Ik%20ben%20ge%C3%AFnteresseerd%20in%20de%20functie%3A%20"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block px-6 py-3 font-bold text-white text-sm uppercase tracking-wider text-center"
-                        style={{ backgroundColor: '#25D366' }}
-                      >
-                        💬 WhatsApp Marije
-                      </a>
-                    </div>
-                  </div>
-                )}
+                {/* spacer voor foto overflow */}
+                <div style={{ height: '14px' }} />
 
               </div>
             ))}
