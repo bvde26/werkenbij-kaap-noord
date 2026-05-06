@@ -12,7 +12,7 @@ export default function JijPage() {
           </a>
           <nav className="hidden md:flex gap-8 text-sm font-medium" style={{ color: '#3b696d' }}>
             <a href="/jij" className="hover:opacity-70 font-bold">Voor jou</a>
-            <a href="/wij" className="hover:opacity-70">Over ons</a>
+            <a href="/over-ons" className="hover:opacity-70">Over ons</a>
             <a href="/#contact" className="hover:opacity-70">Contact</a>
           </nav>
         </div>

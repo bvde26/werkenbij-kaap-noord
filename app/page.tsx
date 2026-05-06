@@ -12,7 +12,7 @@ export default function Home() {
           </div>
           <nav className="hidden md:flex gap-8 text-sm font-medium" style={{ color: '#3b696d' }}>
             <a href="/jij" className="hover:opacity-70">Voor jou</a>
-            <a href="/wij" className="hover:opacity-70">Over ons</a>
+            <a href="/over-ons" className="hover:opacity-70">Over ons</a>
             <a href="#contact" className="hover:opacity-70">Contact</a>
           </nav>
         </div>
@@ -73,7 +73,7 @@ export default function Home() {
                 We zijn een team dat gepassioneerd is. Dat elkaar helpt. Dat samen iets moois creëert op Texel.
               </p>
               <a
-                href="/wij"
+                href="/over-ons"
                 className="inline-block px-6 py-3 font-medium uppercase transition border-2"
                 style={{ backgroundColor: '#bdeffc', color: '#3b696d', borderColor: '#3b696d', fontSize: '0.9rem', letterSpacing: '0.05em' }}
               >
