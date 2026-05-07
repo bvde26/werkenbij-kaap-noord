@@ -128,7 +128,7 @@ export default function Home() {
       {/* Hero */}
       <section className="relative" style={{ backgroundColor: '#fefdf5' }}>
         {/* Tekst + knoppen */}
-        <div className="flex flex-col items-center justify-center text-center px-4 pt-10 pb-8 md:pt-20 md:pb-12">
+        <div className="flex flex-col items-center justify-center text-center px-4 pt-5 pb-6 md:pt-20 md:pb-12">
           <h1 className="text-4xl md:text-7xl uppercase mb-3 md:mb-4"
             style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em', color: '#3b696d' }}>
             Werken bij Kaap Noord
