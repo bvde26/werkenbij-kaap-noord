@@ -84,13 +84,37 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#f5f5f5' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#fefdf5' }}>
       <Header active="/" />
       <FloatingButtons hidden={isDocked} />
 
       {/* Hero */}
-      <section className="relative">
-        <div className="h-[80vh] md:h-screen overflow-hidden">
+      <section className="relative" style={{ backgroundColor: '#fefdf5' }}>
+        {/* Tekst + knoppen */}
+        <div className="flex flex-col items-center justify-center text-center px-4 pt-20 pb-12">
+          <h1 className="text-5xl md:text-7xl uppercase mb-4"
+            style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em', color: '#3b696d' }}>
+            Werken bij Kaap Noord
+          </h1>
+          <p className="text-lg md:text-2xl mb-8 max-w-2xl"
+            style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d' }}>
+            Kom je een dagje meelopen in ons team op het mooiste eiland?
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link href="/contact"
+              className="px-8 py-3 font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-90"
+              style={{ backgroundColor: '#3b696d', color: '#fcf8bd' }}>
+              Ik wil meelopen →
+            </Link>
+            <Link href="/over-ons"
+              className="px-8 py-3 font-bold text-sm uppercase tracking-widest border-2 transition-opacity hover:opacity-80"
+              style={{ borderColor: '#3b696d', color: '#3b696d' }}>
+              Vertel me meer
+            </Link>
+          </div>
+        </div>
+        {/* Video eronder */}
+        <div className="w-full overflow-hidden" style={{ height: '55vh' }}>
           <iframe
             className="w-full h-full"
             src="https://player.vimeo.com/video/711355612?background=1&muted=1&autoplay=1&loop=1&dnt=1"
@@ -98,29 +122,6 @@ export default function Home() {
             allow="autoplay; fullscreen"
             allowFullScreen
           />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
-            style={{ background: 'rgba(0,0,0,0.35)' }}>
-            <h1 className="text-5xl md:text-7xl uppercase mb-4"
-              style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em', color: '#ffffff' }}>
-              Werken bij Kaap Noord
-            </h1>
-            <p className="text-lg md:text-2xl mb-8 max-w-2xl"
-              style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#ffffff' }}>
-              Kom je een dagje meelopen in ons team op het mooiste eiland?
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/contact"
-                className="px-8 py-3 font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-90"
-                style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}>
-                Ik wil meelopen →
-              </Link>
-              <Link href="/over-ons"
-                className="px-8 py-3 font-bold text-sm uppercase tracking-widest border-2 border-white transition-opacity hover:opacity-80"
-                style={{ color: '#ffffff' }}>
-                Vertel me meer
-              </Link>
-            </div>
-          </div>
         </div>
         <DecorativeLine />
       </section>
