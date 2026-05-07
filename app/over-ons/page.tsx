@@ -1,7 +1,174 @@
+'use client';
+
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FloatingButtons from '@/components/FloatingButtons';
 import Link from 'next/link';
+
+const PHOTOS = [
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2026/02/IMG_5883-scaled.jpeg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/kaapnoord-drone-04.jpg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2026/02/IMG_5114-scaled.jpeg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/3bef2712-9f74-439b-9969-a525c1b0373a.jpg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2026/02/Afbeelding-van-WhatsApp-op-2025-10-03-om-10.52.45_0c9ef02f.jpg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/f46c845e-1d01-4c3d-9d8a-ac655179ef27.jpg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/kaapnoord-26.jpg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2026/02/Afbeelding-van-WhatsApp-op-2025-10-03-om-10.52.45_6b36c6cf.jpg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/4edb805c-ef26-43fd-bf41-9c2c7ec9cebc.jpg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2026/02/Afbeelding-van-WhatsApp-op-2025-10-03-om-10.52.44_4eedba56.jpg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/10/IMG_6521.jpg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/f264dea7-e5e4-478e-9ee9-f76665d810f8.jpg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/kaapnoord-drone-01.jpg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/Bediening-1.jpg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/kaapnoord-31.jpg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/Bediening-7.jpg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/Zelfstandig-medewerker-bediening-2.jpg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/kaapnoord-02.jpg?w=800',
+  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/Bediening-10.jpg?w=800',
+];
+
+function PhotoSlider() {
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const next = useCallback(() => setCurrent(i => (i + 1) % PHOTOS.length), []);
+  const prev = useCallback(() => setCurrent(i => (i - 1 + PHOTOS.length) % PHOTOS.length), []);
+
+  useEffect(() => {
+    if (paused) return;
+    intervalRef.current = setInterval(next, 5000);
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
+  }, [paused, next]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) diff > 0 ? next() : prev();
+    touchStartX.current = null;
+  };
+
+  return (
+    <section style={{ backgroundColor: '#fefdf5' }}>
+      <style>{`
+        .slider-arrow {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          background: rgba(59, 105, 109, 0.7);
+          border: none;
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          z-index: 10;
+          transition: background 0.2s ease, transform 0.2s ease;
+          backdrop-filter: blur(4px);
+        }
+        .slider-arrow:hover {
+          background: rgba(59, 105, 109, 0.95);
+          transform: translateY(-50%) scale(1.1);
+        }
+        .slider-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          border: none;
+          cursor: pointer;
+          transition: background 0.3s ease, transform 0.3s ease;
+          padding: 0;
+        }
+      `}</style>
+
+      <div
+        className="relative w-full overflow-hidden"
+        style={{ height: 'clamp(220px, 56vw, 520px)' }}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* Sliding strip */}
+        <div
+          style={{
+            display: 'flex',
+            width: `${PHOTOS.length * 100}%`,
+            height: '100%',
+            transform: `translateX(-${(current / PHOTOS.length) * 100}%)`,
+            transition: 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          }}
+        >
+          {PHOTOS.map((src, i) => (
+            <div key={i} style={{ width: `${100 / PHOTOS.length}%`, flexShrink: 0, height: '100%' }}>
+              <img
+                src={src}
+                alt={`Kaap Noord foto ${i + 1}`}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Left arrow */}
+        <button className="slider-arrow" style={{ left: '12px' }} onClick={prev} aria-label="Vorige foto">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M10 3L5 8L10 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+
+        {/* Right arrow */}
+        <button className="slider-arrow" style={{ right: '12px' }} onClick={next} aria-label="Volgende foto">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M6 3L11 8L6 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+
+        {/* Counter badge */}
+        <div style={{
+          position: 'absolute',
+          bottom: '12px',
+          right: '12px',
+          background: 'rgba(0,0,0,0.45)',
+          color: 'white',
+          fontSize: '11px',
+          fontFamily: "'Kodchasan', sans-serif",
+          padding: '3px 8px',
+          borderRadius: '20px',
+          backdropFilter: 'blur(4px)',
+          letterSpacing: '0.05em',
+        }}>
+          {current + 1} / {PHOTOS.length}
+        </div>
+      </div>
+
+      {/* Dots */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', padding: '14px 0 6px' }}>
+        {PHOTOS.map((_, i) => (
+          <button
+            key={i}
+            className="slider-dot"
+            onClick={() => setCurrent(i)}
+            aria-label={`Foto ${i + 1}`}
+            style={{
+              background: i === current ? '#3b696d' : '#bdeffc',
+              transform: i === current ? 'scale(1.35)' : 'scale(1)',
+            }}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
 
 export default function OverOns() {
   return (
@@ -23,6 +190,9 @@ export default function OverOns() {
           </p>
         </div>
       </section>
+
+      {/* Photo slider */}
+      <PhotoSlider />
 
       {/* Verhaal */}
       <section className="py-16 px-4">
