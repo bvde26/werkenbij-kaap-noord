@@ -68,12 +68,12 @@ export default function Contact() {
               <p className="mb-8 text-sm leading-relaxed" style={{ color: '#666' }}>
                 De snelste manier. Stuur een appje en we reageren zo snel mogelijk. Gewoon in je eigen woorden.
               </p>
-              <div className="float-btn-contact" style={{ width: '56px', height: '56px', flexShrink: 0 }}>
+              <div className="float-btn-contact" style={{ width: '56px', height: '56px', flexShrink: 0, position: 'relative', borderRadius: '50%', backgroundColor: '#25D366' }}>
                 <a
                   href="https://wa.me/31623823324?text=Hoi!%20Ik%20wil%20graag%20Kaap%20Noord%20ontdekken!"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ backgroundColor: '#25D366', borderRadius: '50%', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  style={{ position: 'absolute', inset: '0', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                   title="Open WhatsApp"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
@@ -90,16 +90,17 @@ export default function Contact() {
               <p className="mb-8 text-sm leading-relaxed" style={{ color: '#666' }}>
                 Liever even bellen? Marije staat voor je klaar. Geef jezelf even voor en we plannen een gesprekje.
               </p>
-              <a
-                href="tel:+31623823324"
-                className="float-btn-contact"
-                style={{ backgroundColor: '#3b696d', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', animationDelay: '0.5s' }}
-                title="Bel ons"
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                </svg>
-              </a>
+              <div className="float-btn-contact" style={{ width: '56px', height: '56px', flexShrink: 0, position: 'relative', borderRadius: '50%', backgroundColor: '#3b696d', animationDelay: '0.5s' }}>
+                <a
+                  href="tel:+31623823324"
+                  style={{ position: 'absolute', inset: '0', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  title="Bel ons"
+                >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
 
