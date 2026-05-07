@@ -142,7 +142,7 @@ export default function MediaAdminPage() {
         .upload(storagePath, compressed, { upsert: false, contentType: 'image/webp' });
 
       if (storageError) {
-        setUploadError(`Upload mislukt: ${storageError.message}`);
+        setUploadError(`Stap 1/2 (Storage upload) mislukt: ${storageError.message} — code: ${storageError.statusCode ?? 'onbekend'}`);
         setUploading(false);
         return;
       }
@@ -166,7 +166,7 @@ export default function MediaAdminPage() {
       }]);
 
       if (dbError) {
-        setUploadError(`Database fout: ${dbError.message}`);
+        setUploadError(`Stap 2/2 (Database insert) mislukt: ${dbError.message} — code: ${dbError.code}`);
         setUploading(false);
         return;
       }
