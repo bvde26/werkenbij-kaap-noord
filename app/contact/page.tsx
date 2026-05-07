@@ -1,8 +1,25 @@
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FloatingButtons from '@/components/FloatingButtons';
 
 export default function Contact() {
+  const [ctaVisible, setCtaVisible] = useState(false);
+  const ctaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ctaRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => setCtaVisible(e.isIntersecting),
+      { threshold: 0.2 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#fefdf5' }}>
       <style>{`
@@ -13,6 +30,7 @@ export default function Contact() {
         .float-btn-contact {
           animation: floatBtn 2.8s ease-in-out infinite;
           will-change: transform;
+          border-radius: 50% !important;
         }
         .float-btn-contact:hover {
           animation: none;
@@ -22,7 +40,7 @@ export default function Contact() {
         }
       `}</style>
       <Header active="/contact" />
-      <FloatingButtons />
+      <FloatingButtons hidden={ctaVisible} />
 
       {/* Hero */}
       <section className="py-20 text-center" style={{ backgroundColor: '#bdeffc' }}>
@@ -42,7 +60,7 @@ export default function Contact() {
       {/* Contact opties */}
       <section className="py-16 px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div ref={ctaRef} className="grid md:grid-cols-2 gap-8 mb-12">
 
             {/* WhatsApp */}
             <div className="rounded-xl p-8 text-center shadow-sm bg-white flex flex-col items-center">
@@ -55,8 +73,8 @@ export default function Contact() {
                 href="https://wa.me/31623823324?text=Hoi!%20Ik%20wil%20graag%20Kaap%20Noord%20ontdekken!"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="float-btn-contact w-16 h-16 rounded-full flex items-center justify-center text-3xl"
-                style={{ backgroundColor: '#25D366' }}
+                className="float-btn-contact"
+                style={{ backgroundColor: '#25D366', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}
                 title="Open WhatsApp"
               >
                 💬
@@ -72,11 +90,11 @@ export default function Contact() {
               </p>
               <a
                 href="tel:+31623823324"
-                className="float-btn-contact w-16 h-16 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: '#3b696d', animationDelay: '0.4s' }}
+                className="float-btn-contact"
+                style={{ backgroundColor: '#3b696d', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', animationDelay: '0.5s' }}
                 title="Bel ons"
               >
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                 </svg>
               </a>
