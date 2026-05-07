@@ -94,7 +94,6 @@ export default function Header({ active = '' }: { active?: string }) {
             </Link>
           </div>
         </div>
-      </div>
     </header>
   );
 }
