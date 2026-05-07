@@ -100,6 +100,26 @@ export default function Home() {
           box-shadow: 0 16px 32px rgba(0,0,0,0.55) !important;
           transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+        @keyframes ctaGlow {
+          0%, 100% {
+            transform: translateY(0px);
+            box-shadow: 0 4px 14px rgba(59,105,109,0.45), 0 0 0px 0px rgba(252,248,189,0);
+          }
+          50% {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(59,105,109,0.55), 0 0 18px 5px rgba(252,248,189,0.35);
+          }
+        }
+        .cta-glow {
+          animation: ctaGlow 2.2s ease-in-out infinite;
+          will-change: transform;
+        }
+        .cta-glow:hover {
+          animation: none;
+          transform: translateY(-5px) scale(1.05);
+          box-shadow: 0 14px 34px rgba(59,105,109,0.6), 0 0 24px 8px rgba(252,248,189,0.45) !important;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
       `}</style>
       <Header active="/" />
       <FloatingButtons hidden={isDocked} />
@@ -118,8 +138,8 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Link href="/contact"
-              className="px-8 py-3 font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-90"
-              style={{ backgroundColor: '#3b696d', color: '#fcf8bd' }}>
+              className="cta-glow px-8 py-3 font-bold text-sm uppercase tracking-widest"
+              style={{ backgroundColor: '#3b696d', color: '#fcf8bd', display: 'inline-block' }}>
               Ik wil meelopen →
             </Link>
             <Link href="/over-ons"
