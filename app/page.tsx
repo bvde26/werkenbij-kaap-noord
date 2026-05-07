@@ -128,7 +128,7 @@ export default function Home() {
       {/* Hero */}
       <section className="relative" style={{ backgroundColor: '#fefdf5' }}>
         {/* Tekst + knoppen */}
-        <div className="flex flex-col items-center justify-center text-center px-4 pt-5 pb-6 md:pt-20 md:pb-12">
+        <div className="flex flex-col items-center justify-center text-center px-4 pt-5 pb-3 md:pt-20 md:pb-8">
           <h1 className="text-4xl md:text-7xl uppercase mb-3 md:mb-4"
             style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em', color: '#3b696d' }}>
             Werken bij Kaap Noord
@@ -150,6 +150,14 @@ export default function Home() {
             </Link>
           </div>
         </div>
+        {/* Golfscheiding */}
+        <div style={{ lineHeight: 0, backgroundColor: '#fefdf5' }}>
+          <svg viewBox="0 0 1440 36" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', width: '100%' }} preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0,18 C180,36 360,0 540,18 C720,36 900,0 1080,18 C1260,36 1380,8 1440,18 L1440,36 L0,36 Z" fill="#bdeffc" opacity="0.6"/>
+            <path d="M0,24 C200,8 400,36 600,20 C800,4 1000,32 1200,18 C1320,10 1400,28 1440,22 L1440,36 L0,36 Z" fill="#bdeffc" opacity="0.35"/>
+          </svg>
+        </div>
+
         {/* Video eronder */}
         <div className="w-full overflow-hidden" style={{ height: '55vh' }}>
           <iframe
