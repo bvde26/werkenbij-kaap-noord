@@ -228,7 +228,6 @@ export default function Home() {
                 return (
                   <div
                     key={r.id}
-                    ref={isFull ? fullRef : null}
                     className="rounded-xl overflow-hidden shadow-md"
                     style={{ borderLeft: '4px solid #fcf8bd' }}
                   >
@@ -301,7 +300,7 @@ export default function Home() {
                           {/* Volledige tekst */}
                           <div style={{ display: 'grid', gridTemplateRows: isFull ? '1fr' : '0fr', transition: 'grid-template-rows 0.35s ease' }}>
                             <div style={{ overflow: 'hidden' }}>
-                              <div className="px-5 pt-1 pb-6">
+                              <div className="px-5 pt-1 pb-5">
                                 <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)', marginBottom: '16px' }} />
                                 {r.extended_description ? (
                                   <p style={{ color: '#d4ecec', fontSize: '14px', lineHeight: '1.75', fontFamily: "'Kodchasan', sans-serif", whiteSpace: 'pre-wrap' }}>
@@ -312,48 +311,54 @@ export default function Home() {
                                     Uitgebreide informatie volgt binnenkort.
                                   </p>
                                 )}
-
-                                {/* Contact knoppen */}
-                                <div className="flex items-center gap-3 flex-wrap mt-5">
-                                  <a href={phoneLink}
-                                    className="float-btn flex-shrink-0"
-                                    style={{ backgroundColor: '#3b696d', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                                    title="Bel ons"
-                                    onClick={e => e.stopPropagation()}>
-                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                                    </svg>
-                                  </a>
-                                  <a href={whatsappLink}
-                                    target="_blank" rel="noopener noreferrer"
-                                    className="float-btn flex-shrink-0"
-                                    style={{ backgroundColor: '#25D366', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', animationDelay: '0.5s' }}
-                                    title="WhatsApp ons"
-                                    onClick={e => e.stopPropagation()}>
-                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
-                                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                                      <path d="M11.5 2C6.262 2 2 6.262 2 11.5c0 1.687.435 3.272 1.197 4.653L2 22l5.998-1.172A9.45 9.45 0 0 0 11.5 21c5.238 0 9.5-4.262 9.5-9.5S16.738 2 11.5 2zm0 17.3a7.792 7.792 0 0 1-3.976-1.083l-.285-.169-2.955.577.6-2.883-.186-.295A7.793 7.793 0 0 1 3.7 11.5C3.7 7.198 7.198 3.7 11.5 3.7S19.3 7.198 19.3 11.5 15.802 19.3 11.5 19.3z"/>
-                                    </svg>
-                                  </a>
-                                  <span style={{ color: '#bdeffc', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif", lineHeight: '1.3' }}>
-                                    Reageer direct<br />op deze vacature
-                                  </span>
-                                  <button
-                                    className="ml-auto flex items-center gap-1 text-sm transition-opacity hover:opacity-75"
-                                    style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Kodchasan', sans-serif" }}
-                                    onClick={() => setCard(i, 'closed')}>
-                                    <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                      <path d="M18 6L6 18M6 6l12 12" />
-                                    </svg>
-                                    Sluiten
-                                  </button>
-                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
+
+                    {/* Contact bar — lichte achtergrond, zelfde stijl als global FloatingButtons */}
+                    {isFull && (
+                      <div
+                        ref={i === fullIdx ? fullRef : null}
+                        className="flex items-center gap-3 px-5 py-4"
+                        style={{ backgroundColor: '#fefdf5', borderTop: '2px solid #bdeffc' }}
+                      >
+                        <a href={phoneLink}
+                          className="float-btn flex-shrink-0"
+                          style={{ backgroundColor: '#3b696d', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                          title="Bel ons"
+                          onClick={e => e.stopPropagation()}>
+                          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                          </svg>
+                        </a>
+                        <a href={whatsappLink}
+                          target="_blank" rel="noopener noreferrer"
+                          className="float-btn flex-shrink-0"
+                          style={{ backgroundColor: '#25D366', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', animationDelay: '0.5s' }}
+                          title="WhatsApp ons"
+                          onClick={e => e.stopPropagation()}>
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                            <path d="M11.5 2C6.262 2 2 6.262 2 11.5c0 1.687.435 3.272 1.197 4.653L2 22l5.998-1.172A9.45 9.45 0 0 0 11.5 21c5.238 0 9.5-4.262 9.5-9.5S16.738 2 11.5 2zm0 17.3a7.792 7.792 0 0 1-3.976-1.083l-.285-.169-2.955.577.6-2.883-.186-.295A7.793 7.793 0 0 1 3.7 11.5C3.7 7.198 7.198 3.7 11.5 3.7S19.3 7.198 19.3 11.5 15.802 19.3 11.5 19.3z"/>
+                          </svg>
+                        </a>
+                        <span style={{ color: '#3b696d', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif", lineHeight: '1.3', flex: 1 }}>
+                          Reageer direct<br />op deze vacature
+                        </span>
+                        <button
+                          className="flex items-center gap-1 text-sm transition-opacity hover:opacity-75 flex-shrink-0"
+                          style={{ color: '#9ca3af', fontFamily: "'Kodchasan', sans-serif" }}
+                          onClick={() => setCard(i, 'closed')}>
+                          <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path d="M18 6L6 18M6 6l12 12" />
+                          </svg>
+                          Sluiten
+                        </button>
+                      </div>
+                    )}
                   </div>
                 );
               })}
