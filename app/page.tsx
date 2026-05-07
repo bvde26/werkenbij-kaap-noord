@@ -299,8 +299,8 @@ export default function Home() {
                               <div className="flex items-center gap-3 flex-wrap mt-5">
                                 <a
                                   href={phoneLink}
-                                  className="float-btn w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                                  style={{ backgroundColor: '#1e4548' }}
+                                  className="float-btn flex-shrink-0"
+                                  style={{ backgroundColor: '#1e4548', borderRadius: '50%', width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                                   title="Bel ons"
                                   onClick={e => e.stopPropagation()}
                                 >
@@ -312,8 +312,8 @@ export default function Home() {
                                   href={whatsappLink}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="float-btn w-12 h-12 rounded-full flex items-center justify-center text-xl flex-shrink-0"
-                                  style={{ backgroundColor: '#25D366', animationDelay: '0.4s' }}
+                                  className="float-btn flex-shrink-0"
+                                  style={{ backgroundColor: '#25D366', borderRadius: '50%', width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', animationDelay: '0.4s' }}
                                   title="WhatsApp ons"
                                   onClick={e => e.stopPropagation()}
                                 >

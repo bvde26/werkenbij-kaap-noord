@@ -6,20 +6,40 @@ export default function FloatingButtons({ hidden = false }: { hidden?: boolean }
 
   return (
     <>
+      <style>{`
+        @keyframes floatFixed {
+          0%, 100% { transform: translateY(0px); box-shadow: 0 6px 20px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2); }
+          50%       { transform: translateY(-6px); box-shadow: 0 16px 32px rgba(0,0,0,0.45), 0 4px 12px rgba(0,0,0,0.2); }
+        }
+        .float-fixed {
+          animation: floatFixed 3s ease-in-out infinite;
+          will-change: transform;
+          border-radius: 50% !important;
+        }
+        .float-fixed:hover {
+          animation: none;
+          transform: translateY(-8px) scale(1.1);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.5) !important;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .float-fixed-delay {
+          animation-delay: 0.5s;
+        }
+      `}</style>
       <a
         href={whatsappLink}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center text-2xl hover:scale-110 transition-transform shadow-xl"
-        style={{ backgroundColor: '#25D366' }}
+        className="float-fixed fixed bottom-6 right-6 z-50"
+        style={{ backgroundColor: '#25D366', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}
         title="WhatsApp ons"
       >
         💬
       </a>
       <a
         href={phoneLink}
-        className="fixed bottom-6 right-24 z-50 w-14 h-14 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-xl"
-        style={{ backgroundColor: '#3b696d' }}
+        className="float-fixed float-fixed-delay fixed bottom-6 right-24 z-50"
+        style={{ backgroundColor: '#3b696d', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         title="Bel ons"
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
