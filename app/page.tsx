@@ -128,23 +128,23 @@ export default function Home() {
       {/* Hero */}
       <section className="relative" style={{ backgroundColor: '#fefdf5' }}>
         {/* Tekst + knoppen */}
-        <div className="flex flex-col items-center justify-center text-center px-4 pt-20 pb-12">
-          <h1 className="text-5xl md:text-7xl uppercase mb-4"
+        <div className="flex flex-col items-center justify-center text-center px-4 pt-10 pb-8 md:pt-20 md:pb-12">
+          <h1 className="text-4xl md:text-7xl uppercase mb-3 md:mb-4"
             style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em', color: '#3b696d' }}>
             Werken bij Kaap Noord
           </h1>
-          <p className="text-lg md:text-2xl mb-8 max-w-2xl"
+          <p className="text-base md:text-2xl mb-5 md:mb-8 max-w-2xl"
             style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d' }}>
             Kom je een dagje meelopen in ons team op het mooiste eiland?
           </p>
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 w-full sm:w-auto">
             <Link href="/contact"
-              className="cta-glow px-8 py-3 font-bold text-sm uppercase tracking-widest"
+              className="cta-glow px-6 py-2.5 md:px-8 md:py-3 font-bold text-sm uppercase tracking-widest"
               style={{ backgroundColor: '#3b696d', color: '#fcf8bd', display: 'inline-block' }}>
               Ik wil meelopen →
             </Link>
             <Link href="/over-ons"
-              className="px-8 py-3 font-bold text-sm uppercase tracking-widest border-2 transition-opacity hover:opacity-80"
+              className="px-6 py-2.5 md:px-8 md:py-3 font-bold text-sm uppercase tracking-widest border-2 transition-opacity hover:opacity-80"
               style={{ borderColor: '#3b696d', color: '#3b696d' }}>
               Vertel me meer
             </Link>
