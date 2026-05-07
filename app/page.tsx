@@ -93,6 +93,7 @@ export default function Home() {
         .float-btn {
           animation: floatBtn 2.8s ease-in-out infinite;
           will-change: transform;
+          border-radius: 50% !important;
         }
         .float-btn:hover {
           animation: none;
@@ -320,11 +321,11 @@ export default function Home() {
                                 <a
                                   href={phoneLink}
                                   className="float-btn flex-shrink-0"
-                                  style={{ backgroundColor: '#1e4548', borderRadius: '50%', width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                  style={{ backgroundColor: '#3b696d', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                                   title="Bel ons"
                                   onClick={e => e.stopPropagation()}
                                 >
-                                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                                   </svg>
                                 </a>
@@ -333,7 +334,7 @@ export default function Home() {
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="float-btn flex-shrink-0"
-                                  style={{ backgroundColor: '#25D366', borderRadius: '50%', width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', animationDelay: '0.4s' }}
+                                  style={{ backgroundColor: '#25D366', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', animationDelay: '0.5s' }}
                                   title="WhatsApp ons"
                                   onClick={e => e.stopPropagation()}
                                 >
