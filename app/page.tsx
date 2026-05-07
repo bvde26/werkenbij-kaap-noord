@@ -10,28 +10,63 @@ import Link from 'next/link';
 const whatsappLink = "https://wa.me/31623823324?text=Hoi!%20Ik%20wil%20graag%20Kaap%20Noord%20ontdekken!";
 const phoneLink = "tel:+31623823324";
 
+type CardState = 'closed' | 'short' | 'full';
+
 const vacatures = [
-  { uren: '38 uur', title: 'Zelfstandig medewerker bediening', img: '/assets/IMG_7031.jpg', tekst: "Wil jij werken in een team waarbij gastvrijheid hoog in het vaandel staat? Samen met je collega's zorg je voor een enthousiaste, ongedwongen service die onze gasten doet terugkeren." },
-  { uren: 'Jouw uren', title: 'Weekendhulpen en vakantiekrachten', img: '/assets/IMG_7115.jpg', tekst: "Op zoek naar een leuke bijbaan op Texel? Ervaring is niet nodig — wij leren je alles wat je moet weten! In overleg is vrijwel alles mogelijk bij ons." },
-  { uren: '38 uur', title: 'Tussenjaars op Texel', img: '/assets/Tussenjaar-horeca-op-Texel.jpg', tekst: "Zin in een avontuurlijk tussenjaar in een van de mooiste omgevingen van Nederland? Van bedienen tot koken — er is volop ruimte om te groeien." },
-  { uren: '38 uur', title: 'Zelfstandig werkend kok', img: '/assets/Sous-chef-kaap-noord-small-image.jpg', tekst: "Wil jij werken als kok waar de zee altijd dichtbij is? Een afwisselende functie met een nadruk op verse en lokale producten." },
-  { uren: '38 uur', title: 'Chef de Partie', img: '/assets/Sous-chef-kaap-noord-small-image.jpg', tekst: "Een dynamische functie als essentiële rol binnen ons keukenteam. Focus op verse en lokale producten, op een prachtig eiland." },
-  { uren: 'In overleg', title: 'Open sollicitatie', img: null, tekst: "Staat jouw ideale baan er niet bij? We zijn altijd op zoek naar enthousiaste mensen met een positieve instelling." },
+  {
+    uren: '38 uur',
+    title: 'Zelfstandig medewerker bediening',
+    img: null as string | null,
+    tekst: "Wil jij werken in een team waarbij gastvrijheid hoog in het vaandel staat? Samen met je collega's zorg je voor een enthousiaste, ongedwongen service die onze gasten doet terugkeren.",
+    extendedTekst: null as string | null,
+  },
+  {
+    uren: 'Jouw uren',
+    title: 'Weekendhulpen en vakantiekrachten',
+    img: null as string | null,
+    tekst: "Op zoek naar een leuke bijbaan op Texel? Ervaring is niet nodig — wij leren je alles wat je moet weten! In overleg is vrijwel alles mogelijk bij ons.",
+    extendedTekst: null as string | null,
+  },
+  {
+    uren: '38 uur',
+    title: 'Tussenjaars op Texel',
+    img: null as string | null,
+    tekst: "Zin in een avontuurlijk tussenjaar in een van de mooiste omgevingen van Nederland? Van bedienen tot koken — er is volop ruimte om te groeien.",
+    extendedTekst: null as string | null,
+  },
+  {
+    uren: '38 uur',
+    title: 'Zelfstandig werkend kok',
+    img: null as string | null,
+    tekst: "Wil jij werken als kok waar de zee altijd dichtbij is? Een afwisselende functie met een nadruk op verse en lokale producten.",
+    extendedTekst: null as string | null,
+  },
+  {
+    uren: '38 uur',
+    title: 'Chef de Partie',
+    img: null as string | null,
+    tekst: "Een dynamische functie als essentiële rol binnen ons keukenteam. Focus op verse en lokale producten, op een prachtig eiland.",
+    extendedTekst: null as string | null,
+  },
+  {
+    uren: 'In overleg',
+    title: 'Open sollicitatie',
+    img: null as string | null,
+    tekst: "Staat jouw ideale baan er niet bij? We zijn altijd op zoek naar enthousiaste mensen met een positieve instelling.",
+    extendedTekst: null as string | null,
+  },
 ];
 
-type ActiveCard = { idx: number; state: 'normal' | 'mega' } | null;
-
 export default function Home() {
-  const [activeCard, setActiveCard] = useState<ActiveCard>(null);
+  const [cardStates, setCardStates] = useState<CardState[]>(vacatures.map(() => 'closed'));
   const [isDocked, setIsDocked] = useState(false);
-  const megaRef = useRef<HTMLDivElement | null>(null);
+  const fullRef = useRef<HTMLDivElement | null>(null);
 
-  const cardState = (i: number) =>
-    activeCard?.idx === i ? activeCard.state : 'mini';
+  const fullIdx = cardStates.findIndex(s => s === 'full');
 
   useEffect(() => {
-    if (activeCard?.state !== 'mega') { setIsDocked(false); return; }
-    const el = megaRef.current;
+    if (fullIdx === -1) { setIsDocked(false); return; }
+    const el = fullRef.current;
     if (!el) return;
     const obs = new IntersectionObserver(
       ([e]) => setIsDocked(e.isIntersecting),
@@ -39,7 +74,14 @@ export default function Home() {
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, [activeCard]);
+  }, [fullIdx]);
+
+  const setCard = (i: number, state: CardState) => {
+    setCardStates(prev => prev.map((s, idx) => {
+      if (idx !== i) return state !== 'closed' ? 'closed' : s;
+      return state;
+    }));
+  };
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f5f5f5' }}>
@@ -58,12 +100,12 @@ export default function Home() {
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
             style={{ background: 'rgba(0,0,0,0.35)' }}>
-            <h1 className="text-5xl md:text-7xl uppercase mb-4 text-white"
-              style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em' }}>
+            <h1 className="text-5xl md:text-7xl uppercase mb-4"
+              style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em', color: '#ffffff' }}>
               Werken bij Kaap Noord
             </h1>
-            <p className="text-lg md:text-2xl text-white mb-8 max-w-2xl"
-              style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300 }}>
+            <p className="text-lg md:text-2xl mb-8 max-w-2xl"
+              style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#ffffff' }}>
               Kom je een dagje meelopen in ons team op het mooiste eiland?
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -73,7 +115,8 @@ export default function Home() {
                 Ik wil meelopen →
               </Link>
               <Link href="/over-ons"
-                className="px-8 py-3 font-bold text-sm uppercase tracking-widest border-2 border-white text-white transition-opacity hover:opacity-80">
+                className="px-8 py-3 font-bold text-sm uppercase tracking-widest border-2 border-white transition-opacity hover:opacity-80"
+                style={{ color: '#ffffff' }}>
                 Vertel me meer
               </Link>
             </div>
@@ -106,157 +149,187 @@ export default function Home() {
             </svg>
           </div>
 
-          {/* Grid — gap-y-16 geeft ruimte voor 20px foto-overhang */}
-          <div className="grid md:grid-cols-2 gap-x-10 gap-y-16">
+          <div className="grid md:grid-cols-2 gap-5">
             {vacatures.map((r, i) => {
-              const state = cardState(i);
+              const state = cardStates[i];
+              const isOpen = state !== 'closed';
+              const isFull = state === 'full';
 
-              /* ── MINI ── */
-              if (state === 'mini') {
-                return (
-                  <div key={i}
-                    className="rounded-xl shadow-md flex items-center gap-4 px-5 py-4 cursor-pointer hover:brightness-110 transition-all"
+              return (
+                <div
+                  key={i}
+                  ref={isFull ? fullRef : null}
+                  className="rounded-xl overflow-hidden shadow-md"
+                  style={{ borderLeft: '4px solid #fcf8bd' }}
+                >
+                  {/* ── BAR ── */}
+                  <button
+                    className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
                     style={{ backgroundColor: '#3b696d' }}
-                    onClick={() => setActiveCard({ idx: i, state: 'normal' })}>
-                    {r.img ? (
-                      <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
-                        <img src={r.img} alt="" className="w-full h-full object-cover" />
-                      </div>
-                    ) : (
-                      <div className="w-12 h-12 rounded-lg flex-shrink-0 flex items-center justify-center"
-                        style={{ backgroundColor: '#2a5558' }}>
-                        <span className="text-xl">❓</span>
-                      </div>
-                    )}
+                    onClick={() => setCard(i, isOpen ? 'closed' : 'short')}
+                  >
                     <div className="flex-1 min-w-0">
-                      <span className="text-xs font-semibold uppercase tracking-widest block"
-                        style={{ color: '#fcf8bd' }}>
-                        ⏱ {r.uren} &nbsp;📍 Texel
-                      </span>
-                      <h3 className="text-base font-extrabold text-white leading-snug truncate"
-                        style={{ fontFamily: "'Kodchasan', sans-serif" }}>
+                      <span
+                        className="block font-bold leading-snug mb-1"
+                        style={{
+                          color: '#ffffff',
+                          fontFamily: "'Kodchasan', sans-serif",
+                          fontSize: '17px',
+                        }}
+                      >
                         {r.title}
-                      </h3>
+                      </span>
+                      <span className="flex items-center gap-4 flex-wrap">
+                        <span style={{ color: '#fcf8bd', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif" }}>
+                          ⏱ {r.uren}
+                        </span>
+                        <span style={{ color: '#fcf8bd', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif" }}>
+                          📍 Texel
+                        </span>
+                      </span>
                     </div>
-                    <svg className="w-5 h-5 flex-shrink-0 text-white" fill="none" stroke="currentColor"
-                      strokeWidth="2" viewBox="0 0 24 24">
+                    <svg
+                      style={{
+                        width: '20px', height: '20px', flexShrink: 0,
+                        stroke: '#fcf8bd', transition: 'transform 0.3s ease',
+                        transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                      }}
+                      fill="none" strokeWidth="2.5" viewBox="0 0 24 24"
+                    >
                       <path d="M19 9l-7 7-7-7" />
                     </svg>
-                  </div>
-                );
-              }
+                  </button>
 
-              /* ── NORMAAL of MEGA ── */
-              return (
-                <div key={i}
-                  ref={state === 'mega' ? megaRef : null}
-                  className="relative"
-                  style={{ paddingTop: '20px' }}>
+                  {/* ── UITKLAPBAAR GEDEELTE ── */}
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateRows: isOpen ? '1fr' : '0fr',
+                    transition: 'grid-template-rows 0.35s ease',
+                  }}>
+                    <div style={{ overflow: 'hidden' }}>
+                      <div style={{ backgroundColor: '#2d5f63' }}>
 
-                  <div className="rounded-xl shadow-md relative"
-                    style={{
-                      backgroundColor: '#3b696d',
-                      padding: '30px 20px',         /* mobiel */
-                    }}>
+                        {/* Foto placeholder — wordt later ingevuld via admin */}
+                        {r.img && (
+                          <div style={{ width: '100%', aspectRatio: '16/7', overflow: 'hidden' }}>
+                            <img
+                              src={r.img}
+                              alt={r.title}
+                              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                            />
+                          </div>
+                        )}
 
-                    {/* Mobiel: foto vol breedte bovenaan */}
-                    {r.img && (
-                      <div className="block md:hidden w-full rounded-lg overflow-hidden mb-4"
-                        style={{ aspectRatio: '16/7' }}>
-                        <img src={r.img} alt={r.title} className="w-full h-full object-cover" />
-                      </div>
-                    )}
-
-                    {/* Desktop: ruimte voor uitstekende foto via inline padding */}
-                    <div className="md:pr-[190px] md:pl-2 md:pt-2">
-
-                      {/* Header: titel + sluitknop */}
-                      <div className="flex items-start justify-between mb-2">
-                        <h3 className="text-xl font-extrabold text-white leading-snug"
-                          style={{ fontFamily: "'Kodchasan', sans-serif" }}>
-                          {r.title}
-                        </h3>
-                        <button
-                          className="ml-3 flex-shrink-0 text-white opacity-50 hover:opacity-100 transition-opacity"
-                          onClick={() => setActiveCard(null)}
-                          aria-label="Sluiten">
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2"
-                            viewBox="0 0 24 24">
-                            <path d="M18 6L6 18M6 6l12 12" />
-                          </svg>
-                        </button>
-                      </div>
-
-                      {/* Meta */}
-                      <div className="flex gap-5 mb-4">
-                        <span className="text-sm" style={{ color: '#fcf8bd' }}>⏱ {r.uren}</span>
-                        <span className="text-sm" style={{ color: '#fcf8bd' }}>📍 Texel</span>
-                      </div>
-
-                      {/* Beschrijving */}
-                      <p className="text-sm text-white leading-relaxed mb-5"
-                        style={{ fontFamily: "'Kodchasan', sans-serif" }}>
-                        {r.tekst}
-                      </p>
-
-                      {/* CTA: normal → mega knop / mega → docked knoppen */}
-                      {state === 'normal' ? (
-                        <button
-                          className="inline-block px-5 py-2 font-bold transition-opacity hover:opacity-85"
-                          style={{
-                            backgroundColor: '#fcf8bd',
-                            color: '#3b696d',
-                            fontFamily: "'Pana Summer', serif",
-                            fontSize: '18px',
-                          }}
-                          onClick={() => setActiveCard({ idx: i, state: 'mega' })}>
-                          Solliciteer direct
-                        </button>
-                      ) : (
-                        <div className="flex items-center gap-3">
-                          <a href={phoneLink}
-                            className="w-14 h-14 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-xl flex-shrink-0"
-                            style={{ backgroundColor: '#2a5558' }}
-                            title="Bel ons">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                            </svg>
-                          </a>
-                          <a href={whatsappLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="w-14 h-14 rounded-full flex items-center justify-center text-2xl hover:scale-110 transition-transform shadow-xl flex-shrink-0"
-                            style={{ backgroundColor: '#25D366' }}
-                            title="WhatsApp ons">
-                            💬
-                          </a>
-                          <span className="text-sm leading-snug" style={{ color: '#bdeffc' }}>
-                            Reageer direct<br />op deze vacature
-                          </span>
+                        {/* Korte tekst */}
+                        <div className="px-5 pt-5 pb-3">
+                          <p style={{
+                            color: '#d4ecec',
+                            fontSize: '14px',
+                            lineHeight: '1.7',
+                            fontFamily: "'Kodchasan', sans-serif",
+                          }}>
+                            {r.tekst}
+                          </p>
                         </div>
-                      )}
-                    </div>
 
-                    {/* Desktop foto — steekt 20px uit boven de card */}
-                    {r.img ? (
-                      <div className="hidden md:block absolute border-4 border-white shadow-lg"
-                        style={{ right: '20px', top: '-20px', width: '150px' }}>
-                        <img src={r.img} alt={r.title} className="w-full block"
-                          style={{ aspectRatio: '2/3', objectFit: 'cover' }} />
+                        {/* Tweede uitklap trigger — alleen zichtbaar in 'short' state */}
+                        <div style={{
+                          display: 'grid',
+                          gridTemplateRows: !isFull ? '1fr' : '0fr',
+                          transition: 'grid-template-rows 0.2s ease',
+                        }}>
+                          <div style={{ overflow: 'hidden' }}>
+                            <div className="px-5 pb-4 flex justify-end">
+                              <button
+                                onClick={(e) => { e.stopPropagation(); setCard(i, 'full'); }}
+                                className="flex items-center gap-1 text-sm font-semibold transition-opacity hover:opacity-75"
+                                style={{ color: '#fcf8bd', fontFamily: "'Kodchasan', sans-serif" }}
+                              >
+                                Volledige vacature
+                                <svg style={{ width: '16px', height: '16px', stroke: '#fcf8bd' }}
+                                  fill="none" strokeWidth="2.5" viewBox="0 0 24 24">
+                                  <path d="M19 9l-7 7-7-7" />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Uitgebreide tekst — alleen in 'full' state */}
+                        <div style={{
+                          display: 'grid',
+                          gridTemplateRows: isFull ? '1fr' : '0fr',
+                          transition: 'grid-template-rows 0.35s ease',
+                        }}>
+                          <div style={{ overflow: 'hidden' }}>
+                            <div className="px-5 pt-1 pb-6">
+
+                              {/* Divider */}
+                              <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)', marginBottom: '16px' }} />
+
+                              {r.extendedTekst ? (
+                                <div
+                                  style={{ color: '#d4ecec', fontSize: '14px', lineHeight: '1.75', fontFamily: "'Kodchasan', sans-serif" }}
+                                  dangerouslySetInnerHTML={{ __html: r.extendedTekst }}
+                                />
+                              ) : (
+                                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '13px', fontStyle: 'italic', fontFamily: "'Kodchasan', sans-serif" }}>
+                                  Uitgebreide informatie volgt binnenkort.
+                                </p>
+                              )}
+
+                              {/* Gedockte contact-knoppen */}
+                              <div className="flex items-center gap-3 flex-wrap mt-5">
+                                <a
+                                  href={phoneLink}
+                                  className="w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-lg flex-shrink-0"
+                                  style={{ backgroundColor: '#1e4548' }}
+                                  title="Bel ons"
+                                  onClick={e => e.stopPropagation()}
+                                >
+                                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                                  </svg>
+                                </a>
+                                <a
+                                  href={whatsappLink}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="w-12 h-12 rounded-full flex items-center justify-center text-xl hover:scale-110 transition-transform shadow-lg flex-shrink-0"
+                                  style={{ backgroundColor: '#25D366' }}
+                                  title="WhatsApp ons"
+                                  onClick={e => e.stopPropagation()}
+                                >
+                                  💬
+                                </a>
+                                <span style={{ color: '#bdeffc', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif", lineHeight: '1.3' }}>
+                                  Reageer direct<br />op deze vacature
+                                </span>
+                                <button
+                                  className="ml-auto flex items-center gap-1 text-sm transition-opacity hover:opacity-75"
+                                  style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Kodchasan', sans-serif" }}
+                                  onClick={() => setCard(i, 'closed')}
+                                >
+                                  <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                    <path d="M18 6L6 18M6 6l12 12" />
+                                  </svg>
+                                  Sluiten
+                                </button>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+
                       </div>
-                    ) : (
-                      <div className="hidden md:flex absolute items-center justify-center border-4 border-white"
-                        style={{ right: '20px', top: '-20px', width: '150px', aspectRatio: '2/3', backgroundColor: '#2a5558' }}>
-                        <span className="text-4xl">❓</span>
-                      </div>
-                    )}
+                    </div>
                   </div>
                 </div>
               );
             })}
           </div>
 
-          <div className="text-center mt-16">
+          <div className="text-center mt-12">
             <Link href="/rollen"
               className="inline-block px-8 py-3 font-semibold border-2 text-sm uppercase tracking-wider transition-colors hover:text-white hover:bg-[#3b696d]"
               style={{ borderColor: '#3b696d', color: '#3b696d' }}>
@@ -282,7 +355,8 @@ export default function Home() {
               </div>
             </div>
             <div className="w-full md:w-64 flex-shrink-0 h-56 md:h-auto overflow-hidden">
-              <img src="/assets/IMG_7115.jpg" alt="Medewerker Kaap Noord" className="w-full h-full object-cover" />
+              <img src="/assets/IMG_7115.jpg" alt="Medewerker Kaap Noord"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
             </div>
           </div>
         </div>
@@ -296,26 +370,22 @@ export default function Home() {
             Waarom Kaap Noord?
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="text-4xl mb-3">🏝️</div>
-              <h3 className="font-bold text-lg mb-2" style={{ color: '#3b696d' }}>Werken op een eiland</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">Werk op een van de mooiste plekken van Nederland. Zilt water, zonsondergangen en natuur om je heen.</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl mb-3">👥</div>
-              <h3 className="font-bold text-lg mb-2" style={{ color: '#3b696d' }}>Echt team</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">Fijne werksfeer in een hecht team. Bij ons geen formele setting maar het huiskamer gevoel.</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl mb-3">🎯</div>
-              <h3 className="font-bold text-lg mb-2" style={{ color: '#3b696d' }}>Jij bepaalt mee</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">Flexibele tijden in overleg. Vakantie ook in het hoogseizoen. Jij brengt het voorstel, wij regelen het.</p>
-            </div>
+            {[
+              { icon: '🏝️', title: 'Werken op een eiland', text: 'Werk op een van de mooiste plekken van Nederland. Zilt water, zonsondergangen en natuur om je heen.' },
+              { icon: '👥', title: 'Echt team', text: 'Fijne werksfeer in een hecht team. Bij ons geen formele setting maar het huiskamer gevoel.' },
+              { icon: '🎯', title: 'Jij bepaalt mee', text: 'Flexibele tijden in overleg. Vakantie ook in het hoogseizoen. Jij brengt het voorstel, wij regelen het.' },
+            ].map((usp, i) => (
+              <div key={i} className="text-center">
+                <div className="text-4xl mb-3">{usp.icon}</div>
+                <h3 className="font-bold text-lg mb-2" style={{ color: '#3b696d' }}>{usp.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{usp.text}</p>
+              </div>
+            ))}
           </div>
           <div className="text-center mt-10">
             <Link href="/voor-jou"
-              className="inline-block px-8 py-3 font-semibold text-sm uppercase tracking-wider text-white transition-opacity hover:opacity-85"
-              style={{ backgroundColor: '#3b696d' }}>
+              className="inline-block px-8 py-3 font-semibold text-sm uppercase tracking-wider transition-opacity hover:opacity-85"
+              style={{ backgroundColor: '#3b696d', color: '#ffffff' }}>
               Alle voordelen →
             </Link>
           </div>
@@ -325,8 +395,8 @@ export default function Home() {
       {/* CTA Banner */}
       <section className="py-16 px-4 text-center" style={{ backgroundColor: '#3b696d' }}>
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl md:text-4xl text-white uppercase mb-4"
-            style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400 }}>
+          <h2 className="text-3xl md:text-4xl uppercase mb-4"
+            style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, color: '#ffffff' }}>
             Kom je kennismaken?
           </h2>
           <p className="text-lg mb-8" style={{ color: '#bdeffc' }}>
@@ -335,11 +405,12 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href={whatsappLink} target="_blank" rel="noopener noreferrer"
               className="px-8 py-3 font-bold text-sm uppercase tracking-wider transition-opacity hover:opacity-90"
-              style={{ backgroundColor: '#25D366', color: 'white' }}>
+              style={{ backgroundColor: '#25D366', color: '#ffffff' }}>
               💬 WhatsApp Marije
             </a>
             <Link href="/contact"
-              className="px-8 py-3 font-bold text-sm uppercase tracking-wider border-2 border-white text-white transition-opacity hover:opacity-80">
+              className="px-8 py-3 font-bold text-sm uppercase tracking-wider border-2 border-white transition-opacity hover:opacity-80"
+              style={{ color: '#ffffff' }}>
               Of stuur een bericht
             </Link>
           </div>
