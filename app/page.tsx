@@ -6,61 +6,74 @@ import Footer from '@/components/Footer';
 import FloatingButtons from '@/components/FloatingButtons';
 import DecorativeLine from '@/components/DecorativeLine';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabase';
 
 const whatsappLink = "https://wa.me/31623823324?text=Hoi!%20Ik%20wil%20graag%20Kaap%20Noord%20ontdekken!";
 const phoneLink = "tel:+31623823324";
 
 type CardState = 'closed' | 'short' | 'full';
 
-const vacatures = [
+interface Vacature {
+  id: string;
+  title: string;
+  uren_display: string | null;
+  description: string | null;
+  extended_description: string | null;
+  image_url: string | null;
+}
+
+const usps = [
   {
-    uren: '38 uur',
-    title: 'Zelfstandig medewerker bediening',
-    img: null as string | null,
-    tekst: "Wil jij werken in een team waarbij gastvrijheid hoog in het vaandel staat? Samen met je collega's zorg je voor een enthousiaste, ongedwongen service die onze gasten doet terugkeren.",
-    extendedTekst: null as string | null,
+    title: 'Werken op een eiland',
+    text: 'Werk op een van de mooiste plekken van Nederland. Zilt water, zonsondergangen en natuur om je heen.',
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22V12M12 12C12 7 7 4 2 6M12 12C12 7 17 4 22 6M2 20h20M6 20c1-2 3-3 4-4M18 20c-1-2-3-3-4-4" />
+      </svg>
+    ),
   },
   {
-    uren: 'Jouw uren',
-    title: 'Weekendhulpen en vakantiekrachten',
-    img: null as string | null,
-    tekst: "Op zoek naar een leuke bijbaan op Texel? Ervaring is niet nodig — wij leren je alles wat je moet weten! In overleg is vrijwel alles mogelijk bij ons.",
-    extendedTekst: null as string | null,
+    title: 'Echt team',
+    text: 'Fijne werksfeer in een hecht team. Bij ons geen formele setting maar het huiskamer gevoel.',
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="9" cy="7" r="3" />
+        <circle cx="15" cy="7" r="3" />
+        <path d="M3 20c0-4 2.7-6 6-6M21 20c0-4-2.7-6-6-6M9 14c1 0 2 .3 3 1 1-.7 2-1 3-1" />
+      </svg>
+    ),
   },
   {
-    uren: '38 uur',
-    title: 'Tussenjaars op Texel',
-    img: null as string | null,
-    tekst: "Zin in een avontuurlijk tussenjaar in een van de mooiste omgevingen van Nederland? Van bedienen tot koken — er is volop ruimte om te groeien.",
-    extendedTekst: null as string | null,
-  },
-  {
-    uren: '38 uur',
-    title: 'Zelfstandig werkend kok',
-    img: null as string | null,
-    tekst: "Wil jij werken als kok waar de zee altijd dichtbij is? Een afwisselende functie met een nadruk op verse en lokale producten.",
-    extendedTekst: null as string | null,
-  },
-  {
-    uren: '38 uur',
-    title: 'Chef de Partie',
-    img: null as string | null,
-    tekst: "Een dynamische functie als essentiële rol binnen ons keukenteam. Focus op verse en lokale producten, op een prachtig eiland.",
-    extendedTekst: null as string | null,
-  },
-  {
-    uren: 'In overleg',
-    title: 'Open sollicitatie',
-    img: null as string | null,
-    tekst: "Staat jouw ideale baan er niet bij? We zijn altijd op zoek naar enthousiaste mensen met een positieve instelling.",
-    extendedTekst: null as string | null,
+    title: 'Jij bepaalt mee',
+    text: 'Flexibele tijden in overleg. Vakantie ook in het hoogseizoen. Jij brengt het voorstel, wij regelen het.',
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="20 6 9 17 4 12" />
+      </svg>
+    ),
   },
 ];
 
 export default function Home() {
-  const [cardStates, setCardStates] = useState<CardState[]>(vacatures.map(() => 'closed'));
+  const [vacatures, setVacatures] = useState<Vacature[]>([]);
+  const [vacaturesLoading, setVacaturesLoading] = useState(true);
+  const [cardStates, setCardStates] = useState<CardState[]>([]);
   const [isDocked, setIsDocked] = useState(false);
   const fullRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    supabase
+      .from('vacatures')
+      .select('id, title, uren_display, description, extended_description, image_url')
+      .eq('published', true)
+      .order('created_at', { ascending: false })
+      .then(({ data }) => {
+        const list = data || [];
+        setVacatures(list);
+        setCardStates(list.map(() => 'closed' as CardState));
+        setVacaturesLoading(false);
+      });
+  }, []);
 
   const fullIdx = cardStates.findIndex(s => s === 'full');
 
@@ -125,19 +138,18 @@ export default function Home() {
       <Header active="/" />
       <FloatingButtons hidden={isDocked} />
 
-      {/* Hero */}
+      {/* Hero — left-aligned tekst, asymmetrische whitespace */}
       <section className="relative" style={{ backgroundColor: '#fefdf5' }}>
-        {/* Tekst + knoppen */}
-        <div className="flex flex-col items-center justify-center text-center px-4 pt-5 pb-3 md:pt-20 md:pb-8">
-          <h1 className="text-4xl md:text-7xl uppercase mb-3 md:mb-4"
-            style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em', color: '#3b696d' }}>
+        <div className="px-6 sm:px-10 md:px-20 lg:px-32 pt-8 pb-4 md:pt-20 md:pb-10">
+          <h1 className="text-4xl md:text-7xl uppercase mb-4 md:mb-5"
+            style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em', color: '#3b696d', maxWidth: '10ch', lineHeight: 1.05 }}>
             Werken bij Kaap Noord
           </h1>
-          <p className="text-base md:text-2xl mb-5 md:mb-8 max-w-2xl"
-            style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d' }}>
+          <p className="text-base md:text-xl mb-6 md:mb-8"
+            style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', maxWidth: '38ch' }}>
             Kom je een dagje meelopen in ons team op het mooiste eiland?
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
             <Link href="/contact"
               className="cta-glow px-6 py-2.5 md:px-8 md:py-3 font-bold text-sm uppercase tracking-widest"
               style={{ backgroundColor: '#3b696d', color: '#fcf8bd', display: 'inline-block' }}>
@@ -145,11 +157,12 @@ export default function Home() {
             </Link>
             <Link href="/over-ons"
               className="px-6 py-2.5 md:px-8 md:py-3 font-bold text-sm uppercase tracking-widest border-2 transition-opacity hover:opacity-80"
-              style={{ borderColor: '#3b696d', color: '#3b696d' }}>
+              style={{ borderColor: '#3b696d', color: '#3b696d', display: 'inline-block' }}>
               Vertel me meer
             </Link>
           </div>
         </div>
+
         {/* Golfscheiding */}
         <div style={{ lineHeight: 0, backgroundColor: '#fefdf5' }}>
           <svg viewBox="0 0 1440 36" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', width: '100%' }} preserveAspectRatio="none" aria-hidden="true">
@@ -158,7 +171,7 @@ export default function Home() {
           </svg>
         </div>
 
-        {/* Video eronder */}
+        {/* Video */}
         <div className="w-full overflow-hidden" style={{ height: '55vh' }}>
           <iframe
             className="w-full h-full"
@@ -181,7 +194,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Functies */}
+      {/* Functies — dynamisch uit Supabase */}
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl text-center mb-2 uppercase"
@@ -195,185 +208,157 @@ export default function Home() {
             </svg>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-5">
-            {vacatures.map((r, i) => {
-              const state = cardStates[i];
-              const isOpen = state !== 'closed';
-              const isFull = state === 'full';
+          {vacaturesLoading ? (
+            <div className="grid md:grid-cols-2 gap-5">
+              {[1, 2, 3, 4].map(i => (
+                <div key={i} className="h-16 rounded-xl animate-pulse" style={{ backgroundColor: '#e8f4f4' }} />
+              ))}
+            </div>
+          ) : vacatures.length === 0 ? (
+            <p className="text-center py-8" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>
+              Er zijn momenteel geen openstaande vacatures. Kijk binnenkort terug.
+            </p>
+          ) : (
+            <div className="grid md:grid-cols-2 gap-5">
+              {vacatures.map((r, i) => {
+                const state = cardStates[i];
+                const isOpen = state !== 'closed';
+                const isFull = state === 'full';
 
-              return (
-                <div
-                  key={i}
-                  ref={isFull ? fullRef : null}
-                  className="rounded-xl overflow-hidden shadow-md"
-                  style={{ borderLeft: '4px solid #fcf8bd' }}
-                >
-                  {/* ── BAR ── */}
-                  <button
-                    className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
-                    style={{ backgroundColor: '#3b696d' }}
-                    onClick={() => setCard(i, isOpen ? 'closed' : 'short')}
+                return (
+                  <div
+                    key={r.id}
+                    ref={isFull ? fullRef : null}
+                    className="rounded-xl overflow-hidden shadow-md"
+                    style={{ borderLeft: '4px solid #fcf8bd' }}
                   >
-                    <div className="flex-1 min-w-0">
-                      <span
-                        className="block font-bold leading-snug mb-1"
-                        style={{
-                          color: '#ffffff',
-                          fontFamily: "'Kodchasan', sans-serif",
-                          fontSize: '17px',
-                        }}
-                      >
-                        {r.title}
-                      </span>
-                      <span className="flex items-center gap-4 flex-wrap">
-                        <span style={{ color: '#fcf8bd', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif" }}>
-                          ⏱ {r.uren}
-                        </span>
-                        <span style={{ color: '#fcf8bd', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif" }}>
-                          📍 Texel
-                        </span>
-                      </span>
-                    </div>
-                    <svg
-                      style={{
-                        width: '20px', height: '20px', flexShrink: 0,
-                        stroke: '#fcf8bd', transition: 'transform 0.3s ease',
-                        transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                      }}
-                      fill="none" strokeWidth="2.5" viewBox="0 0 24 24"
+                    {/* BAR */}
+                    <button
+                      className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
+                      style={{ backgroundColor: '#3b696d' }}
+                      onClick={() => setCard(i, isOpen ? 'closed' : 'short')}
                     >
-                      <path d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
+                      <div className="flex-1 min-w-0">
+                        <span className="block font-bold leading-snug mb-1"
+                          style={{ color: '#ffffff', fontFamily: "'Kodchasan', sans-serif", fontSize: '17px' }}>
+                          {r.title}
+                        </span>
+                        <span className="flex items-center gap-4 flex-wrap">
+                          {r.uren_display && (
+                            <span className="flex items-center gap-1" style={{ color: '#fcf8bd', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif" }}>
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                              {r.uren_display}
+                            </span>
+                          )}
+                          <span className="flex items-center gap-1" style={{ color: '#fcf8bd', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif" }}>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            Texel
+                          </span>
+                        </span>
+                      </div>
+                      <svg
+                        style={{ width: '20px', height: '20px', flexShrink: 0, stroke: '#fcf8bd', transition: 'transform 0.3s ease', transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                        fill="none" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
 
-                  {/* ── UITKLAPBAAR GEDEELTE ── */}
-                  <div style={{
-                    display: 'grid',
-                    gridTemplateRows: isOpen ? '1fr' : '0fr',
-                    transition: 'grid-template-rows 0.35s ease',
-                  }}>
-                    <div style={{ overflow: 'hidden' }}>
-                      <div style={{ backgroundColor: '#2d5f63' }}>
-
-                        {/* Foto placeholder — wordt later ingevuld via admin */}
-                        {r.img && (
-                          <div style={{ width: '100%', aspectRatio: '16/7', overflow: 'hidden' }}>
-                            <img
-                              src={r.img}
-                              alt={r.title}
-                              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                            />
-                          </div>
-                        )}
-
-                        {/* Korte tekst */}
-                        <div className="px-5 pt-5 pb-3">
-                          <p style={{
-                            color: '#d4ecec',
-                            fontSize: '14px',
-                            lineHeight: '1.7',
-                            fontFamily: "'Kodchasan', sans-serif",
-                          }}>
-                            {r.tekst}
-                          </p>
-                        </div>
-
-                        {/* Tweede uitklap trigger — alleen zichtbaar in 'short' state */}
-                        <div style={{
-                          display: 'grid',
-                          gridTemplateRows: !isFull ? '1fr' : '0fr',
-                          transition: 'grid-template-rows 0.2s ease',
-                        }}>
-                          <div style={{ overflow: 'hidden' }}>
-                            <div className="px-5 pb-4 flex justify-end">
-                              <button
-                                onClick={(e) => { e.stopPropagation(); setCard(i, 'full'); }}
-                                className="flex items-center gap-1 text-sm font-semibold transition-opacity hover:opacity-75"
-                                style={{ color: '#fcf8bd', fontFamily: "'Kodchasan', sans-serif" }}
-                              >
-                                Volledige vacature
-                                <svg style={{ width: '16px', height: '16px', stroke: '#fcf8bd' }}
-                                  fill="none" strokeWidth="2.5" viewBox="0 0 24 24">
-                                  <path d="M19 9l-7 7-7-7" />
-                                </svg>
-                              </button>
+                    {/* UITKLAPBAAR */}
+                    <div style={{ display: 'grid', gridTemplateRows: isOpen ? '1fr' : '0fr', transition: 'grid-template-rows 0.35s ease' }}>
+                      <div style={{ overflow: 'hidden' }}>
+                        <div style={{ backgroundColor: '#2d5f63' }}>
+                          {r.image_url && (
+                            <div style={{ width: '100%', aspectRatio: '16/7', overflow: 'hidden' }}>
+                              <img src={r.image_url} alt={r.title}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                             </div>
+                          )}
+                          <div className="px-5 pt-5 pb-3">
+                            <p style={{ color: '#d4ecec', fontSize: '14px', lineHeight: '1.7', fontFamily: "'Kodchasan', sans-serif" }}>
+                              {r.description}
+                            </p>
                           </div>
-                        </div>
 
-                        {/* Uitgebreide tekst — alleen in 'full' state */}
-                        <div style={{
-                          display: 'grid',
-                          gridTemplateRows: isFull ? '1fr' : '0fr',
-                          transition: 'grid-template-rows 0.35s ease',
-                        }}>
-                          <div style={{ overflow: 'hidden' }}>
-                            <div className="px-5 pt-1 pb-6">
-
-                              {/* Divider */}
-                              <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)', marginBottom: '16px' }} />
-
-                              {r.extendedTekst ? (
-                                <div
-                                  style={{ color: '#d4ecec', fontSize: '14px', lineHeight: '1.75', fontFamily: "'Kodchasan', sans-serif" }}
-                                  dangerouslySetInnerHTML={{ __html: r.extendedTekst }}
-                                />
-                              ) : (
-                                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '13px', fontStyle: 'italic', fontFamily: "'Kodchasan', sans-serif" }}>
-                                  Uitgebreide informatie volgt binnenkort.
-                                </p>
-                              )}
-
-                              {/* Gedockte contact-knoppen */}
-                              <div className="flex items-center gap-3 flex-wrap mt-5">
-                                <a
-                                  href={phoneLink}
-                                  className="float-btn flex-shrink-0"
-                                  style={{ backgroundColor: '#3b696d', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                                  title="Bel ons"
-                                  onClick={e => e.stopPropagation()}
-                                >
-                                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                                  </svg>
-                                </a>
-                                <a
-                                  href={whatsappLink}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="float-btn flex-shrink-0"
-                                  style={{ backgroundColor: '#25D366', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', animationDelay: '0.5s' }}
-                                  title="WhatsApp ons"
-                                  onClick={e => e.stopPropagation()}
-                                >
-                                  💬
-                                </a>
-                                <span style={{ color: '#bdeffc', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif", lineHeight: '1.3' }}>
-                                  Reageer direct<br />op deze vacature
-                                </span>
-                                <button
-                                  className="ml-auto flex items-center gap-1 text-sm transition-opacity hover:opacity-75"
-                                  style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Kodchasan', sans-serif" }}
-                                  onClick={() => setCard(i, 'closed')}
-                                >
-                                  <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                    <path d="M18 6L6 18M6 6l12 12" />
-                                  </svg>
-                                  Sluiten
-                                </button>
+                          {/* "Volledige vacature" knop — alleen zichtbaar in short state */}
+                          {r.extended_description && (
+                            <div style={{ display: 'grid', gridTemplateRows: !isFull ? '1fr' : '0fr', transition: 'grid-template-rows 0.2s ease' }}>
+                              <div style={{ overflow: 'hidden' }}>
+                                <div className="px-5 pb-4 flex justify-end">
+                                  <button
+                                    onClick={(e) => { e.stopPropagation(); setCard(i, 'full'); }}
+                                    className="flex items-center gap-1 text-sm font-semibold transition-opacity hover:opacity-75"
+                                    style={{ color: '#fcf8bd', fontFamily: "'Kodchasan', sans-serif" }}>
+                                    Volledige vacature
+                                    <svg style={{ width: '16px', height: '16px', stroke: '#fcf8bd' }} fill="none" strokeWidth="2.5" viewBox="0 0 24 24">
+                                      <path d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                  </button>
+                                </div>
                               </div>
+                            </div>
+                          )}
 
+                          {/* Volledige tekst */}
+                          <div style={{ display: 'grid', gridTemplateRows: isFull ? '1fr' : '0fr', transition: 'grid-template-rows 0.35s ease' }}>
+                            <div style={{ overflow: 'hidden' }}>
+                              <div className="px-5 pt-1 pb-6">
+                                <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)', marginBottom: '16px' }} />
+                                {r.extended_description ? (
+                                  <p style={{ color: '#d4ecec', fontSize: '14px', lineHeight: '1.75', fontFamily: "'Kodchasan', sans-serif", whiteSpace: 'pre-wrap' }}>
+                                    {r.extended_description}
+                                  </p>
+                                ) : (
+                                  <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '13px', fontStyle: 'italic', fontFamily: "'Kodchasan', sans-serif" }}>
+                                    Uitgebreide informatie volgt binnenkort.
+                                  </p>
+                                )}
+
+                                {/* Contact knoppen */}
+                                <div className="flex items-center gap-3 flex-wrap mt-5">
+                                  <a href={phoneLink}
+                                    className="float-btn flex-shrink-0"
+                                    style={{ backgroundColor: '#3b696d', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                    title="Bel ons"
+                                    onClick={e => e.stopPropagation()}>
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                                    </svg>
+                                  </a>
+                                  <a href={whatsappLink}
+                                    target="_blank" rel="noopener noreferrer"
+                                    className="float-btn flex-shrink-0"
+                                    style={{ backgroundColor: '#25D366', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', animationDelay: '0.5s' }}
+                                    title="WhatsApp ons"
+                                    onClick={e => e.stopPropagation()}>
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+                                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                                      <path d="M11.5 2C6.262 2 2 6.262 2 11.5c0 1.687.435 3.272 1.197 4.653L2 22l5.998-1.172A9.45 9.45 0 0 0 11.5 21c5.238 0 9.5-4.262 9.5-9.5S16.738 2 11.5 2zm0 17.3a7.792 7.792 0 0 1-3.976-1.083l-.285-.169-2.955.577.6-2.883-.186-.295A7.793 7.793 0 0 1 3.7 11.5C3.7 7.198 7.198 3.7 11.5 3.7S19.3 7.198 19.3 11.5 15.802 19.3 11.5 19.3z"/>
+                                    </svg>
+                                  </a>
+                                  <span style={{ color: '#bdeffc', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif", lineHeight: '1.3' }}>
+                                    Reageer direct<br />op deze vacature
+                                  </span>
+                                  <button
+                                    className="ml-auto flex items-center gap-1 text-sm transition-opacity hover:opacity-75"
+                                    style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Kodchasan', sans-serif" }}
+                                    onClick={() => setCard(i, 'closed')}>
+                                    <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                      <path d="M18 6L6 18M6 6l12 12" />
+                                    </svg>
+                                    Sluiten
+                                  </button>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
-
                       </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
 
           <div className="text-center mt-12">
             <Link href="/rollen"
@@ -393,7 +378,7 @@ export default function Home() {
             <div className="flex-1 p-8 md:p-10 flex items-center">
               <div>
                 <span className="text-5xl font-bold mb-4 block"
-                  style={{ color: '#3b696d', fontFamily: 'Georgia, serif' }}>"</span>
+                  style={{ color: '#3b696d', fontFamily: "'Pana Summer', serif" }}>"</span>
                 <p className="text-lg md:text-xl font-semibold uppercase"
                   style={{ color: '#3b696d', fontFamily: "'Pana Summer', serif", letterSpacing: '0.02em' }}>
                   Van Bonaire naar Texel. Wie had dat gedacht! Een wereld van verschil, maar ik werk al een jaar met veel plezier bij Kaap Noord!
@@ -408,27 +393,32 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3 Quick USPs */}
+      {/* USPs — zig-zag 2-kolom ipv 3-kolom grid */}
       <section className="py-16 px-4" style={{ backgroundColor: '#f0fafe' }}>
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl text-center mb-10 uppercase"
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl text-center mb-12 uppercase"
             style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', letterSpacing: '0.05em' }}>
             Waarom Kaap Noord?
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { icon: '🏝️', title: 'Werken op een eiland', text: 'Werk op een van de mooiste plekken van Nederland. Zilt water, zonsondergangen en natuur om je heen.' },
-              { icon: '👥', title: 'Echt team', text: 'Fijne werksfeer in een hecht team. Bij ons geen formele setting maar het huiskamer gevoel.' },
-              { icon: '🎯', title: 'Jij bepaalt mee', text: 'Flexibele tijden in overleg. Vakantie ook in het hoogseizoen. Jij brengt het voorstel, wij regelen het.' },
-            ].map((usp, i) => (
-              <div key={i} className="text-center">
-                <div className="text-4xl mb-3">{usp.icon}</div>
-                <h3 className="font-bold text-lg mb-2" style={{ color: '#3b696d' }}>{usp.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{usp.text}</p>
+          <div className="flex flex-col gap-10">
+            {usps.map((usp, i) => (
+              <div key={i} className={`flex items-start gap-6 ${i % 2 === 1 ? 'md:flex-row-reverse' : ''}`}>
+                <div className="flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}>
+                  {usp.icon}
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-lg mb-2" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>
+                    {usp.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed" style={{ color: '#4b7c80' }}>
+                    {usp.text}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
-          <div className="text-center mt-10">
+          <div className="text-center mt-12">
             <Link href="/voor-jou"
               className="inline-block px-8 py-3 font-semibold text-sm uppercase tracking-wider transition-opacity hover:opacity-85"
               style={{ backgroundColor: '#3b696d', color: '#ffffff' }}>
@@ -450,9 +440,13 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href={whatsappLink} target="_blank" rel="noopener noreferrer"
-              className="px-8 py-3 font-bold text-sm uppercase tracking-wider transition-opacity hover:opacity-90"
+              className="px-8 py-3 font-bold text-sm uppercase tracking-wider transition-opacity hover:opacity-90 flex items-center justify-center gap-2"
               style={{ backgroundColor: '#25D366', color: '#ffffff' }}>
-              💬 WhatsApp Marije
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                <path d="M11.5 2C6.262 2 2 6.262 2 11.5c0 1.687.435 3.272 1.197 4.653L2 22l5.998-1.172A9.45 9.45 0 0 0 11.5 21c5.238 0 9.5-4.262 9.5-9.5S16.738 2 11.5 2zm0 17.3a7.792 7.792 0 0 1-3.976-1.083l-.285-.169-2.955.577.6-2.883-.186-.295A7.793 7.793 0 0 1 3.7 11.5C3.7 7.198 7.198 3.7 11.5 3.7S19.3 7.198 19.3 11.5 15.802 19.3 11.5 19.3z"/>
+              </svg>
+              WhatsApp Marije
             </a>
             <Link href="/contact"
               className="px-8 py-3 font-bold text-sm uppercase tracking-wider border-2 border-white transition-opacity hover:opacity-80"

@@ -66,9 +66,14 @@ export default function Header({ active = '' }: { active?: string }) {
       </div>
 
       {/* Mobile menu */}
-      {open && (
-        <div className="md:hidden absolute top-full left-0 right-0 shadow-lg z-50" style={{ backgroundColor: '#bdeffc' }}>
-          <div className="flex flex-col p-5 gap-4" style={{ color: '#3b696d' }}>
+      <div
+        className="md:hidden absolute top-full left-0 right-0 shadow-lg z-50 overflow-hidden"
+        style={{
+          backgroundColor: '#bdeffc',
+          maxHeight: open ? '400px' : '0px',
+          transition: 'max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+        }}>
+        <div className="flex flex-col p-5 gap-4" style={{ color: '#3b696d' }}>
             {links.map((l) => (
               <Link
                 key={l.href}
@@ -89,7 +94,7 @@ export default function Header({ active = '' }: { active?: string }) {
             </Link>
           </div>
         </div>
-      )}
+      </div>
     </header>
   );
 }
