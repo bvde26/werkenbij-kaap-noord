@@ -19,25 +19,27 @@ const vacatures = [
   { uren: 'In overleg', title: 'Open sollicitatie', img: null, tekst: "Staat jouw ideale baan er niet bij? We zijn altijd op zoek naar enthousiaste mensen met een positieve instelling." },
 ];
 
+type ActiveCard = { idx: number; state: 'normal' | 'mega' } | null;
+
 export default function Home() {
-  const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
+  const [activeCard, setActiveCard] = useState<ActiveCard>(null);
   const [isDocked, setIsDocked] = useState(false);
-  const expandedRef = useRef<HTMLDivElement | null>(null);
+  const megaRef = useRef<HTMLDivElement | null>(null);
+
+  const cardState = (i: number) =>
+    activeCard?.idx === i ? activeCard.state : 'mini';
 
   useEffect(() => {
-    if (expandedIdx === null) {
-      setIsDocked(false);
-      return;
-    }
-    const el = expandedRef.current;
+    if (activeCard?.state !== 'mega') { setIsDocked(false); return; }
+    const el = megaRef.current;
     if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsDocked(entry.isIntersecting),
+    const obs = new IntersectionObserver(
+      ([e]) => setIsDocked(e.isIntersecting),
       { threshold: 0.3 }
     );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [expandedIdx]);
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [activeCard]);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f5f5f5' }}>
@@ -56,10 +58,8 @@ export default function Home() {
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
             style={{ background: 'rgba(0,0,0,0.35)' }}>
-            <h1
-              className="text-5xl md:text-7xl uppercase mb-4 text-white"
-              style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em' }}
-            >
+            <h1 className="text-5xl md:text-7xl uppercase mb-4 text-white"
+              style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em' }}>
               Werken bij Kaap Noord
             </h1>
             <p className="text-lg md:text-2xl text-white mb-8 max-w-2xl"
@@ -67,17 +67,13 @@ export default function Home() {
               Kom je een dagje meelopen in ons team op het mooiste eiland?
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/contact"
+              <Link href="/contact"
                 className="px-8 py-3 font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-90"
-                style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}
-              >
+                style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}>
                 Ik wil meelopen →
               </Link>
-              <Link
-                href="/over-ons"
-                className="px-8 py-3 font-bold text-sm uppercase tracking-widest border-2 border-white text-white transition-opacity hover:opacity-80"
-              >
+              <Link href="/over-ons"
+                className="px-8 py-3 font-bold text-sm uppercase tracking-widest border-2 border-white text-white transition-opacity hover:opacity-80">
                 Vertel me meer
               </Link>
             </div>
@@ -89,111 +85,180 @@ export default function Home() {
       {/* Intro quote */}
       <section className="py-16" style={{ backgroundColor: '#bdeffc' }}>
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <p className="text-xl md:text-2xl leading-relaxed" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif", fontWeight: 300 }}>
+          <p className="text-xl md:text-2xl leading-relaxed"
+            style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif", fontWeight: 300 }}>
             Zie jij jezelf al werken op een unieke plek met een fantastisch uitzicht? Is het helemaal jouw ding om onze gasten naar hun zin te maken en ze het huiskamer gevoel te laten beleven?
           </p>
         </div>
       </section>
 
-      {/* Functies — accordion */}
+      {/* Functies */}
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2
-            className="text-3xl md:text-4xl text-center mb-2 uppercase"
-            style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', letterSpacing: '0.05em' }}
-          >
+          <h2 className="text-3xl md:text-4xl text-center mb-2 uppercase"
+            style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', letterSpacing: '0.05em' }}>
             Ontdek alle functies
           </h2>
           <div className="flex justify-center mb-10">
             <svg className="w-32 h-2" viewBox="0 0 100 10" style={{ color: '#3b696d' }}>
-              <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10"
+                fill="none" stroke="currentColor" strokeWidth="1.5" />
             </svg>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          {/* Grid — gap-y-16 geeft ruimte voor 20px foto-overhang */}
+          <div className="grid md:grid-cols-2 gap-x-10 gap-y-16">
             {vacatures.map((r, i) => {
-              const isOpen = expandedIdx === i;
-              return (
-                <div
-                  key={i}
-                  ref={isOpen ? expandedRef : null}
-                  className="rounded-lg shadow-md overflow-hidden cursor-pointer select-none"
-                  style={{ backgroundColor: '#3b696d' }}
-                  onClick={() => setExpandedIdx(isOpen ? null : i)}
-                >
-                  {/* Header — altijd zichtbaar */}
-                  <div className="flex items-center gap-4 p-5">
+              const state = cardState(i);
+
+              /* ── MINI ── */
+              if (state === 'mini') {
+                return (
+                  <div key={i}
+                    className="rounded-xl shadow-md flex items-center gap-4 px-5 py-4 cursor-pointer hover:brightness-110 transition-all"
+                    style={{ backgroundColor: '#3b696d' }}
+                    onClick={() => setActiveCard({ idx: i, state: 'normal' })}>
                     {r.img ? (
-                      <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
-                        <img src={r.img} alt={r.title} className="w-full h-full object-cover" />
+                      <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                        <img src={r.img} alt="" className="w-full h-full object-cover" />
                       </div>
                     ) : (
-                      <div className="w-16 h-16 rounded-lg flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: '#2a5558' }}>
-                        <span className="text-2xl">❓</span>
+                      <div className="w-12 h-12 rounded-lg flex-shrink-0 flex items-center justify-center"
+                        style={{ backgroundColor: '#2a5558' }}>
+                        <span className="text-xl">❓</span>
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <span className="text-xs font-semibold uppercase tracking-widest block mb-1" style={{ color: '#bdeffc' }}>
+                      <span className="text-xs font-semibold uppercase tracking-widest block"
+                        style={{ color: '#fcf8bd' }}>
                         ⏱ {r.uren} &nbsp;📍 Texel
                       </span>
-                      <h3 className="text-lg font-bold text-white leading-snug">{r.title}</h3>
+                      <h3 className="text-base font-extrabold text-white leading-snug truncate"
+                        style={{ fontFamily: "'Kodchasan', sans-serif" }}>
+                        {r.title}
+                      </h3>
                     </div>
-                    <svg
-                      className={`w-5 h-5 flex-shrink-0 text-white transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
-                      fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"
-                    >
+                    <svg className="w-5 h-5 flex-shrink-0 text-white" fill="none" stroke="currentColor"
+                      strokeWidth="2" viewBox="0 0 24 24">
                       <path d="M19 9l-7 7-7-7" />
                     </svg>
                   </div>
+                );
+              }
 
-                  {/* Uitklapbaar gedeelte */}
-                  {isOpen && (
-                    <div
-                      className="px-5 pb-5"
-                      onClick={e => e.stopPropagation()}
-                    >
-                      {r.img && (
-                        <div className="w-full h-48 rounded-lg overflow-hidden mb-4">
-                          <img src={r.img} alt={r.title} className="w-full h-full object-cover" />
+              /* ── NORMAAL of MEGA ── */
+              return (
+                <div key={i}
+                  ref={state === 'mega' ? megaRef : null}
+                  className="relative"
+                  style={{ paddingTop: '20px' }}>
+
+                  <div className="rounded-xl shadow-md relative"
+                    style={{
+                      backgroundColor: '#3b696d',
+                      padding: '30px 20px',         /* mobiel */
+                    }}>
+
+                    {/* Mobiel: foto vol breedte bovenaan */}
+                    {r.img && (
+                      <div className="block md:hidden w-full rounded-lg overflow-hidden mb-4"
+                        style={{ aspectRatio: '16/7' }}>
+                        <img src={r.img} alt={r.title} className="w-full h-full object-cover" />
+                      </div>
+                    )}
+
+                    {/* Desktop: ruimte voor uitstekende foto via inline padding */}
+                    <div className="md:pr-[190px] md:pl-2 md:pt-2">
+
+                      {/* Header: titel + sluitknop */}
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="text-xl font-extrabold text-white leading-snug"
+                          style={{ fontFamily: "'Kodchasan', sans-serif" }}>
+                          {r.title}
+                        </h3>
+                        <button
+                          className="ml-3 flex-shrink-0 text-white opacity-50 hover:opacity-100 transition-opacity"
+                          onClick={() => setActiveCard(null)}
+                          aria-label="Sluiten">
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2"
+                            viewBox="0 0 24 24">
+                            <path d="M18 6L6 18M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+
+                      {/* Meta */}
+                      <div className="flex gap-5 mb-4">
+                        <span className="text-sm" style={{ color: '#fcf8bd' }}>⏱ {r.uren}</span>
+                        <span className="text-sm" style={{ color: '#fcf8bd' }}>📍 Texel</span>
+                      </div>
+
+                      {/* Beschrijving */}
+                      <p className="text-sm text-white leading-relaxed mb-5"
+                        style={{ fontFamily: "'Kodchasan', sans-serif" }}>
+                        {r.tekst}
+                      </p>
+
+                      {/* CTA: normal → mega knop / mega → docked knoppen */}
+                      {state === 'normal' ? (
+                        <button
+                          className="inline-block px-5 py-2 font-bold transition-opacity hover:opacity-85"
+                          style={{
+                            backgroundColor: '#fcf8bd',
+                            color: '#3b696d',
+                            fontFamily: "'Pana Summer', serif",
+                            fontSize: '18px',
+                          }}
+                          onClick={() => setActiveCard({ idx: i, state: 'mega' })}>
+                          Solliciteer direct
+                        </button>
+                      ) : (
+                        <div className="flex items-center gap-3">
+                          <a href={phoneLink}
+                            className="w-14 h-14 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-xl flex-shrink-0"
+                            style={{ backgroundColor: '#2a5558' }}
+                            title="Bel ons">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                            </svg>
+                          </a>
+                          <a href={whatsappLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-14 h-14 rounded-full flex items-center justify-center text-2xl hover:scale-110 transition-transform shadow-xl flex-shrink-0"
+                            style={{ backgroundColor: '#25D366' }}
+                            title="WhatsApp ons">
+                            💬
+                          </a>
+                          <span className="text-sm leading-snug" style={{ color: '#bdeffc' }}>
+                            Reageer direct<br />op deze vacature
+                          </span>
                         </div>
                       )}
-                      <p className="text-sm mb-6 leading-relaxed" style={{ color: '#d0f0fa' }}>{r.tekst}</p>
-
-                      {/* Gedockte contact-knoppen */}
-                      <div className="flex items-center gap-3">
-                        <a
-                          href={phoneLink}
-                          className="w-14 h-14 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-xl"
-                          style={{ backgroundColor: '#2a5558' }}
-                          title="Bel ons"
-                          onClick={e => e.stopPropagation()}
-                        >
-                          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                          </svg>
-                        </a>
-                        <a
-                          href={whatsappLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-14 h-14 rounded-full flex items-center justify-center text-2xl hover:scale-110 transition-transform shadow-xl"
-                          style={{ backgroundColor: '#25D366' }}
-                          title="WhatsApp ons"
-                          onClick={e => e.stopPropagation()}
-                        >
-                          💬
-                        </a>
-                        <span className="text-sm ml-1" style={{ color: '#bdeffc' }}>Reageer direct op deze vacature</span>
-                      </div>
                     </div>
-                  )}
+
+                    {/* Desktop foto — steekt 20px uit boven de card */}
+                    {r.img ? (
+                      <div className="hidden md:block absolute border-4 border-white shadow-lg"
+                        style={{ right: '20px', top: '-20px', width: '150px' }}>
+                        <img src={r.img} alt={r.title} className="w-full block"
+                          style={{ aspectRatio: '2/3', objectFit: 'cover' }} />
+                      </div>
+                    ) : (
+                      <div className="hidden md:flex absolute items-center justify-center border-4 border-white"
+                        style={{ right: '20px', top: '-20px', width: '150px', aspectRatio: '2/3', backgroundColor: '#2a5558' }}>
+                        <span className="text-4xl">❓</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               );
             })}
           </div>
 
-          <div className="text-center mt-10">
-            <Link href="/rollen" className="inline-block px-8 py-3 font-semibold border-2 text-sm uppercase tracking-wider transition-colors hover:text-white hover:bg-[#3b696d]"
+          <div className="text-center mt-16">
+            <Link href="/rollen"
+              className="inline-block px-8 py-3 font-semibold border-2 text-sm uppercase tracking-wider transition-colors hover:text-white hover:bg-[#3b696d]"
               style={{ borderColor: '#3b696d', color: '#3b696d' }}>
               Alle functies bekijken →
             </Link>
@@ -204,11 +269,14 @@ export default function Home() {
       {/* Testimonial */}
       <section className="py-12 px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="flex flex-col md:flex-row overflow-hidden rounded-xl shadow-md" style={{ backgroundColor: '#bdeffc' }}>
+          <div className="flex flex-col md:flex-row overflow-hidden rounded-xl shadow-md"
+            style={{ backgroundColor: '#bdeffc' }}>
             <div className="flex-1 p-8 md:p-10 flex items-center">
               <div>
-                <span className="text-5xl font-bold mb-4 block" style={{ color: '#3b696d', fontFamily: 'Georgia, serif' }}>"</span>
-                <p className="text-lg md:text-xl font-semibold uppercase" style={{ color: '#3b696d', fontFamily: "'Pana Summer', serif", letterSpacing: '0.02em' }}>
+                <span className="text-5xl font-bold mb-4 block"
+                  style={{ color: '#3b696d', fontFamily: 'Georgia, serif' }}>"</span>
+                <p className="text-lg md:text-xl font-semibold uppercase"
+                  style={{ color: '#3b696d', fontFamily: "'Pana Summer', serif", letterSpacing: '0.02em' }}>
                   Van Bonaire naar Texel. Wie had dat gedacht! Een wereld van verschil, maar ik werk al een jaar met veel plezier bij Kaap Noord!
                 </p>
               </div>
@@ -223,10 +291,8 @@ export default function Home() {
       {/* 3 Quick USPs */}
       <section className="py-16 px-4" style={{ backgroundColor: '#f0fafe' }}>
         <div className="max-w-5xl mx-auto">
-          <h2
-            className="text-3xl text-center mb-10 uppercase"
-            style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', letterSpacing: '0.05em' }}
-          >
+          <h2 className="text-3xl text-center mb-10 uppercase"
+            style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', letterSpacing: '0.05em' }}>
             Waarom Kaap Noord?
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
@@ -247,7 +313,8 @@ export default function Home() {
             </div>
           </div>
           <div className="text-center mt-10">
-            <Link href="/voor-jou" className="inline-block px-8 py-3 font-semibold text-sm uppercase tracking-wider text-white transition-opacity hover:opacity-85"
+            <Link href="/voor-jou"
+              className="inline-block px-8 py-3 font-semibold text-sm uppercase tracking-wider text-white transition-opacity hover:opacity-85"
               style={{ backgroundColor: '#3b696d' }}>
               Alle voordelen →
             </Link>
@@ -266,13 +333,9 @@ export default function Home() {
             Geen lange sollicitatie. Geen gekke tests. Gewoon een gesprek of een dagje meelopen.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
+            <a href={whatsappLink} target="_blank" rel="noopener noreferrer"
               className="px-8 py-3 font-bold text-sm uppercase tracking-wider transition-opacity hover:opacity-90"
-              style={{ backgroundColor: '#25D366', color: 'white' }}
-            >
+              style={{ backgroundColor: '#25D366', color: 'white' }}>
               💬 WhatsApp Marije
             </a>
             <Link href="/contact"
