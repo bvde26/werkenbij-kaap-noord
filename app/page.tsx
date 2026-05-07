@@ -142,8 +142,8 @@ export default function Home() {
       <section className="relative" style={{ backgroundColor: '#fefdf5' }}>
         <div className="px-6 sm:px-10 md:px-20 lg:px-32 pt-8 pb-4 md:pt-20 md:pb-10">
           <h1 className="text-4xl md:text-7xl uppercase mb-4 md:mb-5"
-            style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em', color: '#3b696d', maxWidth: '10ch', lineHeight: 1.05 }}>
-            Werken bij Kaap Noord
+            style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em', color: '#3b696d', lineHeight: 1.05 }}>
+            Werken bij<br />Kaap Noord
           </h1>
           <p className="text-base md:text-xl mb-6 md:mb-8"
             style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', maxWidth: '38ch' }}>

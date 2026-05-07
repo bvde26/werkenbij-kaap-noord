@@ -14,9 +14,9 @@ export default function Header({ active = '' }: { active?: string }) {
 
   return (
     <header className="sticky top-0 z-40" style={{ backgroundColor: '#bdeffc' }}>
-      <div className="max-w-6xl mx-auto px-4 h-[70px] flex justify-between items-center">
+      <div className="max-w-6xl mx-auto px-4 h-[60px] md:h-[80px] flex justify-between items-center">
         <Link href="/" className="hover:opacity-80 transition-opacity">
-          <img src="/logo.svg" alt="Kaap Noord" style={{ height: '42px' }} />
+          <img src="/logo.svg" alt="Kaap Noord" className="h-[40px] md:h-[50px] w-auto" />
         </Link>
 
         {/* Desktop nav */}
