@@ -1,4 +1,6 @@
-export default function FloatingButtons() {
+export default function FloatingButtons({ hidden = false }: { hidden?: boolean }) {
+  if (hidden) return null;
+
   const whatsappLink = "https://wa.me/31623823324?text=Hoi!%20Ik%20wil%20graag%20Kaap%20Noord%20ontdekken!";
   const phoneLink = "tel:+31623823324";
 
