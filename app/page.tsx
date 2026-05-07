@@ -85,6 +85,22 @@ export default function Home() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#fefdf5' }}>
+      <style>{`
+        @keyframes floatBtn {
+          0%, 100% { transform: translateY(0px); box-shadow: 0 6px 16px rgba(0,0,0,0.45), 0 2px 6px rgba(0,0,0,0.3); }
+          50%       { transform: translateY(-5px); box-shadow: 0 14px 28px rgba(0,0,0,0.55), 0 4px 10px rgba(0,0,0,0.3); }
+        }
+        .float-btn {
+          animation: floatBtn 2.8s ease-in-out infinite;
+          will-change: transform;
+        }
+        .float-btn:hover {
+          animation: none;
+          transform: translateY(-6px) scale(1.08);
+          box-shadow: 0 16px 32px rgba(0,0,0,0.55) !important;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+      `}</style>
       <Header active="/" />
       <FloatingButtons hidden={isDocked} />
 
@@ -283,7 +299,7 @@ export default function Home() {
                               <div className="flex items-center gap-3 flex-wrap mt-5">
                                 <a
                                   href={phoneLink}
-                                  className="w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-lg flex-shrink-0"
+                                  className="float-btn w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
                                   style={{ backgroundColor: '#1e4548' }}
                                   title="Bel ons"
                                   onClick={e => e.stopPropagation()}
@@ -296,8 +312,8 @@ export default function Home() {
                                   href={whatsappLink}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="w-12 h-12 rounded-full flex items-center justify-center text-xl hover:scale-110 transition-transform shadow-lg flex-shrink-0"
-                                  style={{ backgroundColor: '#25D366' }}
+                                  className="float-btn w-12 h-12 rounded-full flex items-center justify-center text-xl flex-shrink-0"
+                                  style={{ backgroundColor: '#25D366', animationDelay: '0.4s' }}
                                   title="WhatsApp ons"
                                   onClick={e => e.stopPropagation()}
                                 >
