@@ -202,7 +202,7 @@ export default function Home() {
 
       {/* Hero — tekst boven video, geen wave in de flow */}
       <div style={{ backgroundColor: '#fefdf5', paddingBottom: 0, marginBottom: 0 }}>
-        <div className="px-6 sm:px-10 md:px-20 lg:px-32 py-6 md:py-12">
+        <div className="px-6 sm:px-10 md:px-20 lg:px-32 pt-6 pb-3 md:pt-12 md:pb-6">
           <h1 className="text-4xl md:text-7xl uppercase mb-4 md:mb-5"
             style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em', color: '#3b696d', lineHeight: 1.05 }}>
             Werken bij<br />Kaap Noord
