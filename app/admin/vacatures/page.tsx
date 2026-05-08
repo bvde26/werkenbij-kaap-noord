@@ -55,7 +55,7 @@ export default function AdminVacatures() {
   const descRef = useRef<HTMLTextAreaElement>(null);
   const extRef = useRef<HTMLTextAreaElement>(null);
 
-  const insertBold = (ref: React.RefObject<HTMLTextAreaElement>, field: 'description' | 'extended_description') => {
+  const insertBold = (ref: React.RefObject<HTMLTextAreaElement | null>, field: 'description' | 'extended_description') => {
     const ta = ref.current;
     if (!ta) return;
     const start = ta.selectionStart;
@@ -71,7 +71,7 @@ export default function AdminVacatures() {
     });
   };
 
-  const insertBullet = (ref: React.RefObject<HTMLTextAreaElement>, field: 'description' | 'extended_description') => {
+  const insertBullet = (ref: React.RefObject<HTMLTextAreaElement | null>, field: 'description' | 'extended_description') => {
     const ta = ref.current;
     if (!ta) return;
     const start = ta.selectionStart;
