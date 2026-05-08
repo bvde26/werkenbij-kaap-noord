@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FloatingButtons from '@/components/FloatingButtons';
-import DecorativeLine from '@/components/DecorativeLine';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import RichText from '@/components/RichText';
@@ -268,7 +267,18 @@ export default function Home() {
           allowFullScreen
         />
       </div>
-      <DecorativeLine />
+      {/* Zigzag scheidingslijn */}
+      <div style={{ backgroundColor: '#bdeffc', padding: '18px 0', display: 'flex', justifyContent: 'center' }}>
+        <svg width="180" height="18" viewBox="0 0 180 18" fill="none" aria-hidden="true">
+          <polyline
+            points="0,9 18,1 36,17 54,1 72,17 90,1 108,17 126,1 144,17 162,1 180,9"
+            stroke="#3b696d"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
 
       {/* Intro quote */}
       <section className="py-16" style={{ backgroundColor: '#bdeffc' }}>
