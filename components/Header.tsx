@@ -32,8 +32,10 @@ export default function Header({ active = '' }: { active?: string }) {
           margin-right: 12px;
         }
         .hamburger-btn {
-          background: none;
-          border: none;
+          background: transparent !important;
+          border: none !important;
+          box-shadow: none !important;
+          outline: none !important;
           cursor: pointer;
           width: 28px;
           height: 28px;
@@ -42,7 +44,6 @@ export default function Header({ active = '' }: { active?: string }) {
           justify-content: center;
           padding: 0;
           flex-shrink: 0;
-          z-index: 250;
           position: relative;
         }
         .nav-overlay {
