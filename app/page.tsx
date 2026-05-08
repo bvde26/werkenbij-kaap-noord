@@ -74,6 +74,11 @@ export default function Home() {
         setVacatures(list);
         setCardStates(list.map(() => 'closed' as CardState));
         setVacaturesLoading(false);
+        if (window.location.hash === '#vacatures') {
+          setTimeout(() => {
+            document.getElementById('vacatures')?.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
+        }
       });
   }, []);
 

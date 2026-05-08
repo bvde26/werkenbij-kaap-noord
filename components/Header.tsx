@@ -131,7 +131,15 @@ export default function Header({ active = '' }: { active?: string }) {
               <Link
                 href={link.href}
                 className="nav-link"
-                onClick={() => setOpen(false)}
+                onClick={(e) => {
+                  setOpen(false);
+                  if (link.href === '/#vacatures' && typeof window !== 'undefined' && window.location.pathname === '/') {
+                    e.preventDefault();
+                    setTimeout(() => {
+                      document.getElementById('vacatures')?.scrollIntoView({ behavior: 'smooth' });
+                    }, 350);
+                  }
+                }}
               >
                 {link.label}
               </Link>
