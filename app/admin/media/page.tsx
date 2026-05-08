@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 
 const PAGE = 'over-ons';
@@ -283,12 +284,21 @@ export default function MediaAdminPage() {
 
       <div style={{ maxWidth: '896px', margin: '0 auto' }}>
         {/* Header */}
-        <h1 className="text-3xl font-bold mb-1" style={{ color: '#3b696d' }}>
-          Media beheer
-        </h1>
-        <p className="text-sm mb-10" style={{ color: '#6b7280' }}>
-          Kaap Noord — foto&apos;s &ldquo;Over ons&rdquo; pagina
-        </p>
+        <div className="flex items-start justify-between mb-8">
+          <div>
+            <Link href="/admin/dashboard"
+              className="text-sm mb-2 block hover:underline"
+              style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>
+              ← Dashboard
+            </Link>
+            <h1 className="text-3xl font-bold" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>
+              Media beheer
+            </h1>
+            <p className="text-sm mt-1" style={{ color: '#6b7280', fontFamily: "'Kodchasan', sans-serif" }}>
+              Kaap Noord — foto&apos;s &ldquo;Over ons&rdquo; pagina
+            </p>
+          </div>
+        </div>
 
         {/* Current photos */}
         <div style={{ ...cardStyle, marginBottom: '32px' }}>

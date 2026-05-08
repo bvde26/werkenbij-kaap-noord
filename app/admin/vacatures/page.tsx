@@ -17,11 +17,29 @@ interface Vacature {
   created_at: string;
 }
 
+function compressImage(f: File): Promise<Blob> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const maxW = 1200;
+      const scale = Math.min(1, maxW / img.naturalWidth);
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.naturalWidth * scale);
+      canvas.height = Math.round(img.naturalHeight * scale);
+      canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob((blob) => resolve(blob!), 'image/webp', 0.82);
+      URL.revokeObjectURL(img.src);
+    };
+    img.src = URL.createObjectURL(f);
+  });
+}
+
 const emptyForm = () => ({
   title: '',
   uren_display: '',
   description: '',
   extended_description: '',
+  image_url: null as string | null,
   published: false,
 });
 
@@ -32,6 +50,7 @@ export default function AdminVacatures() {
   const [editId, setEditId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState('');
   const [error, setError] = useState('');
 
   const load = async () => {
@@ -51,6 +70,7 @@ export default function AdminVacatures() {
     setForm(emptyForm());
     setShowForm(true);
     setError('');
+    setUploadStatus('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -61,10 +81,12 @@ export default function AdminVacatures() {
       uren_display: v.uren_display || '',
       description: v.description || '',
       extended_description: v.extended_description || '',
+      image_url: v.image_url,
       published: v.published,
     });
     setShowForm(true);
     setError('');
+    setUploadStatus('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -73,6 +95,29 @@ export default function AdminVacatures() {
     setEditId(null);
     setForm(emptyForm());
     setError('');
+    setUploadStatus('');
+  };
+
+  const handleImageUpload = async (file: File) => {
+    setUploadStatus('Afbeelding comprimeren…');
+    const blob = await compressImage(file);
+    const path = `vacatures/${Date.now()}.webp`;
+    setUploadStatus('Uploaden…');
+    const { error: upErr } = await supabase.storage.from('media').upload(path, blob, { contentType: 'image/webp', upsert: true });
+    if (upErr) { setUploadStatus(''); setError('Upload mislukt: ' + upErr.message); return; }
+    const { data } = supabase.storage.from('media').getPublicUrl(path);
+    setForm(f => ({ ...f, image_url: data.publicUrl }));
+    setUploadStatus('Foto opgeslagen');
+  };
+
+  const quickUploadPhoto = async (vacatureId: string, file: File) => {
+    const blob = await compressImage(file);
+    const path = `vacatures/${Date.now()}.webp`;
+    const { error: upErr } = await supabase.storage.from('media').upload(path, blob, { contentType: 'image/webp', upsert: true });
+    if (upErr) { alert('Upload mislukt: ' + upErr.message); return; }
+    const { data } = supabase.storage.from('media').getPublicUrl(path);
+    await supabase.from('vacatures').update({ image_url: data.publicUrl }).eq('id', vacatureId);
+    await load();
   };
 
   const save = async () => {
@@ -85,6 +130,7 @@ export default function AdminVacatures() {
       uren_display: form.uren_display?.trim() || null,
       description: form.description?.trim() || null,
       extended_description: form.extended_description?.trim() || null,
+      image_url: form.image_url || null,
       published: form.published,
       updated_at: new Date().toISOString(),
     };
@@ -180,6 +226,33 @@ export default function AdminVacatures() {
 
               <div>
                 <label className="block text-sm font-semibold mb-1" style={{ color: '#3b696d' }}>
+                  Foto (polaroid op de kaart)
+                </label>
+                {form.image_url && (
+                  <div className="mb-2 flex items-start gap-3">
+                    <img src={form.image_url} alt="" className="rounded" style={{ width: '100px', height: '75px', objectFit: 'cover' }} />
+                    <button
+                      type="button"
+                      onClick={() => setForm(f => ({ ...f, image_url: null }))}
+                      className="text-xs text-red-500 hover:underline mt-1">
+                      Foto verwijderen
+                    </button>
+                  </div>
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={e => { if (e.target.files?.[0]) handleImageUpload(e.target.files[0]); }}
+                  className="text-sm"
+                  style={{ color: '#3b696d' }}
+                />
+                {uploadStatus && (
+                  <p className="text-xs mt-1" style={{ color: '#6b7280' }}>{uploadStatus}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-1" style={{ color: '#3b696d' }}>
                   Korte beschrijving
                 </label>
                 <p className="text-xs mb-1" style={{ color: '#9ca3af' }}>
@@ -200,7 +273,7 @@ export default function AdminVacatures() {
                   Volledige vacaturetekst
                 </label>
                 <p className="text-xs mb-1" style={{ color: '#9ca3af' }}>
-                  Zichtbaar na "Volledige vacature". Regeleindes worden bewaard.
+                  Zichtbaar na "Volledige vacature". Begin een regel met <strong>- </strong> voor een opsommingspunt.
                 </p>
                 <textarea
                   value={form.extended_description}
@@ -270,12 +343,40 @@ export default function AdminVacatures() {
                 key={v.id}
                 className="flex items-center gap-4 px-5 py-4 rounded-xl bg-white border"
                 style={{ borderColor: v.published ? '#bdeffc' : '#e5e7eb' }}>
+
+                {/* Foto thumbnail */}
+                <label
+                  title={v.image_url ? 'Foto vervangen' : 'Foto toevoegen'}
+                  style={{ cursor: 'pointer', flexShrink: 0 }}>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="sr-only"
+                    onChange={e => { if (e.target.files?.[0]) quickUploadPhoto(v.id, e.target.files[0]); e.target.value = ''; }}
+                  />
+                  {v.image_url ? (
+                    <img
+                      src={v.image_url}
+                      alt=""
+                      style={{ width: '52px', height: '40px', objectFit: 'cover', borderRadius: '6px', display: 'block' }}
+                    />
+                  ) : (
+                    <div
+                      style={{ width: '52px', height: '40px', borderRadius: '6px', border: '2px dashed #d1d5db', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21 15 16 10 5 21"/>
+                      </svg>
+                    </div>
+                  )}
+                </label>
+
                 <div className="flex-1 min-w-0">
                   <p className="font-bold text-sm truncate" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>
                     {v.title}
                   </p>
                   <p className="text-xs mt-0.5" style={{ color: '#9ca3af' }}>
-                    {v.uren_display || '—'} · {v.published ? 'Gepubliceerd' : 'Concept'}
+                    {v.uren_display || '—'} · {v.published ? 'Gepubliceerd' : 'Concept'} · {v.image_url ? 'Foto ✓' : 'Geen foto'}
                   </p>
                 </div>
                 <div className="flex items-center gap-1 flex-shrink-0">
