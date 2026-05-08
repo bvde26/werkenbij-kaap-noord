@@ -267,21 +267,28 @@ export default function Home() {
           allowFullScreen
         />
       </div>
-      {/* Zigzag scheidingslijn */}
-      <div style={{ backgroundColor: '#bdeffc', padding: '18px 0', display: 'flex', justifyContent: 'center' }}>
-        <svg width="180" height="18" viewBox="0 0 180 18" fill="none" aria-hidden="true">
-          <polyline
-            points="0,9 18,1 36,17 54,1 72,17 90,1 108,17 126,1 144,17 162,1 180,9"
-            stroke="#3b696d"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </div>
-
       {/* Intro quote */}
-      <section className="py-16" style={{ backgroundColor: '#bdeffc' }}>
+      <section className="py-16" style={{ backgroundColor: '#bdeffc', position: 'relative' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}>
+          <svg width="320" height="28" viewBox="0 0 320 28" fill="none" aria-hidden="true">
+            <path
+              d="M0,14 C26,4 53,24 80,14 C107,4 134,24 160,14 C186,4 213,24 240,14 C267,4 294,24 320,14"
+              stroke="#3b696d"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              fill="none"
+              opacity="0.6"
+            />
+            <path
+              d="M40,20 C54,13 67,22 80,20 C93,18 106,14 120,20 C134,26 147,18 160,20 C173,22 186,15 200,20 C214,25 227,18 240,20"
+              stroke="#3b696d"
+              strokeWidth="1"
+              strokeLinecap="round"
+              fill="none"
+              opacity="0.3"
+            />
+          </svg>
+        </div>
         <div className="max-w-3xl mx-auto px-4 text-center">
           <p className="text-xl md:text-2xl leading-relaxed"
             style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif", fontWeight: 300 }}>
