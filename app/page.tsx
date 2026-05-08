@@ -60,7 +60,8 @@ export default function Home() {
   const [vacaturesLoading, setVacaturesLoading] = useState(true);
   const [cardStates, setCardStates] = useState<CardState[]>([]);
   const [isDocked, setIsDocked] = useState(false);
-  const fullRef = useRef<HTMLDivElement | null>(null);
+  const dockedSet = useRef(new Set<number>());
+  const contactBarRefs = useRef<(HTMLDivElement | null)[]>([]);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
@@ -86,25 +87,28 @@ export default function Home() {
     })();
   }, []);
 
-  const openIdx = cardStates.findIndex(s => s !== 'closed');
-
   useEffect(() => {
-    if (openIdx === -1) { setIsDocked(false); return; }
-    const el = fullRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => setIsDocked(e.isIntersecting),
-      { threshold: 0.3 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [openIdx]);
+    const observers = new Map<number, IntersectionObserver>();
+    cardStates.forEach((state, i) => {
+      if (state === 'closed') {
+        if (dockedSet.current.delete(i)) setIsDocked(dockedSet.current.size > 0);
+        return;
+      }
+      const el = contactBarRefs.current[i];
+      if (!el) return;
+      const obs = new IntersectionObserver(([e]) => {
+        if (e.isIntersecting) dockedSet.current.add(i);
+        else dockedSet.current.delete(i);
+        setIsDocked(dockedSet.current.size > 0);
+      }, { threshold: 0.3 });
+      obs.observe(el);
+      observers.set(i, obs);
+    });
+    return () => observers.forEach(o => o.disconnect());
+  }, [cardStates]);
 
   const setCard = (i: number, state: CardState) => {
-    setCardStates(prev => prev.map((s, idx) => {
-      if (idx !== i) return state !== 'closed' ? 'closed' : s;
-      return state;
-    }));
+    setCardStates(prev => prev.map((s, idx) => idx === i ? state : s));
   };
 
   const closeCard = (i: number) => {
@@ -117,29 +121,7 @@ export default function Home() {
   };
 
   const handleCardClick = (i: number) => {
-    const wasClosed = cardStates[i] === 'closed';
-    const currentOpenIdx = cardStates.findIndex(s => s !== 'closed');
-
-    if (!wasClosed) {
-      setCard(i, 'closed');
-      return;
-    }
-
-    // Compensate for layout shift when another card collapses above/alongside
-    if (currentOpenIdx !== -1 && currentOpenIdx !== i) {
-      const el = cardRefs.current[i];
-      const prevTop = el?.getBoundingClientRect().top ?? 0;
-      setCard(i, 'preview');
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          if (!el) return;
-          const shift = el.getBoundingClientRect().top - prevTop;
-          if (Math.abs(shift) > 1) window.scrollBy({ top: shift, behavior: 'instant' });
-        });
-      });
-    } else {
-      setCard(i, 'preview');
-    }
+    setCard(i, cardStates[i] === 'closed' ? 'preview' : 'closed');
   };
 
   return (
@@ -465,7 +447,7 @@ export default function Home() {
 
                           {/* CONTACT BAR */}
                           <div
-                            ref={i === openIdx ? fullRef : null}
+                            ref={el => { contactBarRefs.current[i] = el; }}
                             className="flex items-center gap-3 px-5 py-4"
                             style={{
                               backgroundColor: isOpen ? '#f8fafa' : '#fefdf5',
