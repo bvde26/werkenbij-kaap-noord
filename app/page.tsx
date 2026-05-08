@@ -171,26 +171,26 @@ export default function Home() {
           </p>
           <div className="flex flex-col items-start gap-2" style={{ marginTop: '8px' }}>
             <div className="cta-bubble-wrap">
-              <Link href="/contact" style={{ position: 'relative', display: 'inline-block', width: '290px', height: '110px', textDecoration: 'none' }}>
+              <Link href="/contact" style={{ position: 'relative', display: 'inline-block', width: '330px', height: '130px', textDecoration: 'none' }}>
                 <svg
                   aria-hidden="true"
-                  width="290" height="110"
+                  width="330" height="130"
                   viewBox="0 0 390 200"
                   preserveAspectRatio="none"
                   style={{ display: 'block', filter: 'drop-shadow(0 12px 28px rgba(59,105,109,0.55)) drop-shadow(0 4px 10px rgba(59,105,109,0.35))' }}>
-                  <path d="M55 40 C45 42 40 50 42 62 C40 82 41 102 43 122 C45 138 55 145 72 143 C82 142 88 143 92 146 C92 160 90 172 88 182 C102 174 114 160 120 146 C122 143 128 142 138 142 C220 143 290 143 330 140 C354 136 365 126 364 112 C366 92 366 72 362 52 C358 38 344 30 320 30 C250 28 180 29 86 31 C70 32 60 34 55 40 Z" fill="none" stroke="#3b696d" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M55 40 C45 42 40 50 42 62 C40 82 41 102 43 122 C45 138 55 145 72 143 C82 142 88 143 92 146 C92 160 90 172 88 182 C102 174 114 160 120 146 C122 143 128 142 138 142 C220 143 290 143 330 140 C354 136 365 126 364 112 C366 92 366 72 362 52 C358 38 344 30 320 30 C250 28 180 29 86 31 C70 32 60 34 55 40 Z" fill="none" stroke="#3b696d" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <span style={{
                   position: 'absolute',
-                  top: '46px',
+                  top: '50px',
                   left: '52%',
                   transform: 'translate(-50%, -50%)',
                   color: '#3b696d',
                   fontFamily: "'Pana Summer', serif",
-                  fontWeight: 400,
-                  fontSize: '20px',
+                  fontWeight: 700,
+                  fontSize: '26px',
                   textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
+                  letterSpacing: '0.04em',
                   whiteSpace: 'nowrap',
                   pointerEvents: 'none',
                 }}>
