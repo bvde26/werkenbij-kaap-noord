@@ -73,29 +73,29 @@ export default function Contact() {
       <FloatingButtons hidden={ctaVisible} />
 
       {/* Hero */}
-      <section className="py-20 text-center" style={{ backgroundColor: '#bdeffc' }}>
+      <section className="py-6 md:py-12 text-center" style={{ backgroundColor: '#bdeffc' }}>
         <div className="max-w-4xl mx-auto px-4">
           <h1
-            className="text-5xl md:text-6xl uppercase mb-6"
+            className="text-5xl md:text-6xl uppercase mb-4"
             style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, color: '#3b696d', letterSpacing: '0.03em' }}
           >
             Kom je kennismaken?
           </h1>
-          <p className="text-xl" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif", fontWeight: 300 }}>
+          <p style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif", fontWeight: 400, fontSize: '16px', lineHeight: '1.6' }}>
             Geen lange sollicitatie. Geen gekke tests. Gewoon een gesprek of een dagje meelopen.
           </p>
         </div>
       </section>
 
       {/* Contact opties */}
-      <section className="py-16 px-4">
+      <section className="py-8 px-4">
         <div className="max-w-4xl mx-auto">
-          <div ref={ctaRef} className="grid md:grid-cols-2 gap-8 mb-12">
+          <div ref={ctaRef} className="grid md:grid-cols-2 gap-4 mb-8">
 
             {/* WhatsApp */}
-            <div className="rounded-xl p-8 text-center shadow-sm bg-white flex flex-col items-center">
-              <h2 className="text-2xl font-bold mb-3" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>WhatsApp Marije</h2>
-              <p className="mb-8 text-sm leading-relaxed" style={{ color: '#666' }}>
+            <div className="rounded-xl p-5 text-center shadow-sm bg-white flex flex-col items-center">
+              <h2 className="text-xl font-bold mb-2" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>WhatsApp Marije</h2>
+              <p className="mb-5 text-sm leading-relaxed" style={{ color: '#666' }}>
                 De snelste manier. Stuur een appje en we reageren zo snel mogelijk. Gewoon in je eigen woorden.
               </p>
               <button
@@ -112,9 +112,9 @@ export default function Contact() {
             </div>
 
             {/* Bellen */}
-            <div className="rounded-xl p-8 text-center shadow-sm bg-white flex flex-col items-center">
-              <h2 className="text-2xl font-bold mb-3" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>Bel ons</h2>
-              <p className="mb-8 text-sm leading-relaxed" style={{ color: '#666' }}>
+            <div className="rounded-xl p-5 text-center shadow-sm bg-white flex flex-col items-center">
+              <h2 className="text-xl font-bold mb-2" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>Bel ons</h2>
+              <p className="mb-5 text-sm leading-relaxed" style={{ color: '#666' }}>
                 Liever even bellen? Marije staat voor je klaar. Geef jezelf even voor en we plannen een gesprekje.
               </p>
               <button
