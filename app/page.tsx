@@ -169,7 +169,7 @@ export default function Home() {
             style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 400, fontSize: '16px', color: '#3b696d', lineHeight: '1.6', maxWidth: '38ch' }}>
             Kom je een dagje meelopen in ons team op het mooiste eiland?
           </p>
-          <div className="flex flex-col sm:flex-row items-start gap-4 md:gap-6" style={{ marginTop: '8px' }}>
+          <div className="flex flex-col items-start gap-2" style={{ marginTop: '8px' }}>
             <div className="cta-bubble-wrap">
               <Link href="/contact" style={{ position: 'relative', display: 'inline-block', width: '290px', height: '110px', textDecoration: 'none' }}>
                 <svg
@@ -177,7 +177,7 @@ export default function Home() {
                   width="290" height="110"
                   viewBox="0 0 390 200"
                   preserveAspectRatio="none"
-                  style={{ display: 'block', filter: 'drop-shadow(0 8px 24px rgba(59,105,109,0.4))' }}>
+                  style={{ display: 'block', filter: 'drop-shadow(0 12px 28px rgba(59,105,109,0.55)) drop-shadow(0 4px 10px rgba(59,105,109,0.35))' }}>
                   <path d="M55 40 C45 42 40 50 42 62 C40 82 41 102 43 122 C45 138 55 145 72 143 C82 142 88 143 92 146 C92 160 90 172 88 182 C102 174 114 160 120 146 C122 143 128 142 138 142 C220 143 290 143 330 140 C354 136 365 126 364 112 C366 92 366 72 362 52 C358 38 344 30 320 30 C250 28 180 29 86 31 C70 32 60 34 55 40 Z" fill="none" stroke="#3b696d" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <span style={{
@@ -188,7 +188,7 @@ export default function Home() {
                   color: '#3b696d',
                   fontFamily: "'Kodchasan', sans-serif",
                   fontWeight: 700,
-                  fontSize: '13px',
+                  fontSize: '16px',
                   textTransform: 'uppercase',
                   letterSpacing: '0.08em',
                   whiteSpace: 'nowrap',
@@ -199,8 +199,8 @@ export default function Home() {
               </Link>
             </div>
             <Link href="/over-ons"
-              className="px-6 py-2.5 md:px-8 md:py-3 font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-80"
-              style={{ backgroundColor: '#3b696d', color: '#fcf8bd', display: 'inline-block', marginTop: '4px', border: 'none' }}>
+              className="font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-80"
+              style={{ backgroundColor: '#3b696d', color: '#fcf8bd', display: 'inline-block', border: 'none', width: '290px', textAlign: 'center', padding: '10px 0' }}>
               Vertel me eerst meer
             </Link>
           </div>
