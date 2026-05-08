@@ -129,31 +129,46 @@ export default function Home() {
           box-shadow: 0 16px 32px rgba(0,0,0,0.55) !important;
           transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        @keyframes ctaGlow {
-          0%, 100% {
-            transform: translateY(0px);
-            box-shadow: 0 4px 14px rgba(59,105,109,0.45), 0 0 0px 0px rgba(252,248,189,0);
-          }
-          50% {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 28px rgba(59,105,109,0.55), 0 0 18px 5px rgba(252,248,189,0.35);
-          }
+        @keyframes bubbleBounce {
+          0%   { transform: translateY(0px) rotate(-1deg); }
+          30%  { transform: translateY(-10px) rotate(0.5deg); }
+          55%  { transform: translateY(-6px) rotate(-0.4deg); }
+          75%  { transform: translateY(-9px) rotate(0.3deg); }
+          100% { transform: translateY(0px) rotate(-1deg); }
         }
-        .cta-glow {
-          animation: ctaGlow 2.2s ease-in-out infinite;
+        .cta-bubble-wrap {
+          display: inline-block;
+          position: relative;
+          animation: bubbleBounce 2.6s ease-in-out infinite;
           will-change: transform;
+          cursor: pointer;
+          padding-bottom: 28px;
+        }
+        .cta-bubble-wrap:hover {
+          animation: none;
+          transform: translateY(-4px) scale(1.04) rotate(0deg);
+          transition: transform 0.18s ease;
+        }
+        .cta-bubble {
+          display: inline-block;
+          background-color: #3b696d;
+          color: #fcf8bd;
+          font-weight: 700;
+          font-size: 13px;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          text-decoration: none;
+          padding: 16px 30px;
+          border-radius: 10px;
+          box-shadow: 0 8px 24px rgba(59,105,109,0.45);
+          font-family: 'Kodchasan', sans-serif;
+          white-space: nowrap;
         }
         #vacatures {
           scroll-margin-top: 60px;
         }
         @media (min-width: 768px) {
           #vacatures { scroll-margin-top: 80px; }
-        }
-        .cta-glow:hover {
-          animation: none;
-          transform: translateY(-5px) scale(1.05);
-          box-shadow: 0 14px 34px rgba(59,105,109,0.6), 0 0 24px 8px rgba(252,248,189,0.45) !important;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
       `}</style>
       <Header active="/" />
@@ -170,16 +185,21 @@ export default function Home() {
             style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', maxWidth: '38ch' }}>
             Kom je een dagje meelopen in ons team op het mooiste eiland?
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
-            <Link href="/contact"
-              className="cta-glow px-6 py-2.5 md:px-8 md:py-3 font-bold text-sm uppercase tracking-widest"
-              style={{ backgroundColor: '#3b696d', color: '#fcf8bd', display: 'inline-block' }}>
-              Ik wil meelopen →
-            </Link>
+          <div className="flex flex-col sm:flex-row items-start gap-4 md:gap-6" style={{ marginTop: '8px' }}>
+            <div className="cta-bubble-wrap">
+              <Link href="/contact" className="cta-bubble">
+                Ik wil meelopen →
+              </Link>
+              <svg
+                style={{ position: 'absolute', bottom: '0px', left: '10px', display: 'block' }}
+                width="40" height="28" viewBox="0 0 40 28" fill="none">
+                <path d="M40 0 L12 0 C5 0 0 5 0 14 C0 21 3 25 7 27 C14 24 26 10 40 0 Z" fill="#3b696d" />
+              </svg>
+            </div>
             <Link href="/over-ons"
               className="px-6 py-2.5 md:px-8 md:py-3 font-bold text-sm uppercase tracking-widest border-2 transition-opacity hover:opacity-80"
-              style={{ borderColor: '#3b696d', color: '#3b696d', display: 'inline-block' }}>
-              Vertel me meer
+              style={{ borderColor: '#3b696d', color: '#3b696d', display: 'inline-block', marginTop: '4px' }}>
+              Vertel me eerst meer
             </Link>
           </div>
         </div>
