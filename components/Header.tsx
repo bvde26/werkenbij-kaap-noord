@@ -15,22 +15,6 @@ export default function Header({ active = '' }: { active?: string }) {
   return (
     <>
       <style>{`
-        .header-cta {
-          font-family: 'Pana Summer', serif;
-          font-size: 18px;
-          color: #3b696d;
-          text-decoration: none;
-          padding: 5px 20px;
-          min-height: 39px;
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='186' height='40' viewBox='0 0 186 40' fill='none'%3E%3Cpath d='M0 0H186L185.177 2.20389C182.193 10.1992 181.544 18.8782 183.306 27.2285L186 40H0V0Z' fill='%23FCF8BD'/%3E%3C%2Fsvg%3E");
-          background-size: auto 100%;
-          background-repeat: no-repeat;
-          background-position: right top;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          margin-right: 12px;
-        }
         .hamburger-btn {
           background: transparent !important;
           border: none !important;
@@ -44,32 +28,43 @@ export default function Header({ active = '' }: { active?: string }) {
           justify-content: center;
           padding: 0;
           flex-shrink: 0;
-          position: relative;
         }
-        .nav-overlay {
+        .nav-backdrop {
           position: fixed;
           inset: 0;
-          z-index: 150;
-          background: #bdeffc;
-          padding-top: 60px;
-          padding-left: 20px;
-          padding-right: 20px;
-          overflow-y: auto;
+          z-index: 140;
+          background: rgba(0,0,0,0.25);
           opacity: 0;
           pointer-events: none;
-          transition: opacity 0.3s ease-in-out;
+          transition: opacity 0.3s ease;
         }
-        @media (min-width: 768px) {
-          .nav-overlay { padding-top: 80px; }
-        }
-        .nav-overlay.open {
+        .nav-backdrop.open {
           opacity: 1;
           pointer-events: all;
         }
+        .nav-panel {
+          position: fixed;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          width: 78%;
+          max-width: 300px;
+          z-index: 150;
+          background: #bdeffc;
+          padding: 24px 28px 40px;
+          transform: translateX(100%);
+          transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+        }
+        .nav-panel.open {
+          transform: translateX(0);
+        }
         .nav-link {
           font-family: 'Pana Summer', serif;
-          font-size: 32px;
-          line-height: 48px;
+          font-size: 30px;
+          line-height: 1.4;
           color: #3b696d;
           text-decoration: none;
           display: inline-flex;
@@ -78,22 +73,22 @@ export default function Header({ active = '' }: { active?: string }) {
         }
         .nav-link::after {
           content: '›';
-          font-size: 32px;
+          font-size: 30px;
           line-height: 1;
         }
         .nav-link-item {
           opacity: 0;
-          transform: translateY(16px);
-          transition: opacity 0.35s ease, transform 0.35s ease;
+          transform: translateX(20px);
+          transition: opacity 0.3s ease, transform 0.3s ease;
         }
-        .nav-overlay.open .nav-link-item {
+        .nav-panel.open .nav-link-item {
           opacity: 1;
-          transform: translateY(0);
+          transform: translateX(0);
         }
-        .nav-overlay.open .nav-link-item:nth-child(1) { transition-delay: 0.08s; }
-        .nav-overlay.open .nav-link-item:nth-child(2) { transition-delay: 0.15s; }
-        .nav-overlay.open .nav-link-item:nth-child(3) { transition-delay: 0.22s; }
-        .nav-overlay.open .nav-link-item:nth-child(4) { transition-delay: 0.29s; }
+        .nav-panel.open .nav-link-item:nth-child(1) { transition-delay: 0.1s; }
+        .nav-panel.open .nav-link-item:nth-child(2) { transition-delay: 0.17s; }
+        .nav-panel.open .nav-link-item:nth-child(3) { transition-delay: 0.24s; }
+        .nav-panel.open .nav-link-item:nth-child(4) { transition-delay: 0.31s; }
       `}</style>
 
       {/* Header bar — z-[200] zodat het boven de overlay (z-150) blijft */}
@@ -123,11 +118,21 @@ export default function Header({ active = '' }: { active?: string }) {
         </div>
       </header>
 
-      {/* Volledig scherm overlay nav */}
-      <nav className={`nav-overlay${open ? ' open' : ''}`} aria-hidden={!open}>
-        <ul style={{ listStyle: 'none', margin: 0, padding: 0, paddingTop: '40px' }}>
+      {/* Backdrop */}
+      <div className={`nav-backdrop${open ? ' open' : ''}`} onClick={() => setOpen(false)} aria-hidden="true" />
+
+      {/* Slide-in panel */}
+      <nav className={`nav-panel${open ? ' open' : ''}`} aria-hidden={!open}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '40px' }}>
+          <button className="hamburger-btn" onClick={() => setOpen(false)} aria-label="Menu sluiten">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2.5" strokeLinecap="round">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <ul style={{ listStyle: 'none', margin: 0, padding: 0, flex: 1 }}>
           {MENU_LINKS.map((link) => (
-            <li key={link.href} className="nav-link-item" style={{ marginBottom: '10px' }}>
+            <li key={link.href} className="nav-link-item" style={{ marginBottom: '16px' }}>
               <Link
                 href={link.href}
                 className="nav-link"
