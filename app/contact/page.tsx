@@ -23,15 +23,23 @@ export default function Contact() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#fefdf5' }}>
       <style>{`
-        @keyframes floatContact {
-          0%, 100% { transform: translateY(0px); box-shadow: 0 8px 20px rgba(0,0,0,0.18); }
-          50%       { transform: translateY(-6px); box-shadow: 0 16px 30px rgba(0,0,0,0.22); }
+        @keyframes floatWA {
+          0%   { transform: translateY(0px) scale(1);      box-shadow: 0 8px 24px rgba(37,211,102,0.45),  0 3px 10px rgba(37,211,102,0.25); }
+          40%  { transform: translateY(-16px) scale(1.09); box-shadow: 0 28px 48px rgba(37,211,102,0.55), 0 8px 20px rgba(37,211,102,0.3); }
+          60%  { transform: translateY(-11px) scale(1.05); box-shadow: 0 22px 40px rgba(37,211,102,0.5),  0 6px 16px rgba(37,211,102,0.25); }
+          100% { transform: translateY(0px) scale(1);      box-shadow: 0 8px 24px rgba(37,211,102,0.45),  0 3px 10px rgba(37,211,102,0.25); }
+        }
+        @keyframes floatPhone {
+          0%   { transform: translateY(0px) scale(1);      box-shadow: 0 8px 24px rgba(59,105,109,0.45),  0 3px 10px rgba(59,105,109,0.25); }
+          40%  { transform: translateY(-16px) scale(1.09); box-shadow: 0 28px 48px rgba(59,105,109,0.55), 0 8px 20px rgba(59,105,109,0.3); }
+          60%  { transform: translateY(-11px) scale(1.05); box-shadow: 0 22px 40px rgba(59,105,109,0.5),  0 6px 16px rgba(59,105,109,0.25); }
+          100% { transform: translateY(0px) scale(1);      box-shadow: 0 8px 24px rgba(59,105,109,0.45),  0 3px 10px rgba(59,105,109,0.25); }
         }
         .contact-circle-btn {
-          width: 56px;
-          height: 56px;
-          border-radius: 50%;
-          border: none;
+          width: 62px;
+          height: 62px;
+          border-radius: 50% !important;
+          border: none !important;
           outline: none;
           cursor: pointer;
           display: flex;
@@ -39,14 +47,26 @@ export default function Contact() {
           justify-content: center;
           flex-shrink: 0;
           padding: 0;
-          animation: floatContact 2.8s ease-in-out infinite;
           will-change: transform;
         }
-        .contact-circle-btn:hover {
+        .float-wa {
+          animation: floatWA 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+        }
+        .float-phone {
+          animation: floatPhone 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+          animation-delay: 0.6s;
+        }
+        .float-wa:hover {
           animation: none;
-          transform: translateY(-8px) scale(1.1);
-          box-shadow: 0 18px 36px rgba(0,0,0,0.26);
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          transform: translateY(-10px) scale(1.15);
+          box-shadow: 0 32px 52px rgba(37,211,102,0.65) !important;
+          transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+        .float-phone:hover {
+          animation: none;
+          transform: translateY(-10px) scale(1.15);
+          box-shadow: 0 32px 52px rgba(59,105,109,0.65) !important;
+          transition: transform 0.18s ease, box-shadow 0.18s ease;
         }
       `}</style>
       <Header active="/contact" />
@@ -79,8 +99,8 @@ export default function Contact() {
                 De snelste manier. Stuur een appje en we reageren zo snel mogelijk. Gewoon in je eigen woorden.
               </p>
               <button
-                className="contact-circle-btn"
-                style={{ backgroundColor: '#25D366', animationDelay: '0s' }}
+                className="contact-circle-btn float-wa"
+                style={{ backgroundColor: '#25D366' }}
                 onClick={() => window.open('https://wa.me/31623823324?text=Hoi!%20Ik%20wil%20graag%20Kaap%20Noord%20ontdekken!', '_blank', 'noopener,noreferrer')}
                 aria-label="Open WhatsApp"
               >
@@ -98,8 +118,8 @@ export default function Contact() {
                 Liever even bellen? Marije staat voor je klaar. Geef jezelf even voor en we plannen een gesprekje.
               </p>
               <button
-                className="contact-circle-btn"
-                style={{ backgroundColor: '#3b696d', animationDelay: '0.5s' }}
+                className="contact-circle-btn float-phone"
+                style={{ backgroundColor: '#3b696d' }}
                 onClick={() => window.location.href = 'tel:+31623823324'}
                 aria-label="Bel ons"
               >
