@@ -261,19 +261,6 @@ export default function OverOns() {
               </div>
             ))}
           </div>
-          <div className="rounded-xl p-8 md:p-12 text-center" style={{ backgroundColor: '#3b696d' }}>
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">Past dit bij jou?</h3>
-            <p className="mb-6" style={{ color: '#bdeffc' }}>Geen lange procedure. Gewoon kennismaken en kijken of het klikt.</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="https://wa.me/31623823324?text=Hoi!%20Ik%20wil%20graag%20Kaap%20Noord%20ontdekken!" target="_blank" rel="noopener noreferrer"
-                className="px-8 py-3 font-bold text-sm uppercase tracking-wider" style={{ backgroundColor: '#25D366', color: 'white' }}>
-                💬 WhatsApp Marije
-              </a>
-              <Link href="/voor-jou" className="px-8 py-3 font-bold text-sm uppercase tracking-wider border-2 border-white text-white hover:opacity-80">
-                Bekijk alle voordelen →
-              </Link>
-            </div>
-          </div>
         </div>
       </section>
 
