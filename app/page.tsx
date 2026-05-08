@@ -133,6 +133,12 @@ export default function Home() {
           animation: ctaGlow 2.2s ease-in-out infinite;
           will-change: transform;
         }
+        #vacatures {
+          scroll-margin-top: 60px;
+        }
+        @media (min-width: 768px) {
+          #vacatures { scroll-margin-top: 80px; }
+        }
         .cta-glow:hover {
           animation: none;
           transform: translateY(-5px) scale(1.05);
