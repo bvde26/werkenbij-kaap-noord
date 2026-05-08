@@ -199,8 +199,8 @@ export default function Home() {
               </Link>
             </div>
             <Link href="/over-ons"
-              className="px-6 py-2.5 md:px-8 md:py-3 font-bold text-sm uppercase tracking-widest border-2 transition-opacity hover:opacity-80"
-              style={{ borderColor: '#3b696d', color: '#3b696d', display: 'inline-block', marginTop: '4px' }}>
+              className="px-6 py-2.5 md:px-8 md:py-3 font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-80"
+              style={{ backgroundColor: '#fcf8bd', color: '#3b696d', display: 'inline-block', marginTop: '4px', border: 'none' }}>
               Vertel me eerst meer
             </Link>
           </div>
