@@ -178,14 +178,14 @@ export default function Home() {
                   viewBox="0 0 390 200"
                   preserveAspectRatio="none"
                   style={{ display: 'block', filter: 'drop-shadow(0 8px 24px rgba(59,105,109,0.4))' }}>
-                  <path d="M55 40 C45 42 40 50 42 62 C40 82 41 102 43 122 C45 138 55 145 72 143 C82 142 88 143 92 146 C92 160 90 172 88 182 C102 174 114 160 120 146 C122 143 128 142 138 142 C220 143 290 143 330 140 C354 136 365 126 364 112 C366 92 366 72 362 52 C358 38 344 30 320 30 C250 28 180 29 86 31 C70 32 60 34 55 40 Z" fill="#3b696d" />
+                  <path d="M55 40 C45 42 40 50 42 62 C40 82 41 102 43 122 C45 138 55 145 72 143 C82 142 88 143 92 146 C92 160 90 172 88 182 C102 174 114 160 120 146 C122 143 128 142 138 142 C220 143 290 143 330 140 C354 136 365 126 364 112 C366 92 366 72 362 52 C358 38 344 30 320 30 C250 28 180 29 86 31 C70 32 60 34 55 40 Z" fill="none" stroke="#3b696d" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <span style={{
                   position: 'absolute',
                   top: '46px',
                   left: '52%',
                   transform: 'translate(-50%, -50%)',
-                  color: '#fcf8bd',
+                  color: '#3b696d',
                   fontFamily: "'Kodchasan', sans-serif",
                   fontWeight: 700,
                   fontSize: '13px',
@@ -200,7 +200,7 @@ export default function Home() {
             </div>
             <Link href="/over-ons"
               className="px-6 py-2.5 md:px-8 md:py-3 font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-80"
-              style={{ backgroundColor: '#fcf8bd', color: '#3b696d', display: 'inline-block', marginTop: '4px', border: 'none' }}>
+              style={{ backgroundColor: '#3b696d', color: '#fcf8bd', display: 'inline-block', marginTop: '4px', border: 'none' }}>
               Vertel me eerst meer
             </Link>
           </div>
