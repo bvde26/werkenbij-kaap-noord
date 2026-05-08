@@ -338,7 +338,7 @@ export default function Home() {
                     ref={el => { cardRefs.current[i] = el; }}
                     className="rounded-2xl shadow-lg overflow-hidden"
                     style={{
-                      backgroundColor: isOpen ? '#ffffff' : '#3b696d',
+                      backgroundColor: isExpanded ? '#ffffff' : '#3b696d',
                       transition: 'background-color 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
                     }}
                   >
@@ -372,7 +372,7 @@ export default function Home() {
                       <div className="flex-1 min-w-0">
                         <span className="block font-bold leading-snug mb-1"
                           style={{
-                            color: isOpen ? '#3b696d' : '#ffffff',
+                            color: isExpanded ? '#3b696d' : '#ffffff',
                             fontFamily: "'Kodchasan', sans-serif",
                             fontSize: '17px',
                             transition: 'color 0.3s ease',
@@ -382,7 +382,7 @@ export default function Home() {
                         <span className="flex items-center gap-4 flex-wrap">
                           {r.uren_display && (
                             <span className="flex items-center gap-1" style={{
-                              color: isOpen ? '#5a8a8e' : '#fcf8bd',
+                              color: isExpanded ? '#5a8a8e' : '#fcf8bd',
                               fontSize: '13px',
                               fontFamily: "'Kodchasan', sans-serif",
                               transition: 'color 0.3s ease',
@@ -405,7 +405,7 @@ export default function Home() {
                       <svg
                         style={{
                           width: '20px', height: '20px', flexShrink: 0,
-                          stroke: isOpen ? '#3b696d' : '#fcf8bd',
+                          stroke: isExpanded ? '#3b696d' : '#fcf8bd',
                           transition: 'transform 0.3s ease, stroke 0.3s ease',
                           transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
                         }}
@@ -418,14 +418,14 @@ export default function Home() {
                     <div id={`vacature-content-${r.id}`} style={{ display: 'grid', gridTemplateRows: isExpanded ? '1fr' : '0fr', transition: 'grid-template-rows 0.3s cubic-bezier(0.23, 1, 0.32, 1)' }}>
                       <div style={{ overflow: 'hidden' }}>
                         <div style={{
-                          backgroundColor: isOpen ? '#f8fafa' : '#2d5f63',
+                          backgroundColor: isExpanded ? '#f8fafa' : '#2d5f63',
                           transition: 'background-color 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
                         }}>
                           <div className="px-5 pt-4 pb-2">
                             {/* Korte omschrijving — alleen zichtbaar in preview staat */}
                             <div style={{ display: 'grid', gridTemplateRows: isPreview ? '1fr' : '0fr', transition: 'grid-template-rows 0.35s cubic-bezier(0.23, 1, 0.32, 1)' }}>
                               <div style={{ overflow: 'hidden' }}>
-                                <RichText text={r.description || ''} color='#d4ecec' fontSize="14px" lineHeight="1.75" />
+                                <RichText text={r.description || ''} color='#3b696d' fontSize="14px" lineHeight="1.75" />
                               </div>
                             </div>
 
@@ -446,7 +446,7 @@ export default function Home() {
                                     onClick={(e) => { e.stopPropagation(); setCard(i, 'open'); }}
                                     style={{
                                       background: 'none', border: 'none', cursor: 'pointer',
-                                      color: '#fcf8bd', fontFamily: "'Kodchasan', sans-serif",
+                                      color: '#3b696d', fontFamily: "'Kodchasan', sans-serif",
                                       fontSize: '13px', fontWeight: 600,
                                       padding: '12px 0 4px',
                                       display: 'flex', alignItems: 'center', gap: '5px',
@@ -467,8 +467,8 @@ export default function Home() {
                             ref={el => { contactBarRefs.current[i] = el; }}
                             className="flex items-center gap-3 px-5 py-4"
                             style={{
-                              backgroundColor: isOpen ? '#f8fafa' : '#fefdf5',
-                              borderTop: isOpen ? '1px solid rgba(59,105,109,0.15)' : '2px solid #bdeffc',
+                              backgroundColor: isExpanded ? '#f8fafa' : '#fefdf5',
+                              borderTop: isExpanded ? '1px solid rgba(59,105,109,0.15)' : '2px solid #bdeffc',
                             }}
                           >
                             <button
