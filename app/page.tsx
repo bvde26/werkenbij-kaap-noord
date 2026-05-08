@@ -7,6 +7,7 @@ import FloatingButtons from '@/components/FloatingButtons';
 import DecorativeLine from '@/components/DecorativeLine';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import RichText from '@/components/RichText';
 
 const whatsappLink = "https://wa.me/31623823324?text=Hoi!%20Ik%20wil%20graag%20Kaap%20Noord%20ontdekken!";
 const phoneLink = "tel:+31623823324";
@@ -138,9 +139,9 @@ export default function Home() {
       <Header active="/" />
       <FloatingButtons hidden={isDocked} />
 
-      {/* Hero — left-aligned tekst, asymmetrische whitespace */}
-      <section className="relative" style={{ backgroundColor: '#fefdf5' }}>
-        <div className="px-6 sm:px-10 md:px-20 lg:px-32 pt-8 pb-4 md:pt-20 md:pb-10">
+      {/* Hero — tekst boven video, geen wave in de flow */}
+      <div style={{ backgroundColor: '#fefdf5', paddingBottom: 0, marginBottom: 0 }}>
+        <div className="px-6 sm:px-10 md:px-20 lg:px-32 py-6 md:py-12">
           <h1 className="text-4xl md:text-7xl uppercase mb-4 md:mb-5"
             style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em', color: '#3b696d', lineHeight: 1.05 }}>
             Werken bij<br />Kaap Noord
@@ -162,27 +163,24 @@ export default function Home() {
             </Link>
           </div>
         </div>
+      </div>
 
-        {/* Golfscheiding */}
-        <div style={{ lineHeight: 0, backgroundColor: '#fefdf5' }}>
-          <svg viewBox="0 0 1440 36" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', width: '100%' }} preserveAspectRatio="none" aria-hidden="true">
-            <path d="M0,18 C180,36 360,0 540,18 C720,36 900,0 1080,18 C1260,36 1380,8 1440,18 L1440,36 L0,36 Z" fill="#bdeffc" opacity="0.6"/>
-            <path d="M0,24 C200,8 400,36 600,20 C800,4 1000,32 1200,18 C1320,10 1400,28 1440,22 L1440,36 L0,36 Z" fill="#bdeffc" opacity="0.35"/>
+      {/* Video — wave als cream overlay bovenop video, zodat hero naadloos overloopt */}
+      <div style={{ position: 'relative', height: 'clamp(260px, 56vw, 560px)', overflow: 'hidden', lineHeight: 0 }}>
+        {/* Cream golf overlay: visueel verbindt hero met video, gap structureel onmogelijk */}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 1, lineHeight: 0, pointerEvents: 'none' }}>
+          <svg viewBox="0 0 1440 56" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', width: '100%' }} preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0,0 L1440,0 L1440,22 C1260,46 1080,56 900,42 C720,28 540,8 360,24 C180,40 90,52 0,38 Z" fill="#fefdf5"/>
           </svg>
         </div>
-
-        {/* Video */}
-        <div className="w-full overflow-hidden" style={{ height: '55vh' }}>
-          <iframe
-            className="w-full h-full"
-            src="https://player.vimeo.com/video/711355612?background=1&muted=1&autoplay=1&loop=1&dnt=1"
-            frameBorder="0"
-            allow="autoplay; fullscreen"
-            allowFullScreen
-          />
-        </div>
-        <DecorativeLine />
-      </section>
+        <iframe
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', display: 'block' }}
+          src="https://player.vimeo.com/video/711355612?background=1&muted=1&autoplay=1&loop=1&dnt=1"
+          allow="autoplay; fullscreen"
+          allowFullScreen
+        />
+      </div>
+      <DecorativeLine />
 
       {/* Intro quote */}
       <section className="py-16" style={{ backgroundColor: '#bdeffc' }}>
@@ -273,9 +271,7 @@ export default function Home() {
                             </div>
                           )}
                           <div className="px-5 pt-5 pb-3">
-                            <p style={{ color: '#d4ecec', fontSize: '14px', lineHeight: '1.7', fontFamily: "'Kodchasan', sans-serif" }}>
-                              {r.description}
-                            </p>
+                            <RichText text={r.description || ''} color="#d4ecec" fontSize="14px" lineHeight="1.7" />
                           </div>
 
                           {/* "Volledige vacature" knop — alleen zichtbaar in short state */}
@@ -303,9 +299,7 @@ export default function Home() {
                               <div className="px-5 pt-1 pb-5">
                                 <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)', marginBottom: '16px' }} />
                                 {r.extended_description ? (
-                                  <p style={{ color: '#d4ecec', fontSize: '14px', lineHeight: '1.75', fontFamily: "'Kodchasan', sans-serif", whiteSpace: 'pre-wrap' }}>
-                                    {r.extended_description}
-                                  </p>
+                                  <RichText text={r.extended_description} color="#d4ecec" fontSize="14px" lineHeight="1.75" />
                                 ) : (
                                   <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '13px', fontStyle: 'italic', fontFamily: "'Kodchasan', sans-serif" }}>
                                     Uitgebreide informatie volgt binnenkort.
@@ -428,35 +422,6 @@ export default function Home() {
               className="inline-block px-8 py-3 font-semibold text-sm uppercase tracking-wider transition-opacity hover:opacity-85"
               style={{ backgroundColor: '#3b696d', color: '#ffffff' }}>
               Alle voordelen →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Banner */}
-      <section className="py-16 px-4 text-center" style={{ backgroundColor: '#3b696d' }}>
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl md:text-4xl uppercase mb-4"
-            style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, color: '#ffffff' }}>
-            Kom je kennismaken?
-          </h2>
-          <p className="text-lg mb-8" style={{ color: '#bdeffc' }}>
-            Geen lange sollicitatie. Geen gekke tests. Gewoon een gesprek of een dagje meelopen.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href={whatsappLink} target="_blank" rel="noopener noreferrer"
-              className="px-8 py-3 font-bold text-sm uppercase tracking-wider transition-opacity hover:opacity-90 flex items-center justify-center gap-2"
-              style={{ backgroundColor: '#25D366', color: '#ffffff' }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                <path d="M11.5 2C6.262 2 2 6.262 2 11.5c0 1.687.435 3.272 1.197 4.653L2 22l5.998-1.172A9.45 9.45 0 0 0 11.5 21c5.238 0 9.5-4.262 9.5-9.5S16.738 2 11.5 2zm0 17.3a7.792 7.792 0 0 1-3.976-1.083l-.285-.169-2.955.577.6-2.883-.186-.295A7.793 7.793 0 0 1 3.7 11.5C3.7 7.198 7.198 3.7 11.5 3.7S19.3 7.198 19.3 11.5 15.802 19.3 11.5 19.3z"/>
-              </svg>
-              WhatsApp Marije
-            </a>
-            <Link href="/contact"
-              className="px-8 py-3 font-bold text-sm uppercase tracking-wider border-2 border-white transition-opacity hover:opacity-80"
-              style={{ color: '#ffffff' }}>
-              Of stuur een bericht
             </Link>
           </div>
         </div>
