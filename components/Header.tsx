@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 
 const MENU_LINKS = [
@@ -11,6 +11,17 @@ const MENU_LINKS = [
 
 export default function Header({ active = '' }: { active?: string }) {
   const [open, setOpen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    if (open) {
+      nav.removeAttribute('inert');
+    } else {
+      nav.setAttribute('inert', '');
+    }
+  }, [open]);
 
   return (
     <>
@@ -19,7 +30,6 @@ export default function Header({ active = '' }: { active?: string }) {
           background: transparent !important;
           border: none !important;
           box-shadow: none !important;
-          outline: none !important;
           cursor: pointer;
           width: 28px;
           height: 28px;
@@ -29,6 +39,15 @@ export default function Header({ active = '' }: { active?: string }) {
           padding: 0;
           flex-shrink: 0;
         }
+        .hamburger-btn:focus-visible {
+          outline: 2px solid #3b696d;
+          outline-offset: 3px;
+          border-radius: 4px;
+        }
+        .hamburger-btn:active {
+          transform: scale(0.88);
+          transition: transform 100ms ease-out;
+        }
         .nav-backdrop {
           position: fixed;
           inset: 0;
@@ -36,7 +55,7 @@ export default function Header({ active = '' }: { active?: string }) {
           background: rgba(0,0,0,0.25);
           opacity: 0;
           pointer-events: none;
-          transition: opacity 0.3s ease;
+          transition: opacity 0.25s ease;
         }
         .nav-backdrop.open {
           opacity: 1;
@@ -53,7 +72,7 @@ export default function Header({ active = '' }: { active?: string }) {
           background: #bdeffc;
           padding: 24px 28px 40px;
           transform: translateX(100%);
-          transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+          transition: transform 0.32s cubic-bezier(0.23, 1, 0.32, 1);
           overflow-y: auto;
           display: flex;
           flex-direction: column;
@@ -79,19 +98,24 @@ export default function Header({ active = '' }: { active?: string }) {
         .nav-link-item {
           opacity: 0;
           transform: translateX(20px);
-          transition: opacity 0.3s ease, transform 0.3s ease;
+          transition: opacity 0.28s ease-out, transform 0.28s cubic-bezier(0.23, 1, 0.32, 1);
         }
         .nav-panel.open .nav-link-item {
           opacity: 1;
           transform: translateX(0);
         }
-        .nav-panel.open .nav-link-item:nth-child(1) { transition-delay: 0.1s; }
-        .nav-panel.open .nav-link-item:nth-child(2) { transition-delay: 0.17s; }
-        .nav-panel.open .nav-link-item:nth-child(3) { transition-delay: 0.24s; }
-        .nav-panel.open .nav-link-item:nth-child(4) { transition-delay: 0.31s; }
+        .nav-panel.open .nav-link-item:nth-child(1) { transition-delay: 0.08s; }
+        .nav-panel.open .nav-link-item:nth-child(2) { transition-delay: 0.13s; }
+        .nav-panel.open .nav-link-item:nth-child(3) { transition-delay: 0.18s; }
+        .nav-panel.open .nav-link-item:nth-child(4) { transition-delay: 0.23s; }
+        @media (prefers-reduced-motion: reduce) {
+          .nav-panel { transition: none; }
+          .nav-backdrop { transition: none; }
+          .nav-link-item { transition: none; opacity: 1; transform: none; }
+        }
       `}</style>
 
-      {/* Header bar — z-[200] zodat het boven de overlay (z-150) blijft */}
+      {/* Header bar */}
       <header className="sticky top-0 z-[200]" style={{ backgroundColor: '#bdeffc' }}>
         <div className="px-5 h-[60px] md:h-[80px] flex items-center">
           <Link href="/" className="mr-auto hover:opacity-80 transition-opacity">
@@ -102,13 +126,14 @@ export default function Header({ active = '' }: { active?: string }) {
             onClick={() => setOpen(!open)}
             aria-label={open ? 'Menu sluiten' : 'Menu openen'}
             aria-expanded={open}
+            aria-controls="nav-panel"
           >
             {open ? (
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2.5" strokeLinecap="round">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
                 <path d="M18 6L6 18M6 6l12 12" />
               </svg>
             ) : (
-              <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="#3b696d" strokeWidth="2.5" strokeLinecap="round">
+              <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="#3b696d" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
                 <line x1="0" y1="2" x2="28" y2="2" />
                 <line x1="0" y1="11" x2="28" y2="11" />
                 <line x1="0" y1="20" x2="28" y2="20" />
@@ -122,10 +147,15 @@ export default function Header({ active = '' }: { active?: string }) {
       <div className={`nav-backdrop${open ? ' open' : ''}`} onClick={() => setOpen(false)} aria-hidden="true" />
 
       {/* Slide-in panel */}
-      <nav className={`nav-panel${open ? ' open' : ''}`} aria-hidden={!open}>
+      <nav
+        id="nav-panel"
+        ref={navRef}
+        className={`nav-panel${open ? ' open' : ''}`}
+        aria-hidden={!open}
+      >
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '40px' }}>
           <button className="hamburger-btn" onClick={() => setOpen(false)} aria-label="Menu sluiten">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2.5" strokeLinecap="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
               <path d="M18 6L6 18M6 6l12 12" />
             </svg>
           </button>

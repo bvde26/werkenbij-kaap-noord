@@ -79,7 +79,8 @@ export default function Home() {
             document.getElementById('vacatures')?.scrollIntoView({ behavior: 'smooth' });
           }, 100);
         }
-      });
+      })
+      .catch(() => setVacaturesLoading(false));
   }, []);
 
   const openIdx = cardStates.findIndex(s => s === 'open');
@@ -116,8 +117,8 @@ export default function Home() {
     <div className="min-h-screen" style={{ backgroundColor: '#fefdf5' }}>
       <style>{`
         @keyframes floatBtn {
-          0%, 100% { transform: translateY(0px); box-shadow: 0 6px 16px rgba(0,0,0,0.45), 0 2px 6px rgba(0,0,0,0.3); }
-          50%       { transform: translateY(-5px); box-shadow: 0 14px 28px rgba(0,0,0,0.55), 0 4px 10px rgba(0,0,0,0.3); }
+          0%, 100% { transform: translateY(0px); }
+          50%       { transform: translateY(-5px); }
         }
         .float-btn {
           animation: floatBtn 2.8s ease-in-out infinite;
@@ -127,37 +128,47 @@ export default function Home() {
           outline: none !important;
           cursor: pointer;
           padding: 0;
+          box-shadow: 0 8px 20px rgba(0,0,0,0.38);
         }
-        .float-btn:hover {
-          animation: none;
-          transform: translateY(-6px) scale(1.08);
-          box-shadow: 0 16px 32px rgba(0,0,0,0.55) !important;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        @media (hover: hover) and (pointer: fine) {
+          .float-btn:hover {
+            animation: none;
+            transform: translateY(-6px) scale(1.08);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.55) !important;
+            transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.18s ease-out;
+          }
         }
-        @keyframes bubbleBounce {
-          0%   { transform: translateY(0px) rotate(-1deg); }
-          30%  { transform: translateY(-10px) rotate(0.5deg); }
-          55%  { transform: translateY(-6px) rotate(-0.4deg); }
-          75%  { transform: translateY(-9px) rotate(0.3deg); }
-          100% { transform: translateY(0px) rotate(-1deg); }
+        .float-btn:active {
+          animation: none !important;
+          transform: scale(0.95) !important;
+          transition: transform 100ms ease-out !important;
+        }
+        @keyframes bubbleFloat {
+          0%, 100% { transform: translateY(0px); }
+          50%       { transform: translateY(-8px); }
         }
         .cta-bubble-wrap {
           display: inline-block;
           position: relative;
-          animation: bubbleBounce 2.6s ease-in-out infinite;
+          animation: bubbleFloat 3s ease-in-out infinite;
           will-change: transform;
           cursor: pointer;
         }
-        .cta-bubble-wrap:hover {
-          animation: none;
-          transform: translateY(-4px) scale(1.04) rotate(0deg);
-          transition: transform 0.18s ease;
+        @media (hover: hover) and (pointer: fine) {
+          .cta-bubble-wrap:hover {
+            animation: none;
+            transform: translateY(-4px) scale(1.03);
+            transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+          }
         }
         #vacatures {
           scroll-margin-top: 60px;
         }
         @media (min-width: 768px) {
           #vacatures { scroll-margin-top: 80px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .float-btn, .cta-bubble-wrap { animation: none; }
         }
       `}</style>
       <Header active="/" />
@@ -176,10 +187,10 @@ export default function Home() {
           </p>
           <div className="flex flex-col items-start gap-2" style={{ marginTop: '8px' }}>
             <div className="cta-bubble-wrap">
-              <Link href="/contact" style={{ position: 'relative', display: 'inline-block', width: '330px', height: '130px', textDecoration: 'none' }}>
+              <Link href="/contact" style={{ position: 'relative', display: 'inline-block', width: 'min(330px, 90vw)', height: '130px', textDecoration: 'none' }}>
                 <svg
                   aria-hidden="true"
-                  width="330" height="130"
+                  width="100%" height="130"
                   viewBox="0 0 390 200"
                   preserveAspectRatio="none"
                   style={{ display: 'block', filter: 'drop-shadow(0 12px 28px rgba(59,105,109,0.55)) drop-shadow(0 4px 10px rgba(59,105,109,0.35))' }}>
@@ -301,6 +312,8 @@ export default function Home() {
                       className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
                       style={{ background: 'none', border: 'none', outline: 'none', cursor: 'pointer' }}
                       onClick={() => setCard(i, isOpen ? 'closed' : 'open')}
+                      aria-expanded={isOpen}
+                      aria-controls={`vacature-content-${r.id}`}
                     >
                       <div className="flex-1 min-w-0">
                         <span className="block font-bold leading-snug mb-1"
@@ -328,7 +341,7 @@ export default function Home() {
                     </button>
 
                     {/* UITKLAPBARE CONTENT */}
-                    <div style={{ display: 'grid', gridTemplateRows: isOpen ? '1fr' : '0fr', transition: 'grid-template-rows 0.35s ease' }}>
+                    <div id={`vacature-content-${r.id}`} style={{ display: 'grid', gridTemplateRows: isOpen ? '1fr' : '0fr', transition: 'grid-template-rows 0.3s cubic-bezier(0.23, 1, 0.32, 1)' }}>
                       <div style={{ overflow: 'hidden' }}>
                         <div style={{ backgroundColor: '#2d5f63' }}>
                           <div className="px-5 pt-4 pb-4">
@@ -394,7 +407,7 @@ export default function Home() {
       <section className="py-16 px-4" style={{ backgroundColor: '#f0fafe' }}>
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl text-center mb-12 uppercase"
-            style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', letterSpacing: '0.05em' }}>
+            style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, color: '#3b696d', letterSpacing: '0.03em' }}>
             Waarom Kaap Noord?
           </h2>
           <div className="flex flex-col gap-10">

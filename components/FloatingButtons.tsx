@@ -8,24 +8,34 @@ export default function FloatingButtons({ hidden = false }: { hidden?: boolean }
     <>
       <style>{`
         @keyframes floatFixed {
-          0%   { transform: translateY(0px) scale(1);     box-shadow: 0 8px 24px rgba(0,0,0,0.45), 0 3px 10px rgba(0,0,0,0.25); }
-          40%  { transform: translateY(-10px) scale(1.04); box-shadow: 0 22px 44px rgba(0,0,0,0.55), 0 6px 16px rgba(0,0,0,0.25); }
-          60%  { transform: translateY(-7px) scale(1.02);  box-shadow: 0 18px 36px rgba(0,0,0,0.5),  0 5px 14px rgba(0,0,0,0.2); }
-          100% { transform: translateY(0px) scale(1);     box-shadow: 0 8px 24px rgba(0,0,0,0.45), 0 3px 10px rgba(0,0,0,0.25); }
+          0%, 100% { transform: translateY(0px) scale(1); }
+          40%       { transform: translateY(-10px) scale(1.04); }
+          60%       { transform: translateY(-7px) scale(1.02); }
         }
         .float-fixed {
-          animation: floatFixed 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+          animation: floatFixed 2.4s ease-in-out infinite;
           will-change: transform;
           border-radius: 50% !important;
+          box-shadow: 0 10px 28px rgba(0,0,0,0.38), 0 4px 10px rgba(0,0,0,0.18);
         }
-        .float-fixed:hover {
-          animation: none;
-          transform: translateY(-10px) scale(1.12);
-          box-shadow: 0 28px 48px rgba(0,0,0,0.6) !important;
-          transition: transform 0.18s ease, box-shadow 0.18s ease;
+        @media (hover: hover) and (pointer: fine) {
+          .float-fixed:hover {
+            animation: none;
+            transform: translateY(-10px) scale(1.12);
+            box-shadow: 0 28px 48px rgba(0,0,0,0.55) !important;
+            transition: transform 0.18s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.18s ease-out;
+          }
+        }
+        .float-fixed:active {
+          animation: none !important;
+          transform: scale(0.95) !important;
+          transition: transform 100ms ease-out !important;
         }
         .float-fixed-delay {
           animation-delay: 0.6s;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .float-fixed { animation: none; }
         }
       `}</style>
       <a
@@ -34,9 +44,9 @@ export default function FloatingButtons({ hidden = false }: { hidden?: boolean }
         rel="noopener noreferrer"
         className="float-fixed fixed bottom-6 right-6 z-50"
         style={{ backgroundColor: '#25D366', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-        title="WhatsApp ons"
+        aria-label="WhatsApp ons"
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white" aria-hidden="true">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
           <path d="M11.5 2C6.262 2 2 6.262 2 11.5c0 1.687.435 3.272 1.197 4.653L2 22l5.998-1.172A9.45 9.45 0 0 0 11.5 21c5.238 0 9.5-4.262 9.5-9.5S16.738 2 11.5 2zm0 17.3a7.792 7.792 0 0 1-3.976-1.083l-.285-.169-2.955.577.6-2.883-.186-.295A7.793 7.793 0 0 1 3.7 11.5C3.7 7.198 7.198 3.7 11.5 3.7S19.3 7.198 19.3 11.5 15.802 19.3 11.5 19.3z"/>
         </svg>
@@ -45,9 +55,9 @@ export default function FloatingButtons({ hidden = false }: { hidden?: boolean }
         href={phoneLink}
         className="float-fixed float-fixed-delay fixed bottom-6 right-24 z-50"
         style={{ backgroundColor: '#3b696d', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-        title="Bel ons"
+        aria-label="Bel ons"
       >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" aria-hidden="true">
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
         </svg>
       </a>

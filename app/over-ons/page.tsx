@@ -55,8 +55,8 @@ function PhotoSlider({ photos }: { photos: string[] }) {
           background: rgba(59, 105, 109, 0.7);
           border: none;
           border-radius: 50%;
-          width: 40px;
-          height: 40px;
+          width: 44px;
+          height: 44px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -65,9 +65,11 @@ function PhotoSlider({ photos }: { photos: string[] }) {
           transition: background 0.2s ease, transform 0.2s ease;
           backdrop-filter: blur(4px);
         }
-        .slider-arrow:hover {
-          background: rgba(59, 105, 109, 0.95);
-          transform: translateY(-50%) scale(1.1);
+        @media (hover: hover) and (pointer: fine) {
+          .slider-arrow:hover {
+            background: rgba(59, 105, 109, 0.95);
+            transform: translateY(-50%) scale(1.1);
+          }
         }
         .slider-dot {
           width: 8px;
@@ -207,13 +209,13 @@ export default function OverOns() {
           <svg className="w-32 h-2 mb-8" viewBox="0 0 100 10" style={{ color: '#bdeffc' }}>
             <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1.5" />
           </svg>
-          <p className="text-lg leading-relaxed mb-6" style={{ color: '#444' }}>
+          <p className="text-lg leading-relaxed mb-6" style={{ color: '#3b696d' }}>
             {c('over_ons_tekst_1', 'Bij ons staat "je thuis voelen" voor zowel gasten als voor jou, hoog op ons lijstje. Snelle ongedwongen service met een glimlach is waar wij voor staan. Bij ons geen formele setting maar juist het huiskamer gevoel waarin ook jij je prettig voelt.')}
           </p>
-          <p className="text-lg leading-relaxed mb-6" style={{ color: '#444' }}>
+          <p className="text-lg leading-relaxed mb-6" style={{ color: '#3b696d' }}>
             {c('over_ons_tekst_2', 'Een gezellig, gemotiveerd team met de nodige humor om er zo iedere dag weer een feestje van te maken. Soms is het flink aanpakken, maar altijd met een lach en altijd samen.')}
           </p>
-          <p className="text-lg leading-relaxed" style={{ color: '#444' }}>
+          <p className="text-lg leading-relaxed" style={{ color: '#3b696d' }}>
             {c('over_ons_tekst_3', 'Kaap Noord is een familie, waarbij de ervaring die de medewerkers hebben minstens net zo belangrijk is als die van de gasten. Désirée en Mike vinden het belangrijk dat jij elke ochtend wakker wordt en zin hebt om aan de slag te gaan.')}
           </p>
         </div>
@@ -256,7 +258,7 @@ export default function OverOns() {
                 </div>
                 <div className="flex-1">
                   <h3 className="font-bold text-lg mb-2" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>{usp.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: '#4b7c80' }}>{usp.text}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#3b696d' }}>{usp.text}</p>
                 </div>
               </div>
             ))}
