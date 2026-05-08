@@ -219,24 +219,6 @@ export default function OverOns() {
         </div>
       </section>
 
-      {/* Testimonial */}
-      <section className="pb-8 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex flex-col md:flex-row overflow-hidden rounded-xl shadow-md" style={{ backgroundColor: '#bdeffc' }}>
-            <div className="flex-1 p-8 md:p-10 flex items-center">
-              <div>
-                <span className="text-5xl font-bold mb-2 block" style={{ color: '#3b696d', fontFamily: "'Pana Summer', serif" }}>"</span>
-                <p className="text-lg md:text-xl font-semibold uppercase" style={{ color: '#3b696d', fontFamily: "'Pana Summer', serif", letterSpacing: '0.02em' }}>
-                  {c('over_ons_testimonial', 'Van Bonaire naar Texel. Wie had dat gedacht! Een wereld van verschil, maar ik werk al een jaar met veel plezier bij Kaap Noord!')}
-                </p>
-              </div>
-            </div>
-            <div className="w-full md:w-64 flex-shrink-0 h-56 md:h-auto overflow-hidden">
-              <img src="/assets/IMG_7115.jpg" alt="Medewerker Kaap Noord" className="w-full h-full object-cover" />
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Werken bij ons */}
       <section className="py-16 px-4">
