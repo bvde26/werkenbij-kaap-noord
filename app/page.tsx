@@ -392,7 +392,7 @@ export default function Home() {
                             </span>
                           )}
                           <span className="flex items-center gap-1" style={{
-                            color: isOpen ? '#5a8a8e' : '#fcf8bd',
+                            color: isExpanded ? '#5a8a8e' : '#fcf8bd',
                             fontSize: '13px',
                             fontFamily: "'Kodchasan', sans-serif",
                             transition: 'color 0.3s ease',
