@@ -12,7 +12,7 @@ import RichText from '@/components/RichText';
 const whatsappLink = "https://wa.me/31623823324?text=Hoi!%20Ik%20wil%20graag%20Kaap%20Noord%20ontdekken!";
 const phoneLink = "tel:+31623823324";
 
-type CardState = 'closed' | 'open';
+type CardState = 'closed' | 'preview' | 'open';
 
 interface Vacature {
   id: string;
@@ -86,7 +86,7 @@ export default function Home() {
     })();
   }, []);
 
-  const openIdx = cardStates.findIndex(s => s === 'open');
+  const openIdx = cardStates.findIndex(s => s !== 'closed');
 
   useEffect(() => {
     if (openIdx === -1) { setIsDocked(false); return; }
@@ -281,7 +281,11 @@ export default function Home() {
             <div className="grid md:grid-cols-2 gap-6">
               {vacatures.map((r, i) => {
                 const state = cardStates[i];
+                const isClosed = state === 'closed';
+                const isPreview = state === 'preview';
                 const isOpen = state === 'open';
+                const isExpanded = !isClosed;
+                const hasExtended = !!r.extended_description;
                 const tilt = i % 2 === 0 ? '-2deg' : '1.5deg';
 
                 return (
@@ -289,7 +293,10 @@ export default function Home() {
                     key={r.id}
                     ref={el => { cardRefs.current[i] = el; }}
                     className="rounded-2xl shadow-lg overflow-hidden"
-                    style={{ backgroundColor: '#3b696d' }}
+                    style={{
+                      backgroundColor: isOpen ? '#ffffff' : '#3b696d',
+                      transition: 'background-color 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
+                    }}
                   >
                     {/* POLAROID FOTO — altijd zichtbaar */}
                     {r.image_url && (
@@ -310,50 +317,101 @@ export default function Home() {
                       </div>
                     )}
 
-                    {/* TITEL BAR — klikbaar */}
+                    {/* TITEL BAR — klikbaar: closed→preview, preview/open→closed */}
                     <button
                       className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
                       style={{ background: 'none', border: 'none', outline: 'none', cursor: 'pointer' }}
-                      onClick={() => setCard(i, isOpen ? 'closed' : 'open')}
-                      aria-expanded={isOpen}
+                      onClick={() => setCard(i, isClosed ? 'preview' : 'closed')}
+                      aria-expanded={isExpanded}
                       aria-controls={`vacature-content-${r.id}`}
                     >
                       <div className="flex-1 min-w-0">
                         <span className="block font-bold leading-snug mb-1"
-                          style={{ color: '#ffffff', fontFamily: "'Kodchasan', sans-serif", fontSize: '17px' }}>
+                          style={{
+                            color: isOpen ? '#3b696d' : '#ffffff',
+                            fontFamily: "'Kodchasan', sans-serif",
+                            fontSize: '17px',
+                            transition: 'color 0.3s ease',
+                          }}>
                           {r.title}
                         </span>
                         <span className="flex items-center gap-4 flex-wrap">
                           {r.uren_display && (
-                            <span className="flex items-center gap-1" style={{ color: '#fcf8bd', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif" }}>
+                            <span className="flex items-center gap-1" style={{
+                              color: isOpen ? '#5a8a8e' : '#fcf8bd',
+                              fontSize: '13px',
+                              fontFamily: "'Kodchasan', sans-serif",
+                              transition: 'color 0.3s ease',
+                            }}>
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                               {r.uren_display}
                             </span>
                           )}
-                          <span className="flex items-center gap-1" style={{ color: '#fcf8bd', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif" }}>
+                          <span className="flex items-center gap-1" style={{
+                            color: isOpen ? '#5a8a8e' : '#fcf8bd',
+                            fontSize: '13px',
+                            fontFamily: "'Kodchasan', sans-serif",
+                            transition: 'color 0.3s ease',
+                          }}>
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                             Texel
                           </span>
                         </span>
                       </div>
                       <svg
-                        style={{ width: '20px', height: '20px', flexShrink: 0, stroke: '#fcf8bd', transition: 'transform 0.3s ease', transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                        style={{
+                          width: '20px', height: '20px', flexShrink: 0,
+                          stroke: isOpen ? '#3b696d' : '#fcf8bd',
+                          transition: 'transform 0.3s ease, stroke 0.3s ease',
+                          transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                        }}
                         fill="none" strokeWidth="2.5" viewBox="0 0 24 24">
                         <path d="M19 9l-7 7-7-7" />
                       </svg>
                     </button>
 
                     {/* UITKLAPBARE CONTENT */}
-                    <div id={`vacature-content-${r.id}`} style={{ display: 'grid', gridTemplateRows: isOpen ? '1fr' : '0fr', transition: 'grid-template-rows 0.3s cubic-bezier(0.23, 1, 0.32, 1)' }}>
+                    <div id={`vacature-content-${r.id}`} style={{ display: 'grid', gridTemplateRows: isExpanded ? '1fr' : '0fr', transition: 'grid-template-rows 0.3s cubic-bezier(0.23, 1, 0.32, 1)' }}>
                       <div style={{ overflow: 'hidden' }}>
-                        <div style={{ backgroundColor: '#2d5f63' }}>
-                          <div className="px-5 pt-4 pb-4">
-                            <RichText text={r.description || ''} color="#d4ecec" fontSize="14px" lineHeight="1.75" />
-                            {r.extended_description && (
-                              <>
-                                <div style={{ borderTop: '1px solid rgba(255,255,255,0.12)', margin: '14px 0' }} />
-                                <RichText text={r.extended_description} color="#d4ecec" fontSize="14px" lineHeight="1.75" />
-                              </>
+                        <div style={{
+                          backgroundColor: isOpen ? '#f8fafa' : '#2d5f63',
+                          transition: 'background-color 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
+                        }}>
+                          <div className="px-5 pt-4 pb-2">
+                            {/* Korte omschrijving — altijd zichtbaar wanneer expanded */}
+                            <RichText text={r.description || ''} color={isOpen ? '#3b696d' : '#d4ecec'} fontSize="14px" lineHeight="1.75" />
+
+                            {/* Uitgebreide omschrijving — alleen in open staat */}
+                            {hasExtended && (
+                              <div style={{ display: 'grid', gridTemplateRows: isOpen ? '1fr' : '0fr', transition: 'grid-template-rows 0.35s cubic-bezier(0.23, 1, 0.32, 1)' }}>
+                                <div style={{ overflow: 'hidden' }}>
+                                  <div style={{ borderTop: '1px solid rgba(59,105,109,0.2)', margin: '16px 0 14px' }} />
+                                  <RichText text={r.extended_description!} color="#3b696d" fontSize="14px" lineHeight="1.75" />
+                                </div>
+                              </div>
+                            )}
+
+                            {/* "Lees meer" knop — zichtbaar in preview wanneer extended bestaat */}
+                            {hasExtended && (
+                              <div style={{ display: 'grid', gridTemplateRows: isPreview ? '1fr' : '0fr', transition: 'grid-template-rows 0.25s ease' }}>
+                                <div style={{ overflow: 'hidden' }}>
+                                  <button
+                                    onClick={(e) => { e.stopPropagation(); setCard(i, 'open'); }}
+                                    style={{
+                                      background: 'none', border: 'none', cursor: 'pointer',
+                                      color: '#fcf8bd', fontFamily: "'Kodchasan', sans-serif",
+                                      fontSize: '13px', fontWeight: 600,
+                                      padding: '12px 0 4px',
+                                      display: 'flex', alignItems: 'center', gap: '5px',
+                                    }}
+                                  >
+                                    Lees de volledige vacaturetekst
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                                      <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                  </button>
+                                </div>
+                              </div>
                             )}
                           </div>
 
