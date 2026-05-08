@@ -64,12 +64,13 @@ export default function Home() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    supabase
-      .from('vacatures')
-      .select('id, title, uren_display, description, extended_description, image_url')
-      .eq('published', true)
-      .order('created_at', { ascending: false })
-      .then(({ data }) => {
+    void (async () => {
+      try {
+        const { data } = await supabase
+          .from('vacatures')
+          .select('id, title, uren_display, description, extended_description, image_url')
+          .eq('published', true)
+          .order('created_at', { ascending: false });
         const list = data || [];
         setVacatures(list);
         setCardStates(list.map(() => 'closed' as CardState));
@@ -79,8 +80,10 @@ export default function Home() {
             document.getElementById('vacatures')?.scrollIntoView({ behavior: 'smooth' });
           }, 100);
         }
-      })
-      .catch(() => setVacaturesLoading(false));
+      } catch {
+        setVacaturesLoading(false);
+      }
+    })();
   }, []);
 
   const openIdx = cardStates.findIndex(s => s === 'open');
