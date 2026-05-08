@@ -419,7 +419,10 @@ export default function Home() {
                           <div
                             ref={i === openIdx ? fullRef : null}
                             className="flex items-center gap-3 px-5 py-4"
-                            style={{ backgroundColor: '#fefdf5', borderTop: '2px solid #bdeffc' }}
+                            style={{
+                              backgroundColor: isOpen ? '#f8fafa' : '#fefdf5',
+                              borderTop: isOpen ? '1px solid rgba(59,105,109,0.15)' : '2px solid #bdeffc',
+                            }}
                           >
                             <button
                               className="float-btn flex-shrink-0"

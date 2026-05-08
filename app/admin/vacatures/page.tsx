@@ -55,6 +55,22 @@ export default function AdminVacatures() {
   const descRef = useRef<HTMLTextAreaElement>(null);
   const extRef = useRef<HTMLTextAreaElement>(null);
 
+  const insertBold = (ref: React.RefObject<HTMLTextAreaElement>, field: 'description' | 'extended_description') => {
+    const ta = ref.current;
+    if (!ta) return;
+    const start = ta.selectionStart;
+    const end = ta.selectionEnd;
+    const val = form[field];
+    const inner = val.slice(start, end) || 'vetgedrukte tekst';
+    const newVal = val.slice(0, start) + `**${inner}**` + val.slice(end);
+    setForm(f => ({ ...f, [field]: newVal }));
+    requestAnimationFrame(() => {
+      ta.selectionStart = start + 2;
+      ta.selectionEnd = start + 2 + inner.length;
+      ta.focus();
+    });
+  };
+
   const insertBullet = (ref: React.RefObject<HTMLTextAreaElement>, field: 'description' | 'extended_description') => {
     const ta = ref.current;
     if (!ta) return;
@@ -290,6 +306,14 @@ export default function AdminVacatures() {
                     </svg>
                     Opsommingspunt
                   </button>
+                  <button
+                    type="button"
+                    onClick={() => insertBold(descRef, 'description')}
+                    className="flex items-center gap-1.5 px-2 py-1 text-xs rounded border"
+                    style={{ borderColor: '#bdeffc', color: '#3b696d', backgroundColor: '#f0fafe', fontFamily: "'Kodchasan', sans-serif", fontWeight: 700 }}
+                  >
+                    B
+                  </button>
                 </div>
                 <textarea
                   ref={descRef}
@@ -320,6 +344,14 @@ export default function AdminVacatures() {
                       <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
                     </svg>
                     Opsommingspunt
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => insertBold(extRef, 'extended_description')}
+                    className="flex items-center gap-1.5 px-2 py-1 text-xs rounded border"
+                    style={{ borderColor: '#bdeffc', color: '#3b696d', backgroundColor: '#f0fafe', fontFamily: "'Kodchasan', sans-serif", fontWeight: 700 }}
+                  >
+                    B
                   </button>
                 </div>
                 <textarea

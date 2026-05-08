@@ -1,8 +1,19 @@
+import React from 'react';
+
 interface RichTextProps {
   text: string;
   color?: string;
   fontSize?: string;
   lineHeight?: string | number;
+}
+
+function parseInline(text: string): React.ReactNode[] {
+  const parts = text.split(/(\*\*[^*]+\*\*)/);
+  return parts.map((part, i) =>
+    part.startsWith('**') && part.endsWith('**')
+      ? <strong key={i} style={{ fontWeight: 700 }}>{part.slice(2, -2)}</strong>
+      : part
+  );
 }
 
 export default function RichText({ text, color = '#d4ecec', fontSize = '14px', lineHeight = '1.75' }: RichTextProps) {
@@ -22,7 +33,7 @@ export default function RichText({ text, color = '#d4ecec', fontSize = '14px', l
                 <path d="m9 12 2 2 4-4"/>
               </svg>
             </span>
-            <span>{b}</span>
+            <span>{parseInline(b)}</span>
           </li>
         ))}
       </ul>
@@ -40,7 +51,7 @@ export default function RichText({ text, color = '#d4ecec', fontSize = '14px', l
       } else {
         elements.push(
           <p key={i} style={{ margin: '0 0 4px', fontFamily: "'Kodchasan', sans-serif", fontSize, lineHeight, color }}>
-            {line}
+            {parseInline(line)}
           </p>
         );
       }
