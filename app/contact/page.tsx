@@ -94,7 +94,7 @@ export default function Contact() {
 
             {/* WhatsApp */}
             <div className="rounded-xl p-5 text-center shadow-sm bg-white flex flex-col items-center">
-              <h2 className="text-xl font-bold mb-2" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>WhatsApp Marije</h2>
+              <h2 className="text-2xl uppercase mb-2" style={{ color: '#3b696d', fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em' }}>WhatsApp Marije</h2>
               <p className="mb-5 text-sm leading-relaxed" style={{ color: '#666' }}>
                 De snelste manier. Stuur een appje en we reageren zo snel mogelijk. Gewoon in je eigen woorden.
               </p>
@@ -113,7 +113,7 @@ export default function Contact() {
 
             {/* Bellen */}
             <div className="rounded-xl p-5 text-center shadow-sm bg-white flex flex-col items-center">
-              <h2 className="text-xl font-bold mb-2" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>Bel ons</h2>
+              <h2 className="text-2xl uppercase mb-2" style={{ color: '#3b696d', fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em' }}>Bel ons</h2>
               <p className="mb-5 text-sm leading-relaxed" style={{ color: '#666' }}>
                 Liever even bellen? Marije staat voor je klaar. Geef jezelf even voor en we plannen een gesprekje.
               </p>
@@ -132,8 +132,8 @@ export default function Contact() {
 
           {/* Form */}
           <div className="rounded-xl p-8 md:p-12 bg-white shadow-sm">
-            <h2 className="text-2xl font-bold mb-2" style={{ color: '#3b696d' }}>Stuur een berichtje</h2>
-            <p className="text-gray-500 text-sm mb-8">We reageren zo snel mogelijk en plannen daarna graag een persoonlijk gesprek.</p>
+            <h2 className="text-2xl uppercase mb-2" style={{ color: '#3b696d', fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em' }}>Stuur een berichtje</h2>
+            <p className="text-sm mb-8" style={{ color: '#666', fontFamily: "'Kodchasan', sans-serif", fontWeight: 400, lineHeight: '1.6' }}>We reageren zo snel mogelijk en plannen daarna graag een persoonlijk gesprek.</p>
 
             <form className="space-y-5" action="mailto:vacatures@strandpaviljoenkaapnoord.nl" method="get">
               <div className="grid md:grid-cols-2 gap-5">
