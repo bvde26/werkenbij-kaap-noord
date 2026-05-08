@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 
@@ -52,6 +52,26 @@ export default function AdminVacatures() {
   const [saving, setSaving] = useState(false);
   const [uploadStatus, setUploadStatus] = useState('');
   const [error, setError] = useState('');
+  const descRef = useRef<HTMLTextAreaElement>(null);
+  const extRef = useRef<HTMLTextAreaElement>(null);
+
+  const insertBullet = (ref: React.RefObject<HTMLTextAreaElement>, field: 'description' | 'extended_description') => {
+    const ta = ref.current;
+    if (!ta) return;
+    const start = ta.selectionStart;
+    const val = form[field];
+    const lineStart = val.lastIndexOf('\n', start - 1) + 1;
+    const atLineStart = val.slice(lineStart, start).trim() === '' && lineStart === start;
+    const newVal = atLineStart
+      ? val.slice(0, lineStart) + '- ' + val.slice(lineStart)
+      : val.slice(0, start) + '\n- ' + val.slice(start);
+    const newPos = atLineStart ? lineStart + 2 : start + 3;
+    setForm(f => ({ ...f, [field]: newVal }));
+    requestAnimationFrame(() => {
+      ta.selectionStart = ta.selectionEnd = newPos;
+      ta.focus();
+    });
+  };
 
   const load = async () => {
     setLoading(true);
@@ -258,7 +278,21 @@ export default function AdminVacatures() {
                 <p className="text-xs mb-1" style={{ color: '#9ca3af' }}>
                   Zichtbaar na de eerste klik. Houd dit kort en pakkend.
                 </p>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <button
+                    type="button"
+                    onClick={() => insertBullet(descRef, 'description')}
+                    className="flex items-center gap-1.5 px-2 py-1 text-xs rounded border"
+                    style={{ borderColor: '#bdeffc', color: '#3b696d', backgroundColor: '#f0fafe', fontFamily: "'Kodchasan', sans-serif" }}
+                  >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
+                    </svg>
+                    Opsommingspunt
+                  </button>
+                </div>
                 <textarea
+                  ref={descRef}
                   value={form.description}
                   onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                   className="w-full px-3 py-2 border rounded text-sm outline-none resize-none"
@@ -273,9 +307,23 @@ export default function AdminVacatures() {
                   Volledige vacaturetekst
                 </label>
                 <p className="text-xs mb-1" style={{ color: '#9ca3af' }}>
-                  Zichtbaar na "Volledige vacature". Begin een regel met <strong>- </strong> voor een opsommingspunt.
+                  Zichtbaar na "Lees de volledige vacaturetekst".
                 </p>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <button
+                    type="button"
+                    onClick={() => insertBullet(extRef, 'extended_description')}
+                    className="flex items-center gap-1.5 px-2 py-1 text-xs rounded border"
+                    style={{ borderColor: '#bdeffc', color: '#3b696d', backgroundColor: '#f0fafe', fontFamily: "'Kodchasan', sans-serif" }}
+                  >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
+                    </svg>
+                    Opsommingspunt
+                  </button>
+                </div>
                 <textarea
+                  ref={extRef}
                   value={form.extended_description}
                   onChange={e => setForm(f => ({ ...f, extended_description: e.target.value }))}
                   className="w-full px-3 py-2 border rounded text-sm outline-none resize-none"

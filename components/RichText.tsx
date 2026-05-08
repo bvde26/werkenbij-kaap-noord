@@ -16,10 +16,10 @@ export default function RichText({ text, color = '#d4ecec', fontSize = '14px', l
       <ul key={key} style={{ margin: '6px 0', padding: 0, listStyle: 'none' }}>
         {bulletBuffer.map((b, i) => (
           <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '4px', fontFamily: "'Kodchasan', sans-serif", fontSize, lineHeight, color }}>
-            <span style={{ flexShrink: 0, marginTop: '2px' }}>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <circle cx="8" cy="8" r="7.5" stroke="currentColor" strokeWidth="1" opacity="0.4" />
-                <path d="M5 8l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <span style={{ flexShrink: 0, marginTop: '3px' }}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="m9 12 2 2 4-4"/>
               </svg>
             </span>
             <span>{b}</span>
