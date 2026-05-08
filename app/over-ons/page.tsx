@@ -5,37 +5,28 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FloatingButtons from '@/components/FloatingButtons';
 import Link from 'next/link';
+import { getContentByPage, getMediaByPage } from '@/lib/supabase';
 
-const PHOTOS = [
+const FALLBACK_PHOTOS = [
   'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2026/02/IMG_5883-scaled.jpeg?w=800',
   'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/kaapnoord-drone-04.jpg?w=800',
   'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2026/02/IMG_5114-scaled.jpeg?w=800',
   'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/3bef2712-9f74-439b-9969-a525c1b0373a.jpg?w=800',
-  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2026/02/Afbeelding-van-WhatsApp-op-2025-10-03-om-10.52.45_0c9ef02f.jpg?w=800',
   'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/f46c845e-1d01-4c3d-9d8a-ac655179ef27.jpg?w=800',
   'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/kaapnoord-26.jpg?w=800',
-  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2026/02/Afbeelding-van-WhatsApp-op-2025-10-03-om-10.52.45_6b36c6cf.jpg?w=800',
-  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/4edb805c-ef26-43fd-bf41-9c2c7ec9cebc.jpg?w=800',
-  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2026/02/Afbeelding-van-WhatsApp-op-2025-10-03-om-10.52.44_4eedba56.jpg?w=800',
-  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/10/IMG_6521.jpg?w=800',
-  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/f264dea7-e5e4-478e-9ee9-f76665d810f8.jpg?w=800',
   'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/kaapnoord-drone-01.jpg?w=800',
   'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/Bediening-1.jpg?w=800',
-  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/kaapnoord-31.jpg?w=800',
-  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/Bediening-7.jpg?w=800',
-  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/Zelfstandig-medewerker-bediening-2.jpg?w=800',
   'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/kaapnoord-02.jpg?w=800',
-  'https://i0.wp.com/werkenbijkaapnoord.nl/wp-content/uploads/2024/02/Bediening-10.jpg?w=800',
 ];
 
-function PhotoSlider() {
+function PhotoSlider({ photos }: { photos: string[] }) {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const next = useCallback(() => setCurrent(i => (i + 1) % PHOTOS.length), []);
-  const prev = useCallback(() => setCurrent(i => (i - 1 + PHOTOS.length) % PHOTOS.length), []);
+  const next = useCallback(() => setCurrent(i => (i + 1) % photos.length), [photos.length]);
+  const prev = useCallback(() => setCurrent(i => (i - 1 + photos.length) % photos.length), [photos.length]);
 
   useEffect(() => {
     if (paused) return;
@@ -101,14 +92,14 @@ function PhotoSlider() {
         <div
           style={{
             display: 'flex',
-            width: `${PHOTOS.length * 100}%`,
+            width: `${photos.length * 100}%`,
             height: '100%',
-            transform: `translateX(-${(current / PHOTOS.length) * 100}%)`,
+            transform: `translateX(-${(current / photos.length) * 100}%)`,
             transition: 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
           }}
         >
-          {PHOTOS.map((src, i) => (
-            <div key={i} style={{ width: `${100 / PHOTOS.length}%`, flexShrink: 0, height: '100%' }}>
+          {photos.map((src, i) => (
+            <div key={i} style={{ width: `${100 / photos.length}%`, flexShrink: 0, height: '100%' }}>
               <img
                 src={src}
                 alt={`Kaap Noord foto ${i + 1}`}
@@ -147,13 +138,13 @@ function PhotoSlider() {
           backdropFilter: 'blur(4px)',
           letterSpacing: '0.05em',
         }}>
-          {current + 1} / {PHOTOS.length}
+          {current + 1} / {photos.length}
         </div>
       </div>
 
       {/* Dots */}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', padding: '14px 0 6px' }}>
-        {PHOTOS.map((_, i) => (
+        {photos.map((_, i) => (
           <button
             key={i}
             className="slider-dot"
@@ -171,35 +162,45 @@ function PhotoSlider() {
 }
 
 export default function OverOns() {
+  const [content, setContent] = useState<Record<string, string>>({});
+  const [photos, setPhotos] = useState<string[]>(FALLBACK_PHOTOS);
+
+  useEffect(() => {
+    getContentByPage('over-ons').then(c => { if (Object.keys(c).length > 0) setContent(c); });
+    getMediaByPage('over-ons').then(items => { if (items.length > 0) setPhotos(items.map(m => m.url)); });
+  }, []);
+
+  const c = (key: string, fallback: string) => content[key] || fallback;
+
   return (
     <div className="min-h-screen bg-white">
       <Header active="/over-ons" />
       <FloatingButtons />
 
       {/* Hero */}
-      <section className="py-20 text-center" style={{ backgroundColor: '#bdeffc' }}>
-        <div className="max-w-4xl mx-auto px-4">
+      <section className="py-20" style={{ backgroundColor: '#bdeffc' }}>
+        <div className="max-w-4xl mx-auto px-6 sm:px-10 md:px-16">
           <h1
             className="text-5xl md:text-6xl uppercase mb-6"
             style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, color: '#3b696d', letterSpacing: '0.03em' }}
           >
-            Over ons
+            {c('over_ons_h1', 'Over ons')}
           </h1>
-          <p className="text-xl md:text-2xl" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif", fontWeight: 300 }}>
+          <p className="text-xl md:text-2xl" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, maxWidth: '42ch' }}>
             Dit is Kaap Noord. Dit zijn wij. Dit zoeken we.
           </p>
         </div>
       </section>
 
       {/* Photo slider */}
-      <PhotoSlider />
+      <PhotoSlider photos={photos} />
 
       {/* Verhaal */}
       <section className="py-16 px-4">
         <div className="max-w-4xl mx-auto">
           <h2
-            className="text-3xl md:text-4xl uppercase mb-4"
-            style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', letterSpacing: '0.05em' }}
+            className="text-2xl md:text-3xl lg:text-4xl uppercase mb-4"
+            style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, color: '#3b696d', letterSpacing: '0.03em' }}
           >
             Over Strandpaviljoen Kaap Noord
           </h2>
@@ -207,13 +208,13 @@ export default function OverOns() {
             <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1.5" />
           </svg>
           <p className="text-lg leading-relaxed mb-6" style={{ color: '#444' }}>
-            Bij ons staat "je thuis voelen" voor zowel gasten als voor jou, hoog op ons lijstje. Snelle ongedwongen service met een glimlach is waar wij voor staan. Bij ons geen formele setting maar juist het huiskamer gevoel waarin ook jij je prettig voelt.
+            {c('over_ons_tekst_1', 'Bij ons staat "je thuis voelen" voor zowel gasten als voor jou, hoog op ons lijstje. Snelle ongedwongen service met een glimlach is waar wij voor staan. Bij ons geen formele setting maar juist het huiskamer gevoel waarin ook jij je prettig voelt.')}
           </p>
           <p className="text-lg leading-relaxed mb-6" style={{ color: '#444' }}>
-            Een gezellig, gemotiveerd team met de nodige humor om er zo iedere dag weer een feestje van te maken. Soms is het flink aanpakken, maar altijd met een lach en altijd samen.
+            {c('over_ons_tekst_2', 'Een gezellig, gemotiveerd team met de nodige humor om er zo iedere dag weer een feestje van te maken. Soms is het flink aanpakken, maar altijd met een lach en altijd samen.')}
           </p>
           <p className="text-lg leading-relaxed" style={{ color: '#444' }}>
-            Kaap Noord is een familie, waarbij de ervaring die de medewerkers hebben minstens net zo belangrijk is als die van de gasten. Désirée en Mike vinden het belangrijk dat jij elke ochtend wakker wordt en zin hebt om aan de slag te gaan.
+            {c('over_ons_tekst_3', 'Kaap Noord is een familie, waarbij de ervaring die de medewerkers hebben minstens net zo belangrijk is als die van de gasten. Désirée en Mike vinden het belangrijk dat jij elke ochtend wakker wordt en zin hebt om aan de slag te gaan.')}
           </p>
         </div>
       </section>
@@ -224,9 +225,9 @@ export default function OverOns() {
           <div className="flex flex-col md:flex-row overflow-hidden rounded-xl shadow-md" style={{ backgroundColor: '#bdeffc' }}>
             <div className="flex-1 p-8 md:p-10 flex items-center">
               <div>
-                <span className="text-5xl font-bold mb-2 block" style={{ color: '#3b696d', fontFamily: 'Georgia, serif' }}>"</span>
+                <span className="text-5xl font-bold mb-2 block" style={{ color: '#3b696d', fontFamily: "'Pana Summer', serif" }}>"</span>
                 <p className="text-lg md:text-xl font-semibold uppercase" style={{ color: '#3b696d', fontFamily: "'Pana Summer', serif", letterSpacing: '0.02em' }}>
-                  Van Bonaire naar Texel. Wie had dat gedacht! Een wereld van verschil, maar ik werk al een jaar met veel plezier bij Kaap Noord!
+                  {c('over_ons_testimonial', 'Van Bonaire naar Texel. Wie had dat gedacht! Een wereld van verschil, maar ik werk al een jaar met veel plezier bij Kaap Noord!')}
                 </p>
               </div>
             </div>
@@ -242,29 +243,41 @@ export default function OverOns() {
         <div className="max-w-4xl mx-auto">
           <h2
             className="text-3xl md:text-4xl uppercase mb-4"
-            style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', letterSpacing: '0.05em' }}
+            style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, color: '#3b696d', letterSpacing: '0.03em' }}
           >
             Werken bij ons
           </h2>
           <svg className="w-32 h-2 mb-8" viewBox="0 0 100 10" style={{ color: '#bdeffc' }}>
             <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1.5" />
           </svg>
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            <div className="p-6 rounded-lg" style={{ backgroundColor: '#f0fafe' }}>
-              <div className="text-3xl mb-3">🏝️</div>
-              <h3 className="font-bold text-lg mb-2" style={{ color: '#3b696d' }}>Werken op een eiland</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">Werk op een van de mooiste plekken van Nederland. Texel is niet zomaar een locatie — het is een leefstijl.</p>
-            </div>
-            <div className="p-6 rounded-lg" style={{ backgroundColor: '#f0fafe' }}>
-              <div className="text-3xl mb-3">👥</div>
-              <h3 className="font-bold text-lg mb-2" style={{ color: '#3b696d' }}>Collega's</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">Fijne werksfeer in een hecht team. De sfeer tussen de collega's maakt van een heerlijk drukke dag ook voor jou een feestje.</p>
-            </div>
-            <div className="p-6 rounded-lg" style={{ backgroundColor: '#f0fafe' }}>
-              <div className="text-3xl mb-3">⭐</div>
-              <h3 className="font-bold text-lg mb-2" style={{ color: '#3b696d' }}>Ontwikkeling</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">Er is altijd ruimte voor persoonlijke ontwikkeling binnen het vak. Ervaring is niet nodig — wij leren je alles.</p>
-            </div>
+          <div className="flex flex-col gap-10 mb-12">
+            {[
+              {
+                icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3c0 4-3 6-6 7h12c-3-1-6-3-6-7z"/><path d="M2 20h20"/><path d="M7 20c1-3 3-4 5-4s4 1 5 4"/></svg>,
+                title: 'Werken op een eiland',
+                text: 'Werk op een van de mooiste plekken van Nederland. Texel is niet zomaar een locatie — het is een leefstijl.',
+              },
+              {
+                icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="15" cy="7" r="3"/><path d="M3 20c0-4 2.7-6 6-6M21 20c0-4-2.7-6-6-6M9 14c1 0 2 .3 3 1 1-.7 2-1 3-1"/></svg>,
+                title: "Collega's",
+                text: "Fijne werksfeer in een hecht team. De sfeer tussen de collega's maakt van een heerlijk drukke dag ook voor jou een feestje.",
+              },
+              {
+                icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+                title: 'Ontwikkeling',
+                text: 'Er is altijd ruimte voor persoonlijke ontwikkeling binnen het vak. Ervaring is niet nodig — wij leren je alles.',
+              },
+            ].map((usp, i) => (
+              <div key={i} className={`flex items-start gap-6 ${i % 2 === 1 ? 'md:flex-row-reverse' : ''}`}>
+                <div className="flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center" style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}>
+                  {usp.icon}
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-lg mb-2" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>{usp.title}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: '#4b7c80' }}>{usp.text}</p>
+                </div>
+              </div>
+            ))}
           </div>
           <div className="rounded-xl p-8 md:p-12 text-center" style={{ backgroundColor: '#3b696d' }}>
             <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">Past dit bij jou?</h3>
