@@ -171,10 +171,10 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row items-start gap-4 md:gap-6" style={{ marginTop: '8px' }}>
             <div className="cta-bubble-wrap">
-              <Link href="/contact" style={{ position: 'relative', display: 'inline-block', width: '230px', height: '110px', textDecoration: 'none' }}>
+              <Link href="/contact" style={{ position: 'relative', display: 'inline-block', width: '270px', height: '110px', textDecoration: 'none' }}>
                 <svg
                   aria-hidden="true"
-                  width="230" height="110"
+                  width="270" height="110"
                   viewBox="0 0 260 200"
                   preserveAspectRatio="none"
                   style={{ display: 'block', filter: 'drop-shadow(0 8px 24px rgba(59,105,109,0.45))' }}>
