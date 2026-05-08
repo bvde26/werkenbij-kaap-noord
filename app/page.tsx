@@ -397,14 +397,17 @@ export default function Home() {
                           transition: 'background-color 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
                         }}>
                           <div className="px-5 pt-4 pb-2">
-                            {/* Korte omschrijving — altijd zichtbaar wanneer expanded */}
-                            <RichText text={r.description || ''} color={isOpen ? '#3b696d' : '#d4ecec'} fontSize="14px" lineHeight="1.75" />
+                            {/* Korte omschrijving — alleen zichtbaar in preview staat */}
+                            <div style={{ display: 'grid', gridTemplateRows: isPreview ? '1fr' : '0fr', transition: 'grid-template-rows 0.35s cubic-bezier(0.23, 1, 0.32, 1)' }}>
+                              <div style={{ overflow: 'hidden' }}>
+                                <RichText text={r.description || ''} color='#d4ecec' fontSize="14px" lineHeight="1.75" />
+                              </div>
+                            </div>
 
-                            {/* Uitgebreide omschrijving — alleen in open staat */}
+                            {/* Uitgebreide omschrijving — alleen zichtbaar in open staat */}
                             {hasExtended && (
                               <div style={{ display: 'grid', gridTemplateRows: isOpen ? '1fr' : '0fr', transition: 'grid-template-rows 0.35s cubic-bezier(0.23, 1, 0.32, 1)' }}>
                                 <div style={{ overflow: 'hidden' }}>
-                                  <div style={{ borderTop: '1px solid rgba(59,105,109,0.2)', margin: '16px 0 14px' }} />
                                   <RichText text={r.extended_description!} color="#3b696d" fontSize="14px" lineHeight="1.75" />
                                 </div>
                               </div>
