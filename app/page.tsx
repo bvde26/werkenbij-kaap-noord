@@ -115,7 +115,7 @@ export default function Home() {
     setCard(i, 'closed');
     const el = cardRefs.current[i];
     if (!el) return;
-    const headerHeight = window.innerWidth >= 768 ? 80 : 60;
+    const headerHeight = window.innerWidth >= 768 ? 64 : 48;
     const top = el.getBoundingClientRect().top + window.scrollY - headerHeight - 12;
     window.scrollTo({ top, behavior: 'smooth' });
   };
@@ -188,10 +188,10 @@ export default function Home() {
           .cta-glow { animation: none; filter: drop-shadow(0 8px 20px rgba(15,167,210,0.6)); }
         }
         #vacatures {
-          scroll-margin-top: 60px;
+          scroll-margin-top: 48px;
         }
         @media (min-width: 768px) {
-          #vacatures { scroll-margin-top: 80px; }
+          #vacatures { scroll-margin-top: 64px; }
         }
         @media (prefers-reduced-motion: reduce) {
           .float-btn, .cta-bubble-wrap { animation: none; }

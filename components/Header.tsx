@@ -117,9 +117,9 @@ export default function Header({ active = '' }: { active?: string }) {
 
       {/* Header bar */}
       <header className="sticky top-0 z-[200]" style={{ backgroundColor: '#bdeffc' }}>
-        <div className="px-5 h-[60px] md:h-[80px] flex items-center">
+        <div className="px-5 h-[48px] md:h-[64px] flex items-center">
           <Link href="/" className="mr-auto hover:opacity-80 transition-opacity">
-            <img src="/logo.svg" alt="Kaap Noord" className="h-[40px] md:h-[50px] w-auto" />
+            <img src="/logo.svg" alt="Kaap Noord" className="h-[30px] md:h-[40px] w-auto" />
           </Link>
           <button
             className="hamburger-btn"
