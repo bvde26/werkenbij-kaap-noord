@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 const MENU_LINKS = [
-  { href: '/', label: 'Alle vacatures' },
+  { href: '/#vacatures', label: 'Alle vacatures' },
   { href: '/over-ons', label: 'Over ons' },
   { href: '/faq', label: 'FAQ' },
   { href: '/contact', label: 'Contact' },

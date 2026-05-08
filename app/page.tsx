@@ -193,7 +193,7 @@ export default function Home() {
       </section>
 
       {/* Functies — dynamisch uit Supabase */}
-      <section className="py-16 px-4">
+      <section id="vacatures" className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl text-center mb-2 uppercase"
             style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', letterSpacing: '0.05em' }}>
