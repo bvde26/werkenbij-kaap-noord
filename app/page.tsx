@@ -165,8 +165,8 @@ export default function Home() {
             style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em', color: '#3b696d', lineHeight: 1.05 }}>
             Werken bij<br />Kaap Noord
           </h1>
-          <p className="text-base md:text-xl mb-6 md:mb-8"
-            style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, color: '#3b696d', maxWidth: '38ch' }}>
+          <p className="mb-6 md:mb-8"
+            style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 400, fontSize: '16px', color: '#3b696d', lineHeight: '1.6', maxWidth: '38ch' }}>
             Kom je een dagje meelopen in ons team op het mooiste eiland?
           </p>
           <div className="flex flex-col sm:flex-row items-start gap-4 md:gap-6" style={{ marginTop: '8px' }}>
@@ -403,7 +403,7 @@ export default function Home() {
                   <h3 className="font-bold text-lg mb-2" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>
                     {usp.title}
                   </h3>
-                  <p className="text-sm leading-relaxed" style={{ color: '#4b7c80' }}>
+                  <p style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 400, fontSize: '16px', color: '#3b696d', lineHeight: '1.6' }}>
                     {usp.text}
                   </p>
                 </div>
