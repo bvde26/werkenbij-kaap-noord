@@ -116,6 +116,32 @@ export default function Home() {
     window.scrollTo({ top, behavior: 'smooth' });
   };
 
+  const handleCardClick = (i: number) => {
+    const wasClosed = cardStates[i] === 'closed';
+    const currentOpenIdx = cardStates.findIndex(s => s !== 'closed');
+
+    if (!wasClosed) {
+      setCard(i, 'closed');
+      return;
+    }
+
+    // Compensate for layout shift when another card collapses above/alongside
+    if (currentOpenIdx !== -1 && currentOpenIdx !== i) {
+      const el = cardRefs.current[i];
+      const prevTop = el?.getBoundingClientRect().top ?? 0;
+      setCard(i, 'preview');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (!el) return;
+          const shift = el.getBoundingClientRect().top - prevTop;
+          if (Math.abs(shift) > 1) window.scrollBy({ top: shift, behavior: 'instant' });
+        });
+      });
+    } else {
+      setCard(i, 'preview');
+    }
+  };
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#fefdf5' }}>
       <style>{`
@@ -340,7 +366,7 @@ export default function Home() {
                     <button
                       className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
                       style={{ background: 'none', border: 'none', outline: 'none', cursor: 'pointer' }}
-                      onClick={() => setCard(i, isClosed ? 'preview' : 'closed')}
+                      onClick={() => handleCardClick(i)}
                       aria-expanded={isExpanded}
                       aria-controls={`vacature-content-${r.id}`}
                     >
