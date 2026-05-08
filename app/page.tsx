@@ -367,36 +367,6 @@ export default function Home() {
             </div>
           )}
 
-          <div className="text-center mt-12">
-            <Link href="/rollen"
-              className="inline-block px-8 py-3 font-semibold border-2 text-sm uppercase tracking-wider transition-colors hover:text-white hover:bg-[#3b696d]"
-              style={{ borderColor: '#3b696d', color: '#3b696d' }}>
-              Alle functies bekijken →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonial */}
-      <section className="py-12 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex flex-col md:flex-row overflow-hidden rounded-xl shadow-md"
-            style={{ backgroundColor: '#bdeffc' }}>
-            <div className="flex-1 p-8 md:p-10 flex items-center">
-              <div>
-                <span className="text-5xl font-bold mb-4 block"
-                  style={{ color: '#3b696d', fontFamily: "'Pana Summer', serif" }}>"</span>
-                <p className="text-lg md:text-xl font-semibold uppercase"
-                  style={{ color: '#3b696d', fontFamily: "'Pana Summer', serif", letterSpacing: '0.02em' }}>
-                  Van Bonaire naar Texel. Wie had dat gedacht! Een wereld van verschil, maar ik werk al een jaar met veel plezier bij Kaap Noord!
-                </p>
-              </div>
-            </div>
-            <div className="w-full md:w-64 flex-shrink-0 h-56 md:h-auto overflow-hidden">
-              <img src="/assets/IMG_7115.jpg" alt="Medewerker Kaap Noord"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-            </div>
-          </div>
         </div>
       </section>
 
