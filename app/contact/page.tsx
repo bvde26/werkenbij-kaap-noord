@@ -183,7 +183,7 @@ export default function Contact() {
               <button
                 type="submit"
                 className="w-full py-4 font-bold text-white text-sm uppercase tracking-wider transition-opacity hover:opacity-85"
-                style={{ backgroundColor: '#3b696d' }}
+                style={{ backgroundColor: '#3b696d', color: '#ffffff' }}
               >
                 Verstuur bericht
               </button>
