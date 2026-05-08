@@ -32,11 +32,6 @@ export default function Header({ active = '' }: { active?: string }) {
           margin-right: 12px;
         }
         .hamburger-btn {
-          position: fixed;
-          right: 20px;
-          top: 30px;
-          transform: translateY(-50%);
-          z-index: 250;
           background: none;
           border: none;
           cursor: pointer;
@@ -46,9 +41,9 @@ export default function Header({ active = '' }: { active?: string }) {
           align-items: center;
           justify-content: center;
           padding: 0;
-        }
-        @media (min-width: 768px) {
-          .hamburger-btn { top: 40px; }
+          flex-shrink: 0;
+          z-index: 250;
+          position: relative;
         }
         .nav-overlay {
           position: fixed;
@@ -106,31 +101,26 @@ export default function Header({ active = '' }: { active?: string }) {
           <Link href="/" className="mr-auto hover:opacity-80 transition-opacity">
             <img src="/logo.svg" alt="Kaap Noord" className="h-[40px] md:h-[50px] w-auto" />
           </Link>
-          <Link href="/contact" className="header-cta">
-            Ik wil solliciteren
-          </Link>
+          <button
+            className="hamburger-btn"
+            onClick={() => setOpen(!open)}
+            aria-label={open ? 'Menu sluiten' : 'Menu openen'}
+            aria-expanded={open}
+          >
+            {open ? (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2.5" strokeLinecap="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="#3b696d" strokeWidth="2.5" strokeLinecap="round">
+                <line x1="0" y1="2" x2="28" y2="2" />
+                <line x1="0" y1="11" x2="28" y2="11" />
+                <line x1="0" y1="20" x2="28" y2="20" />
+              </svg>
+            )}
+          </button>
         </div>
       </header>
-
-      {/* Hamburger — fixed boven alles */}
-      <button
-        className="hamburger-btn"
-        onClick={() => setOpen(!open)}
-        aria-label={open ? 'Menu sluiten' : 'Menu openen'}
-        aria-expanded={open}
-      >
-        {open ? (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2.5" strokeLinecap="round">
-            <path d="M18 6L6 18M6 6l12 12" />
-          </svg>
-        ) : (
-          <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="#3b696d" strokeWidth="2.5" strokeLinecap="round">
-            <line x1="0" y1="2" x2="28" y2="2" />
-            <line x1="0" y1="11" x2="28" y2="11" />
-            <line x1="0" y1="20" x2="28" y2="20" />
-          </svg>
-        )}
-      </button>
 
       {/* Volledig scherm overlay nav */}
       <nav className={`nav-overlay${open ? ' open' : ''}`} aria-hidden={!open}>
