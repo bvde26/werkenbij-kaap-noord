@@ -59,6 +59,7 @@ export default function Home() {
   const [vacaturesLoading, setVacaturesLoading] = useState(true);
   const [cardStates, setCardStates] = useState<CardState[]>([]);
   const [isDocked, setIsDocked] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const dockedSet = useRef(new Set<number>());
   const contactBarRefs = useRef<(HTMLDivElement | null)[]>([]);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -192,8 +193,32 @@ export default function Home() {
         @media (min-width: 768px) {
           #vacatures { scroll-margin-top: 64px; }
         }
+        @keyframes videoShimmer {
+          0%   { transform: translateX(-150%) skewX(-15deg); }
+          100% { transform: translateX(150%) skewX(-15deg); }
+        }
+        .video-placeholder {
+          position: absolute;
+          inset: 0;
+          background: #1e3c3f;
+          z-index: 2;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          transition: opacity 0.9s ease;
+        }
+        .video-placeholder.loaded { opacity: 0; pointer-events: none; }
+        .video-placeholder-shimmer {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.055) 50%, transparent 100%);
+          animation: videoShimmer 2.2s ease-in-out infinite;
+        }
         @media (prefers-reduced-motion: reduce) {
           .float-btn, .cta-bubble-wrap { animation: none; }
+          .video-placeholder-shimmer { animation: none; }
         }
       `}</style>
       <Header active="/" />
@@ -265,7 +290,37 @@ export default function Home() {
           src="https://player.vimeo.com/video/711355612?background=1&muted=1&autoplay=1&loop=1&dnt=1"
           allow="autoplay; fullscreen"
           allowFullScreen
+          onLoad={() => setVideoLoaded(true)}
         />
+        {/* Placeholder — zichtbaar tot iframe geladen is */}
+        <div className={`video-placeholder${videoLoaded ? ' loaded' : ''}`} aria-hidden="true">
+          <div className="video-placeholder-shimmer" />
+          <svg width="48" height="12" viewBox="0 0 48 12" fill="none" style={{ marginBottom: '18px', opacity: 0.4 }}>
+            <path d="M0,6 C6,1 12,11 18,6 C24,1 30,11 36,6 C42,1 48,6 48,6"
+              stroke="#bdeffc" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+          </svg>
+          <span style={{
+            fontFamily: "'Pana Summer', serif",
+            fontSize: 'clamp(28px, 6vw, 52px)',
+            color: '#fefdf5',
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+            lineHeight: 1,
+          }}>
+            Kaap Noord
+          </span>
+          <span style={{
+            fontFamily: "'Kodchasan', sans-serif",
+            fontSize: '13px',
+            color: '#bdeffc',
+            letterSpacing: '0.25em',
+            textTransform: 'uppercase',
+            marginTop: '10px',
+            opacity: 0.7,
+          }}>
+            Texel
+          </span>
+        </div>
       </div>
       {/* Intro quote */}
       <section className="py-16" style={{ backgroundColor: '#bdeffc', position: 'relative' }}>
