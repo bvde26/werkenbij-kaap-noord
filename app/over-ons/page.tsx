@@ -46,11 +46,11 @@ function PhotoSlider({ photos }: { photos: string[] }) {
   };
 
   return (
-    <section style={{ backgroundColor: '#fefdf5', padding: '40px 0 40px' }}>
+    <section style={{ backgroundColor: '#fefdf5', padding: '0' }}>
       {/* padding op het overflow-element geeft schaduwruimte boven/onder */}
       <div
         className="relative overflow-hidden"
-        style={{ height: 'clamp(400px, 80vw, 580px)', padding: '36px 0' }}
+        style={{ height: 'clamp(340px, 72vw, 500px)', padding: '20px 0' }}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         onTouchStart={handleTouchStart}
@@ -119,7 +119,7 @@ export default function OverOns() {
       <FloatingButtons />
 
       {/* Hero */}
-      <section className="py-20" style={{ backgroundColor: '#bdeffc' }}>
+      <section className="pt-8 pb-6" style={{ backgroundColor: '#bdeffc' }}>
         <div className="max-w-4xl mx-auto px-6 sm:px-10 md:px-16">
           <h1
             className="text-5xl md:text-6xl uppercase mb-6"
@@ -137,7 +137,7 @@ export default function OverOns() {
       <PhotoSlider photos={photos} />
 
       {/* Verhaal */}
-      <section className="py-16 px-4">
+      <section className="py-8 px-4">
         <div className="max-w-4xl mx-auto">
           <h2
             className="text-2xl md:text-3xl lg:text-4xl uppercase mb-4"
@@ -162,7 +162,7 @@ export default function OverOns() {
 
 
       {/* Werken bij ons */}
-      <section className="py-16 px-4">
+      <section className="py-8 px-4">
         <div className="max-w-4xl mx-auto">
           <h2
             className="text-3xl md:text-4xl uppercase mb-4"
