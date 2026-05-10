@@ -281,42 +281,24 @@ export default function Home() {
           background: #1e3c3f;
           z-index: 2;
           display: flex;
-          flex-direction: column;
           align-items: center;
           justify-content: center;
-          overflow: hidden;
           transition: opacity 0.9s ease;
         }
         .video-placeholder.loaded { opacity: 0; pointer-events: none; }
-        @keyframes waveSlide1 { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        @keyframes waveSlide2 { 0% { transform: translateX(-50%); } 100% { transform: translateX(0%); } }
-        @keyframes waveSlide3 { 0% { transform: translateX(-25%); } 100% { transform: translateX(-75%); } }
-        @keyframes sunSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes letterBob {
-          0%, 100% { transform: translateY(0px); }
-          50%       { transform: translateY(-10px); }
+        @keyframes vpSpin {
+          0%   { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
-        @keyframes birdFly1 {
-          0%   { transform: translateX(-60vw); }
-          100% { transform: translateX(110vw); }
-        }
-        @keyframes birdFly2 {
-          0%   { transform: translateX(110vw); }
-          100% { transform: translateX(-60vw); }
-        }
-        .vp-char {
-          display: inline-block;
-          font-family: 'Pana Summer', serif;
-          font-size: clamp(30px, 6.5vw, 58px);
-          color: #fefdf5;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-          line-height: 1;
-          animation: letterBob 2s ease-in-out infinite;
+        .vp-spinner {
+          width: 44px;
+          height: 44px;
+          animation: vpSpin 1.6s linear infinite;
+          opacity: 0.55;
         }
         @media (prefers-reduced-motion: reduce) {
           .float-btn, .cta-bubble-wrap { animation: none; }
-          .vp-char { animation: none; }
+          .vp-spinner { animation: none; }
         }
       `}</style>
       <Header active="/" />
@@ -411,79 +393,9 @@ export default function Home() {
         />
         {/* Placeholder — zichtbaar tot iframe geladen is */}
         <div className={`video-placeholder${videoLoaded ? ' loaded' : ''}`} aria-hidden="true">
-
-          {/* Zon rechtsboven */}
-          <div style={{ position: 'absolute', top: '14px', right: '28px' }}>
-            <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
-              <circle cx="27" cy="27" r="10" fill="#fcf8bd" opacity="0.88" />
-              <g style={{ transformOrigin: '27px 27px', animation: 'sunSpin 14s linear infinite' }}>
-                {[0,45,90,135,180,225,270,315].map(deg => {
-                  const r = Math.PI / 180 * deg;
-                  return <line key={deg}
-                    x1={27 + 14 * Math.cos(r)} y1={27 + 14 * Math.sin(r)}
-                    x2={27 + 24 * Math.cos(r)} y2={27 + 24 * Math.sin(r)}
-                    stroke="#fcf8bd" strokeWidth="2" strokeLinecap="round" opacity="0.6" />;
-                })}
-              </g>
-            </svg>
-          </div>
-
-          {/* Meeuw 1 — vliegt links→rechts */}
-          <div style={{ position: 'absolute', top: '20%', left: 0, animation: 'birdFly1 11s ease-in-out 0.5s infinite' }}>
-            <svg width="24" height="10" viewBox="0 0 24 10" fill="none">
-              <path d="M0,6 Q6,0 12,6 Q18,0 24,6" stroke="#bdeffc" strokeWidth="1.6" strokeLinecap="round" opacity="0.75" />
-            </svg>
-          </div>
-          {/* Meeuw 2 — vliegt rechts→links, kleiner */}
-          <div style={{ position: 'absolute', top: '14%', left: 0, animation: 'birdFly2 15s ease-in-out 3s infinite' }}>
-            <svg width="17" height="7" viewBox="0 0 17 7" fill="none">
-              <path d="M0,4 Q4.25,0 8.5,4 Q12.75,0 17,4" stroke="#bdeffc" strokeWidth="1.2" strokeLinecap="round" opacity="0.5" />
-            </svg>
-          </div>
-          {/* Meeuw 3 — groot, laag */}
-          <div style={{ position: 'absolute', top: '30%', left: 0, animation: 'birdFly1 19s ease-in-out 7s infinite' }}>
-            <svg width="20" height="9" viewBox="0 0 20 9" fill="none">
-              <path d="M0,5 Q5,0 10,5 Q15,0 20,5" stroke="#bdeffc" strokeWidth="1.4" strokeLinecap="round" opacity="0.4" />
-            </svg>
-          </div>
-
-          {/* Titel met golvende letters */}
-          <div style={{ position: 'relative', zIndex: 1, lineHeight: 1 }}>
-            {'KAAP NOORD'.split('').map((char, i) => (
-              <span key={i} className="vp-char" style={{ animationDelay: `${i * 0.11}s` }}>
-                {char}
-              </span>
-            ))}
-          </div>
-
-          {/* Subtitel */}
-          <div style={{
-            position: 'relative', zIndex: 1, marginTop: '12px',
-            fontFamily: "'Kodchasan', sans-serif", fontSize: '11px',
-            color: '#bdeffc', letterSpacing: '0.3em', textTransform: 'uppercase', opacity: 0.6,
-          }}>
-            Texel · laden...
-          </div>
-
-          {/* Golven onderaan — 3 lagen */}
-          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '44%', pointerEvents: 'none' }}>
-            <div style={{ position: 'absolute', bottom: 0, width: '200%', animation: 'waveSlide3 10s linear infinite' }}>
-              <svg viewBox="0 0 2880 80" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: '55px' }}>
-                <path d="M0,48 C240,18 480,78 720,48 C960,18 1200,78 1440,48 C1680,18 1920,78 2160,48 C2400,18 2640,78 2880,48 L2880,80 L0,80 Z" fill="#0d2e31" opacity="0.55" />
-              </svg>
-            </div>
-            <div style={{ position: 'absolute', bottom: 0, width: '200%', animation: 'waveSlide2 7s linear infinite' }}>
-              <svg viewBox="0 0 2880 80" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: '50px' }}>
-                <path d="M0,38 C180,8 360,68 540,38 C720,8 900,68 1080,38 C1260,8 1440,68 1620,38 C1800,8 1980,68 2160,38 C2340,8 2520,68 2700,38 C2880,8 2880,38 2880,38 L2880,80 L0,80 Z" fill="#163e42" opacity="0.7" />
-              </svg>
-            </div>
-            <div style={{ position: 'absolute', bottom: 0, width: '200%', animation: 'waveSlide1 4.5s linear infinite' }}>
-              <svg viewBox="0 0 2880 80" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: '44px' }}>
-                <path d="M0,32 C150,6 300,58 450,32 C600,6 750,58 900,32 C1050,6 1200,58 1350,32 C1500,6 1650,58 1800,32 C1950,6 2100,58 2250,32 C2400,6 2550,58 2700,32 C2850,6 2880,32 2880,32 L2880,80 L0,80 Z" fill="#1e3c3f" />
-              </svg>
-            </div>
-          </div>
-
+          <svg className="vp-spinner" viewBox="0 0 44 44" fill="none">
+            <circle cx="22" cy="22" r="18" stroke="#bdeffc" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="85 28" />
+          </svg>
         </div>
       </div>
       {/* Intro quote */}
