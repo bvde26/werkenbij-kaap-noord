@@ -71,7 +71,7 @@ export default function Home() {
       const { data } = await supabase
         .from('site_content')
         .select('key, value')
-        .eq('page', 'homepage');
+        .in('key', ['hero_title', 'hero_subtitle', 'urgency_text', 'hero_cta_balloon']);
       if (data) {
         const map: Record<string, string> = {};
         data.forEach(item => { map[item.key] = item.value; });
