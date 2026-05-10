@@ -70,7 +70,7 @@ export default function Home() {
       const { data } = await supabase
         .from('site_content')
         .select('key, value')
-        .in('key', ['hero_title', 'hero_subtitle', 'urgency_text', 'hero_cta_balloon']);
+        .in('key', ['hero_title', 'hero_subtitle', 'urgency_starburst', 'urgency_sticky', 'hero_cta_balloon']);
       if (data) {
         const map: Record<string, string> = {};
         data.forEach(item => { map[item.key] = item.value; });
@@ -202,36 +202,72 @@ export default function Home() {
         @media (prefers-reduced-motion: reduce) {
           .cta-glow { animation: none; filter: drop-shadow(0 8px 20px rgba(15,167,210,0.6)); }
         }
-        @keyframes chipPulse {
-          0%   { box-shadow: 0 0 0 0 rgba(251,146,60,0.55); }
-          70%  { box-shadow: 0 0 0 10px rgba(251,146,60,0); }
-          100% { box-shadow: 0 0 0 0 rgba(251,146,60,0); }
+        @keyframes starWobble {
+          0%, 100% { transform: rotate(-12deg) scale(1); }
+          40%       { transform: rotate(-9deg) scale(1.07); }
+          70%       { transform: rotate(-15deg) scale(0.97); }
         }
-        @keyframes dotBlink {
-          0%, 100% { transform: scale(1); opacity: 1; }
-          50%       { transform: scale(1.5); opacity: 0.6; }
-        }
-        .urgency-chip {
-          display: inline-flex;
+        .urgency-starburst-wrap {
+          position: absolute;
+          top: -26px;
+          right: -26px;
+          width: 84px;
+          height: 84px;
+          display: flex;
           align-items: center;
-          gap: 8px;
-          background: #fff7ed;
-          border: 1.5px solid #fb923c;
-          color: #9a3412;
-          font-family: 'Kodchasan', sans-serif;
-          font-size: 13px;
-          font-weight: 600;
-          padding: 7px 14px 7px 10px;
-          border-radius: 999px;
-          animation: chipPulse 0.9s ease-out 0.6s 1;
-          letter-spacing: 0.01em;
+          justify-content: center;
+          z-index: 10;
+          animation: starWobble 2.8s ease-in-out infinite;
+          transform: rotate(-12deg);
+          pointer-events: none;
         }
-        .urgency-dot {
-          width: 8px; height: 8px;
-          border-radius: 50%;
-          background: #fb923c;
-          flex-shrink: 0;
-          animation: dotBlink 0.7s ease-in-out 0.6s 3;
+        .urgency-starburst-svg {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          filter: drop-shadow(0 3px 8px rgba(251,100,20,0.4));
+        }
+        .urgency-starburst-text {
+          position: relative;
+          z-index: 1;
+          color: #fff;
+          font-size: 9.5px;
+          font-weight: 800;
+          text-align: center;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+          line-height: 1.25;
+          max-width: 50px;
+          font-family: 'Kodchasan', sans-serif;
+        }
+        @keyframes stickySwing {
+          0%, 100% { transform: rotate(7deg); }
+          50%       { transform: rotate(4deg); }
+        }
+        .urgency-sticky-wrap {
+          position: absolute;
+          bottom: -18px;
+          left: 10px;
+          z-index: 10;
+          pointer-events: none;
+          animation: stickySwing 3.5s ease-in-out infinite;
+          transform: rotate(7deg);
+          transform-origin: top right;
+        }
+        .urgency-sticky {
+          background: #fcf8bd;
+          border-top: 4px solid #fb923c;
+          border-radius: 2px;
+          padding: 6px 12px 7px 10px;
+          font-size: 12px;
+          font-weight: 700;
+          color: #3b696d;
+          font-family: 'Kodchasan', sans-serif;
+          box-shadow: 2px 4px 10px rgba(0,0,0,0.14), 0 1px 3px rgba(0,0,0,0.08);
+          white-space: nowrap;
+          line-height: 1.3;
+          letter-spacing: 0.01em;
         }
         #vacatures {
           scroll-margin-top: 48px;
@@ -285,13 +321,21 @@ export default function Home() {
             style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 400, fontSize: '16px', color: '#3b696d', lineHeight: '1.6', maxWidth: '38ch' }}>
             {siteContent['hero_subtitle'] || 'Kom je een dagje meelopen in ons team op het mooiste eiland?'}
           </p>
-          {siteContent['urgency_text'] && (
-            <div className="urgency-chip" style={{ marginBottom: '16px' }}>
-              <span className="urgency-dot" />
-              {siteContent['urgency_text']}
-            </div>
-          )}
           <div className="flex flex-col items-start gap-2" style={{ marginTop: '0' }}>
+            <div style={{ position: 'relative', display: 'inline-block' }}>
+              {siteContent['urgency_starburst'] && (
+                <div className="urgency-starburst-wrap" aria-hidden="true">
+                  <svg viewBox="0 0 100 100" className="urgency-starburst-svg">
+                    <polygon fill="#fb923c" points="50,0 59,16 75,7 75,25 93,25 84,41 100,50 84,59 93,75 75,75 75,93 59,84 50,100 41,84 25,93 25,75 7,75 16,59 0,50 16,41 7,25 25,25 25,7 41,16" />
+                  </svg>
+                  <span className="urgency-starburst-text">{siteContent['urgency_starburst']}</span>
+                </div>
+              )}
+              {siteContent['urgency_sticky'] && (
+                <div className="urgency-sticky-wrap" aria-hidden="true">
+                  <div className="urgency-sticky">{siteContent['urgency_sticky']}</div>
+                </div>
+              )}
             <div className="cta-bubble-wrap">
               <Link href="/contact" style={{ position: 'relative', display: 'inline-block', width: 'min(330px, 90vw)', height: '130px', textDecoration: 'none' }}>
                 <svg
@@ -323,6 +367,7 @@ export default function Home() {
                   {siteContent['hero_cta_balloon'] || 'Ik wil meelopen →'}
                 </span>
               </Link>
+            </div>
             </div>
             <Link href="/over-ons"
               className="font-bold text-sm uppercase tracking-widest border-2 transition-opacity hover:opacity-80"
