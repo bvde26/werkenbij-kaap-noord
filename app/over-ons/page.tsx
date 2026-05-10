@@ -180,9 +180,11 @@ export default function OverOns() {
               .sort((a, b) => a - b)
               .map(num => (
                 <div key={num} className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
+                  <div className="flex-shrink-0" style={{ width: '44px', height: '46px' }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="46" viewBox="0 0 55 57" fill="none">
+                      <path d="M25.5 56C39.308 56 50.5 44.8071 50.5 31C50.5 17.1929 39.308 6 25.5 6C11.693 6 0.5 17.1929 0.5 31C0.5 44.8071 11.693 56 25.5 56Z" fill="#FCF8BD" stroke="#3B696D" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M38.5 16V46H35.5V34H31V23.5C31 19.3579 34.358 16 38.5 16ZM20.5 33.85V46H17.5V33.85C14.077 33.1551 11.5 30.1285 11.5 26.5V17.5H14.5V28H17.5V17.5H20.5V28H23.5V17.5H26.5V26.5C26.5 30.1285 23.924 33.1551 20.5 33.85Z" fill="#3B696D"/>
+                      <path d="M54.2 1L48.9 16.9L33 22.2L38.3 6.3L54.2 1Z" fill="#FCF8BD" stroke="#3B696D" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
                   <div className="flex-1 pt-1">
