@@ -333,7 +333,7 @@ export default function Home() {
                   whiteSpace: 'nowrap',
                   pointerEvents: 'none',
                 }}>
-                  Ik wil meelopen →
+                  {siteContent['hero_cta_balloon'] || 'Ik wil meelopen →'}
                 </span>
               </Link>
             </div>
