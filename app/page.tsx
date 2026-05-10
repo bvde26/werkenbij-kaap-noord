@@ -61,7 +61,6 @@ export default function Home() {
   const [isDocked, setIsDocked] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [siteContent, setSiteContent] = useState<Record<string, string>>({});
-  const [bannerDismissed, setBannerDismissed] = useState(false);
   const dockedSet = useRef(new Set<number>());
   const contactBarRefs = useRef<(HTMLDivElement | null)[]>([]);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -76,10 +75,6 @@ export default function Home() {
         const map: Record<string, string> = {};
         data.forEach(item => { map[item.key] = item.value; });
         setSiteContent(map);
-        const urgency = map['urgency_text'] || '';
-        if (urgency && localStorage.getItem('urgency_dismissed') === urgency) {
-          setBannerDismissed(true);
-        }
       }
     })();
   }, []);
@@ -207,33 +202,37 @@ export default function Home() {
         @media (prefers-reduced-motion: reduce) {
           .cta-glow { animation: none; filter: drop-shadow(0 8px 20px rgba(15,167,210,0.6)); }
         }
-        .urgency-banner {
-          background: #3b696d;
-          color: #fefdf5;
-          font-size: 13px;
-          text-align: center;
-          padding: 9px 48px;
-          position: relative;
-          font-family: 'Kodchasan', sans-serif;
-          font-weight: 500;
-          letter-spacing: 0.03em;
-          line-height: 1.4;
+        @keyframes chipPulse {
+          0%   { box-shadow: 0 0 0 0 rgba(251,146,60,0.55); }
+          70%  { box-shadow: 0 0 0 10px rgba(251,146,60,0); }
+          100% { box-shadow: 0 0 0 0 rgba(251,146,60,0); }
         }
-        .urgency-banner-close {
-          position: absolute;
-          right: 12px;
-          top: 50%;
-          transform: translateY(-50%);
-          background: none;
-          border: none;
-          color: rgba(254,253,245,0.55);
-          cursor: pointer;
-          padding: 6px;
-          line-height: 1;
-          display: flex;
+        @keyframes dotBlink {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50%       { transform: scale(1.5); opacity: 0.6; }
+        }
+        .urgency-chip {
+          display: inline-flex;
           align-items: center;
+          gap: 8px;
+          background: #fff7ed;
+          border: 1.5px solid #fb923c;
+          color: #9a3412;
+          font-family: 'Kodchasan', sans-serif;
+          font-size: 13px;
+          font-weight: 600;
+          padding: 7px 14px 7px 10px;
+          border-radius: 999px;
+          animation: chipPulse 0.9s ease-out 0.6s 1;
+          letter-spacing: 0.01em;
         }
-        .urgency-banner-close:hover { color: #fefdf5; }
+        .urgency-dot {
+          width: 8px; height: 8px;
+          border-radius: 50%;
+          background: #fb923c;
+          flex-shrink: 0;
+          animation: dotBlink 0.7s ease-in-out 0.6s 3;
+        }
         #vacatures {
           scroll-margin-top: 48px;
         }
@@ -268,24 +267,6 @@ export default function Home() {
           .video-placeholder-shimmer { animation: none; }
         }
       `}</style>
-      {/* Urgentie-banner — alleen zichtbaar als tekst ingesteld is */}
-      {siteContent['urgency_text'] && !bannerDismissed && (
-        <div className="urgency-banner">
-          <span>✦ {siteContent['urgency_text']}</span>
-          <button
-            className="urgency-banner-close"
-            aria-label="Banner sluiten"
-            onClick={() => {
-              setBannerDismissed(true);
-              localStorage.setItem('urgency_dismissed', siteContent['urgency_text']);
-            }}
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-              <path d="M18 6L6 18M6 6l12 12"/>
-            </svg>
-          </button>
-        </div>
-      )}
       <Header active="/" />
       <FloatingButtons hidden={isDocked} />
 
@@ -304,7 +285,13 @@ export default function Home() {
             style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 400, fontSize: '16px', color: '#3b696d', lineHeight: '1.6', maxWidth: '38ch' }}>
             {siteContent['hero_subtitle'] || 'Kom je een dagje meelopen in ons team op het mooiste eiland?'}
           </p>
-          <div className="flex flex-col items-start gap-2" style={{ marginTop: '8px' }}>
+          {siteContent['urgency_text'] && (
+            <div className="urgency-chip" style={{ marginBottom: '16px' }}>
+              <span className="urgency-dot" />
+              {siteContent['urgency_text']}
+            </div>
+          )}
+          <div className="flex flex-col items-start gap-2" style={{ marginTop: '0' }}>
             <div className="cta-bubble-wrap">
               <Link href="/contact" style={{ position: 'relative', display: 'inline-block', width: 'min(330px, 90vw)', height: '130px', textDecoration: 'none' }}>
                 <svg
