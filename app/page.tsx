@@ -22,36 +22,10 @@ interface Vacature {
   image_url: string | null;
 }
 
-const usps = [
-  {
-    title: 'Werken op een eiland',
-    text: 'Werk op een van de mooiste plekken van Nederland. Zilt water, zonsondergangen en natuur om je heen.',
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22V12M12 12C12 7 7 4 2 6M12 12C12 7 17 4 22 6M2 20h20M6 20c1-2 3-3 4-4M18 20c-1-2-3-3-4-4" />
-      </svg>
-    ),
-  },
-  {
-    title: 'Echt team',
-    text: 'Fijne werksfeer in een hecht team. Bij ons geen formele setting maar het huiskamer gevoel.',
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="9" cy="7" r="3" />
-        <circle cx="15" cy="7" r="3" />
-        <path d="M3 20c0-4 2.7-6 6-6M21 20c0-4-2.7-6-6-6M9 14c1 0 2 .3 3 1 1-.7 2-1 3-1" />
-      </svg>
-    ),
-  },
-  {
-    title: 'Jij bepaalt mee',
-    text: 'Flexibele tijden in overleg. Vakantie ook in het hoogseizoen. Jij brengt het voorstel, wij regelen het.',
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="20 6 9 17 4 12" />
-      </svg>
-    ),
-  },
+const FALLBACK_USPS = [
+  { title: 'Werken op een eiland', text: 'Werk op een van de mooiste plekken van Nederland. Zilt water, zonsondergangen en natuur om je heen.' },
+  { title: 'Echt team', text: 'Fijne werksfeer in een hecht team. Bij ons geen formele setting maar het huiskamer gevoel.' },
+  { title: 'Jij bepaalt mee', text: 'Flexibele tijden in overleg. Vakantie ook in het hoogseizoen. Jij brengt het voorstel, wij regelen het.' },
 ];
 
 export default function Home() {
@@ -61,6 +35,7 @@ export default function Home() {
   const [isDocked, setIsDocked] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [siteContent, setSiteContent] = useState<Record<string, string>>({});
+  const [uspContent, setUspContent] = useState<Record<string, string>>({});
   const dockedSet = useRef(new Set<number>());
   const contactBarRefs = useRef<(HTMLDivElement | null)[]>([]);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -75,6 +50,21 @@ export default function Home() {
         const map: Record<string, string> = {};
         data.forEach(item => { map[item.key] = item.value; });
         setSiteContent(map);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    void (async () => {
+      const { data } = await supabase
+        .from('site_content')
+        .select('key, value')
+        .eq('page', 'home')
+        .like('key', 'home_usp_%');
+      if (data && data.length > 0) {
+        const map: Record<string, string> = {};
+        data.forEach(item => { map[item.key] = item.value; });
+        setUspContent(map);
       }
     })();
   }, []);
@@ -644,32 +634,51 @@ export default function Home() {
         </div>
       </section>
 
-      {/* USPs — zig-zag 2-kolom ipv 3-kolom grid */}
+      {/* Waarom Kaap Noord — dynamisch via CMS */}
       <section className="py-16 px-4" style={{ backgroundColor: '#f0fafe' }}>
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl text-center mb-12 uppercase"
+          <h2 className="text-3xl md:text-4xl text-center mb-2 uppercase"
             style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, color: '#3b696d', letterSpacing: '0.03em' }}>
             Waarom Kaap Noord?
           </h2>
-          <div className="flex flex-col gap-10">
-            {usps.map((usp, i) => (
-              <div key={i} className={`flex items-start gap-6 ${i % 2 === 1 ? 'md:flex-row-reverse' : ''}`}>
-                <div className="flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center"
-                  style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}>
-                  {usp.icon}
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-lg mb-2" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>
-                    {usp.title}
-                  </h3>
-                  <p style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 400, fontSize: '16px', color: '#3b696d', lineHeight: '1.6' }}>
-                    {usp.text}
-                  </p>
-                </div>
-              </div>
-            ))}
+          <div className="flex justify-center mb-10">
+            <svg className="w-32 h-2" viewBox="0 0 100 10" style={{ color: '#3b696d' }}>
+              <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10"
+                fill="none" stroke="currentColor" strokeWidth="1.5" />
+            </svg>
           </div>
-          <div className="text-center mt-12">
+          <div className="flex flex-col gap-6 mb-10">
+            {(() => {
+              const dynamic = Object.keys(uspContent)
+                .filter(k => /^home_usp_\d+_titel$/.test(k) && uspContent[k])
+                .map(k => parseInt(k.match(/(\d+)/)![1]))
+                .sort((a, b) => a - b)
+                .map(num => ({ title: uspContent[`home_usp_${num}_titel`], text: uspContent[`home_usp_${num}_tekst`] || '' }));
+              const items = dynamic.length > 0 ? dynamic : FALLBACK_USPS;
+              return items.map((usp, i) => (
+                <div key={i} className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10"/>
+                      <path d="m9 12 2 2 4-4"/>
+                    </svg>
+                  </div>
+                  <div className="flex-1 pt-1">
+                    <p className="font-bold text-base mb-1" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>
+                      {usp.title}
+                    </p>
+                    {usp.text && (
+                      <p className="text-sm leading-relaxed" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>
+                        {usp.text}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ));
+            })()}
+          </div>
+          <div className="text-center">
             <Link href="/voor-jou"
               className="inline-block px-8 py-3 font-semibold text-sm uppercase tracking-wider transition-opacity hover:opacity-85"
               style={{ backgroundColor: '#3b696d', color: '#ffffff' }}>

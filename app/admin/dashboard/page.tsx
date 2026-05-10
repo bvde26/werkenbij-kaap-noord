@@ -33,6 +33,12 @@ const tiles = [
     description: '"Werken bij ons" lijst beheren op de Over ons pagina',
     icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
   },
+  {
+    href: '/admin/usps',
+    label: 'Waarom Kaap Noord',
+    description: '"Waarom Kaap Noord?" lijst beheren op de homepage',
+    icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>,
+  },
 ];
 
 export default function AdminDashboard() {
