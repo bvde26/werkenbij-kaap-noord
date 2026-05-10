@@ -278,7 +278,7 @@ export default function Home() {
         .video-placeholder {
           position: absolute;
           inset: 0;
-          background: #1e3c3f;
+          background: #fefdf5;
           z-index: 2;
           display: flex;
           align-items: center;
@@ -291,10 +291,9 @@ export default function Home() {
           100% { transform: rotate(360deg); }
         }
         .vp-spinner {
-          width: 44px;
-          height: 44px;
+          width: 64px;
+          height: 64px;
           animation: vpSpin 1.6s linear infinite;
-          opacity: 0.55;
         }
         @media (prefers-reduced-motion: reduce) {
           .float-btn, .cta-bubble-wrap { animation: none; }
@@ -393,8 +392,8 @@ export default function Home() {
         />
         {/* Placeholder — zichtbaar tot iframe geladen is */}
         <div className={`video-placeholder${videoLoaded ? ' loaded' : ''}`} aria-hidden="true">
-          <svg className="vp-spinner" viewBox="0 0 44 44" fill="none">
-            <circle cx="22" cy="22" r="18" stroke="#bdeffc" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="85 28" />
+          <svg className="vp-spinner" viewBox="0 0 64 64" fill="none">
+            <circle cx="32" cy="32" r="26" stroke="#3b696d" strokeWidth="3" strokeLinecap="round" strokeDasharray="122 41" />
           </svg>
         </div>
       </div>
