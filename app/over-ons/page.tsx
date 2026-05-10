@@ -165,40 +165,23 @@ export default function OverOns() {
       <section className="py-8 px-4">
         <div className="max-w-4xl mx-auto">
           <h2
-            className="text-3xl md:text-4xl uppercase mb-4"
-            style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, color: '#3b696d', letterSpacing: '0.03em' }}
+            className="text-4xl md:text-5xl uppercase mb-4"
+            style={{ fontFamily: "'Pana Summer', serif", fontWeight: 700, color: '#3b696d', letterSpacing: '0.03em' }}
           >
-            Werken bij ons
+            {c('over_ons_werken_kop', 'Werken bij ons')}
           </h2>
           <svg className="w-32 h-2 mb-8" viewBox="0 0 100 10" style={{ color: '#bdeffc' }}>
             <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1.5" />
           </svg>
-          <div className="flex flex-col gap-10 mb-12">
-            {[
-              {
-                icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3c0 4-3 6-6 7h12c-3-1-6-3-6-7z"/><path d="M2 20h20"/><path d="M7 20c1-3 3-4 5-4s4 1 5 4"/></svg>,
-                title: 'Werken op een eiland',
-                text: 'Werk op een van de mooiste plekken van Nederland. Texel is niet zomaar een locatie — het is een leefstijl.',
-              },
-              {
-                icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="15" cy="7" r="3"/><path d="M3 20c0-4 2.7-6 6-6M21 20c0-4-2.7-6-6-6M9 14c1 0 2 .3 3 1 1-.7 2-1 3-1"/></svg>,
-                title: "Collega's",
-                text: "Fijne werksfeer in een hecht team. De sfeer tussen de collega's maakt van een heerlijk drukke dag ook voor jou een feestje.",
-              },
-              {
-                icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
-                title: 'Ontwikkeling',
-                text: 'Er is altijd ruimte voor persoonlijke ontwikkeling binnen het vak. Ervaring is niet nodig — wij leren je alles.',
-              },
-            ].map((usp, i) => (
-              <div key={i} className={`flex items-start gap-6 ${i % 2 === 1 ? 'md:flex-row-reverse' : ''}`}>
-                <div className="flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center" style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}>
-                  {usp.icon}
+          <div className="flex flex-col gap-5 mb-12">
+            {Array.from({ length: 10 }, (_, i) => c(`over_ons_voordeel_${i + 1}`, '')).filter(Boolean).map((text, i) => (
+              <div key={i} className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-lg mb-2" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>{usp.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: '#3b696d' }}>{usp.text}</p>
-                </div>
+                <p className="text-base leading-relaxed pt-2" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>{text}</p>
               </div>
             ))}
           </div>
