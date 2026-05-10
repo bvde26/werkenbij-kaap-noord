@@ -200,7 +200,7 @@ export default function AdminVacatures() {
       <div className="max-w-4xl mx-auto">
 
         {/* Header */}
-        <div className="flex items-start justify-between mb-8">
+        <div className="flex flex-wrap items-start justify-between gap-3 mb-8">
           <div>
             <Link href="/admin/dashboard"
               className="text-sm mb-2 block hover:underline"
@@ -421,13 +421,13 @@ export default function AdminVacatures() {
             {vacatures.map(v => (
               <div
                 key={v.id}
-                className="flex items-center gap-4 px-5 py-4 rounded-xl bg-white border"
+                className="flex items-start gap-3 px-4 py-3 rounded-xl bg-white border"
                 style={{ borderColor: v.published ? '#bdeffc' : '#e5e7eb' }}>
 
                 {/* Foto thumbnail */}
                 <label
                   title={v.image_url ? 'Foto vervangen' : 'Foto toevoegen'}
-                  style={{ cursor: 'pointer', flexShrink: 0 }}>
+                  style={{ cursor: 'pointer', flexShrink: 0, marginTop: '2px' }}>
                   <input
                     type="file"
                     accept="image/*"
@@ -438,12 +438,12 @@ export default function AdminVacatures() {
                     <img
                       src={v.image_url}
                       alt=""
-                      style={{ width: '52px', height: '40px', objectFit: 'cover', borderRadius: '6px', display: 'block' }}
+                      style={{ width: '48px', height: '36px', objectFit: 'cover', borderRadius: '6px', display: 'block' }}
                     />
                   ) : (
                     <div
-                      style={{ width: '52px', height: '40px', borderRadius: '6px', border: '2px dashed #d1d5db', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round">
+                      style={{ width: '48px', height: '36px', borderRadius: '6px', border: '2px dashed #d1d5db', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round">
                         <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
                         <polyline points="21 15 16 10 5 21"/>
                       </svg>
@@ -456,31 +456,31 @@ export default function AdminVacatures() {
                     {v.title}
                   </p>
                   <p className="text-xs mt-0.5" style={{ color: '#9ca3af' }}>
-                    {v.uren_display || '—'} · {v.published ? 'Gepubliceerd' : 'Concept'} · {v.image_url ? 'Foto ✓' : 'Geen foto'}
+                    {v.uren_display || '—'} · {v.image_url ? 'Foto ✓' : 'Geen foto'}
                   </p>
-                </div>
-                <div className="flex items-center gap-1 flex-shrink-0">
-                  <button
-                    onClick={() => togglePublished(v)}
-                    className="px-3 py-1 text-xs font-semibold rounded-full border transition-colors"
-                    style={{
-                      borderColor: v.published ? '#3b696d' : '#d1d5db',
-                      color: v.published ? '#3b696d' : '#9ca3af',
-                      backgroundColor: v.published ? '#e8f4f4' : 'transparent',
-                    }}>
-                    {v.published ? 'Live' : 'Concept'}
-                  </button>
-                  <button
-                    onClick={() => startEdit(v)}
-                    className="px-3 py-1 text-xs font-semibold hover:underline"
-                    style={{ color: '#3b696d' }}>
-                    Bewerken
-                  </button>
-                  <button
-                    onClick={() => remove(v.id, v.title)}
-                    className="px-3 py-1 text-xs font-semibold hover:underline text-red-500">
-                    Verwijderen
-                  </button>
+                  <div className="flex items-center gap-1 flex-wrap mt-2">
+                    <button
+                      onClick={() => togglePublished(v)}
+                      className="px-3 py-1 text-xs font-semibold rounded-full border transition-colors"
+                      style={{
+                        borderColor: v.published ? '#3b696d' : '#d1d5db',
+                        color: v.published ? '#3b696d' : '#9ca3af',
+                        backgroundColor: v.published ? '#e8f4f4' : 'transparent',
+                      }}>
+                      {v.published ? 'Live' : 'Concept'}
+                    </button>
+                    <button
+                      onClick={() => startEdit(v)}
+                      className="px-3 py-1 text-xs font-semibold hover:underline"
+                      style={{ color: '#3b696d' }}>
+                      Bewerken
+                    </button>
+                    <button
+                      onClick={() => remove(v.id, v.title)}
+                      className="px-3 py-1 text-xs font-semibold hover:underline text-red-500">
+                      Verwijderen
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

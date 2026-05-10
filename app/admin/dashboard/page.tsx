@@ -31,7 +31,7 @@ const tiles = [
 
 export default function AdminDashboard() {
   return (
-    <div className="min-h-screen p-8" style={{ backgroundColor: '#f7faf9' }}>
+    <div className="min-h-screen p-4 sm:p-8" style={{ backgroundColor: '#f7faf9' }}>
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-1" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>Admin</h1>
         <p className="text-sm mb-10" style={{ color: '#6b7280' }}>Kaap Noord — beheer</p>
