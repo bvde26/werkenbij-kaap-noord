@@ -274,8 +274,8 @@ export default function MediaAdminPage() {
         .media-del-btn { color: #dc2626; background: none; border: none; cursor: pointer; font-size: 13px; font-family: 'Kodchasan', sans-serif; font-weight: 600; padding: 4px 0; }
         .media-del-btn:hover:not(:disabled) { color: #991b1b; }
         .media-del-btn:disabled { color: #f87171; cursor: not-allowed; }
-        .media-arrow-btn { background: none; border: 1px solid #bdeffc; border-radius: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #3b696d; }
-        .media-arrow-btn:hover:not(:disabled) { background-color: #bdeffc; }
+        .media-arrow-btn { background: none; border: none; cursor: pointer; font-size: 13px; font-family: 'Kodchasan', sans-serif; font-weight: 600; color: #3b696d; padding: 4px 0; }
+        .media-arrow-btn:hover:not(:disabled) { color: #2a4a4d; }
         .media-arrow-btn:disabled { opacity: 0.3; cursor: not-allowed; }
         .media-file-input { border: 1px solid #bdeffc; border-radius: 8px; padding: 8px 12px; font-family: 'Kodchasan', sans-serif; font-size: 14px; width: 100%; background: white; cursor: pointer; }
         .media-text-input { border: 1px solid #bdeffc; border-radius: 8px; padding: 8px 12px; font-family: 'Kodchasan', sans-serif; font-size: 14px; width: 100%; outline: none; }
@@ -364,28 +364,20 @@ export default function MediaAdminPage() {
 
                     {/* Reorder + delete row */}
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4px' }}>
-                      <div style={{ display: 'flex', gap: '4px' }}>
+                      <div style={{ display: 'flex', gap: '6px' }}>
                         <button
                           className="media-arrow-btn"
-                          title="Omhoog"
                           disabled={index === 0 || reorderingId !== null}
                           onClick={() => handleReorder(index, 'up')}
-                          aria-label="Omhoog"
                         >
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M18 15l-6-6-6 6" />
-                          </svg>
+                          ↑ Omhoog
                         </button>
                         <button
                           className="media-arrow-btn"
-                          title="Omlaag"
                           disabled={index === items.length - 1 || reorderingId !== null}
                           onClick={() => handleReorder(index, 'down')}
-                          aria-label="Omlaag"
                         >
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M6 9l6 6 6-6" />
-                          </svg>
+                          ↓ Omlaag
                         </button>
                       </div>
 
