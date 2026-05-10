@@ -26,13 +26,14 @@ function PhotoSlider({ photos }: { photos: string[] }) {
   const [paused, setPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const n = photos.length;
 
-  const next = useCallback(() => setCurrent(i => (i + 1) % photos.length), [photos.length]);
-  const prev = useCallback(() => setCurrent(i => (i - 1 + photos.length) % photos.length), [photos.length]);
+  const next = useCallback(() => setCurrent(i => (i + 1) % n), [n]);
+  const prev = useCallback(() => setCurrent(i => (i - 1 + n) % n), [n]);
 
   useEffect(() => {
     if (paused) return;
-    intervalRef.current = setInterval(next, 5000);
+    intervalRef.current = setInterval(next, 5500);
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, [paused, next]);
 
@@ -45,116 +46,56 @@ function PhotoSlider({ photos }: { photos: string[] }) {
   };
 
   return (
-    <section style={{ backgroundColor: '#fefdf5', padding: '40px 0 28px' }}>
-      <style>{`
-        .polar-arrow {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          background: rgba(59,105,109,0.18);
-          border: 1.5px solid rgba(59,105,109,0.3);
-          border-radius: 50%;
-          width: 40px; height: 40px;
-          display: flex; align-items: center; justify-content: center;
-          cursor: pointer; z-index: 10;
-          transition: background 0.2s ease;
-          backdrop-filter: blur(4px);
-        }
-        @media (hover: hover) and (pointer: fine) {
-          .polar-arrow:hover { background: rgba(59,105,109,0.45); }
-        }
-        .polar-dot {
-          width: 7px; height: 7px;
-          border-radius: 50%; border: none;
-          cursor: pointer; padding: 0;
-          transition: background 0.3s ease, transform 0.3s ease;
-        }
-      `}</style>
-
-      {/* Sliding strip */}
+    <section style={{ backgroundColor: '#fefdf5', padding: '40px 0 40px' }}>
       <div
         className="relative overflow-hidden"
-        style={{ height: 'clamp(300px, 58vw, 420px)' }}
+        style={{ height: 'clamp(340px, 72vw, 520px)' }}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        <div style={{
-          display: 'flex',
-          width: `${photos.length * 100}%`,
-          height: '100%',
-          transform: `translateX(-${(current / photos.length) * 100}%)`,
-          transition: 'transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-        }}>
-          {photos.map((src, i) => (
-            <div key={i} style={{
-              width: `${100 / photos.length}%`,
-              flexShrink: 0,
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              {/* Polaroid frame */}
-              <div style={{
+        {photos.map((src, i) => {
+          let offset = i - current;
+          if (offset > n / 2) offset -= n;
+          if (offset < -n / 2) offset += n;
+
+          const isActive = offset === 0;
+          const visible = Math.abs(offset) <= 1;
+
+          return (
+            <div
+              key={i}
+              onClick={() => { if (offset > 0) next(); else if (offset < 0) prev(); }}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                width: 'clamp(230px, 76vw, 360px)',
                 background: 'white',
-                padding: '10px 10px 34px 10px',
-                boxShadow: '0 14px 44px rgba(0,0,0,0.32), 0 4px 12px rgba(0,0,0,0.18)',
-                transform: `rotate(${TILTS[i % TILTS.length]})`,
-                width: 'clamp(190px, 62vw, 290px)',
-                flexShrink: 0,
-              }}>
-                <div style={{ width: '100%', aspectRatio: '4/3', overflow: 'hidden' }}>
-                  <img
-                    src={src}
-                    alt={`Kaap Noord foto ${i + 1}`}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                    loading={i === 0 ? 'eager' : 'lazy'}
-                  />
-                </div>
-                {/* Polaroid label */}
-                <div style={{
-                  textAlign: 'center',
-                  paddingTop: '8px',
-                  fontSize: '11px',
-                  color: '#9ca3af',
-                  fontFamily: "'Kodchasan', sans-serif",
-                  letterSpacing: '0.08em',
-                }}>
-                  {i + 1} / {photos.length}
-                </div>
+                padding: '10px 10px 36px 10px',
+                boxShadow: isActive
+                  ? '0 18px 52px rgba(0,0,0,0.38), 0 5px 16px rgba(0,0,0,0.2)'
+                  : '0 6px 20px rgba(0,0,0,0.18)',
+                transform: `translateX(-50%) translateY(-50%) translateX(${offset * 58}vw) scale(${isActive ? 1 : 0.82}) rotate(${TILTS[i % TILTS.length]})`,
+                transition: 'transform 0.52s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.38s ease, box-shadow 0.38s ease',
+                opacity: visible ? (isActive ? 1 : 0.6) : 0,
+                zIndex: isActive ? 2 : 1,
+                cursor: isActive ? 'default' : 'pointer',
+                pointerEvents: visible ? 'auto' : 'none',
+              }}
+            >
+              <div style={{ width: '100%', aspectRatio: '4/3', overflow: 'hidden' }}>
+                <img
+                  src={src}
+                  alt={`Kaap Noord foto ${i + 1}`}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  loading={i <= 1 ? 'eager' : 'lazy'}
+                />
               </div>
             </div>
-          ))}
-        </div>
-
-        <button className="polar-arrow" style={{ left: '10px' }} onClick={prev} aria-label="Vorige foto">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-            <path d="M10 3L5 8L10 13" stroke="#3b696d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-        <button className="polar-arrow" style={{ right: '10px' }} onClick={next} aria-label="Volgende foto">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-            <path d="M6 3L11 8L6 13" stroke="#3b696d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-      </div>
-
-      {/* Dots */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '7px', paddingTop: '16px' }}>
-        {photos.map((_, i) => (
-          <button
-            key={i}
-            className="polar-dot"
-            onClick={() => setCurrent(i)}
-            aria-label={`Foto ${i + 1}`}
-            style={{
-              background: i === current ? '#3b696d' : '#bdeffc',
-              transform: i === current ? 'scale(1.4)' : 'scale(1)',
-            }}
-          />
-        ))}
+          );
+        })}
       </div>
     </section>
   );
