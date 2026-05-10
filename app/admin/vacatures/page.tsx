@@ -217,8 +217,8 @@ export default function AdminVacatures() {
           {!showForm && (
             <button
               onClick={startCreate}
-              className="px-5 py-2.5 text-sm font-bold text-white flex-shrink-0"
-              style={{ backgroundColor: '#3b696d' }}>
+              className="px-5 py-2.5 text-sm font-bold text-white flex-shrink-0 transition-opacity hover:opacity-80"
+              style={{ backgroundColor: '#3b696d', borderRadius: '8px' }}>
               + Nieuwe vacature
             </button>
           )}
