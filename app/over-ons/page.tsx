@@ -47,9 +47,10 @@ function PhotoSlider({ photos }: { photos: string[] }) {
 
   return (
     <section style={{ backgroundColor: '#fefdf5', padding: '40px 0 40px' }}>
+      {/* padding op het overflow-element geeft schaduwruimte boven/onder */}
       <div
         className="relative overflow-hidden"
-        style={{ height: 'clamp(340px, 72vw, 520px)' }}
+        style={{ height: 'clamp(400px, 80vw, 580px)', padding: '36px 0' }}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         onTouchStart={handleTouchStart}
@@ -75,8 +76,8 @@ function PhotoSlider({ photos }: { photos: string[] }) {
                 background: 'white',
                 padding: '10px 10px 36px 10px',
                 boxShadow: isActive
-                  ? '0 18px 52px rgba(0,0,0,0.38), 0 5px 16px rgba(0,0,0,0.2)'
-                  : '0 6px 20px rgba(0,0,0,0.18)',
+                  ? '0 2px 6px rgba(0,0,0,0.08), 0 8px 20px rgba(0,0,0,0.14), 0 20px 32px rgba(0,0,0,0.1)'
+                  : '0 2px 8px rgba(0,0,0,0.08), 0 6px 16px rgba(0,0,0,0.1)',
                 transform: `translateX(-50%) translateY(-50%) translateX(${offset * 58}vw) scale(${isActive ? 1 : 0.82}) rotate(${TILTS[i % TILTS.length]})`,
                 transition: 'transform 0.52s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.38s ease, box-shadow 0.38s ease',
                 opacity: visible ? (isActive ? 1 : 0.6) : 0,
