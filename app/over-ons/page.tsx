@@ -173,17 +173,30 @@ export default function OverOns() {
           <svg className="w-32 h-2 mb-8" viewBox="0 0 100 10" style={{ color: '#bdeffc' }}>
             <polyline points="0,5 10,0 20,10 30,0 40,10 50,0 60,10 70,0 80,10 90,0 100,10" fill="none" stroke="currentColor" strokeWidth="1.5" />
           </svg>
-          <div className="flex flex-col gap-5 mb-12">
-            {Array.from({ length: 10 }, (_, i) => c(`over_ons_voordeel_${i + 1}`, '')).filter(Boolean).map((text, i) => (
-              <div key={i} className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
+          <div className="flex flex-col gap-6 mb-12">
+            {Object.keys(content)
+              .filter(k => /^over_ons_voordeel_\d+_titel$/.test(k) && content[k])
+              .map(k => parseInt(k.match(/(\d+)/)![1]))
+              .sort((a, b) => a - b)
+              .map(num => (
+                <div key={num} className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </div>
+                  <div className="flex-1 pt-1">
+                    <p className="font-bold text-base mb-1" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>
+                      {content[`over_ons_voordeel_${num}_titel`]}
+                    </p>
+                    {content[`over_ons_voordeel_${num}_tekst`] && (
+                      <p className="text-sm leading-relaxed" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>
+                        {content[`over_ons_voordeel_${num}_tekst`]}
+                      </p>
+                    )}
+                  </div>
                 </div>
-                <p className="text-base leading-relaxed pt-2" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>{text}</p>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </section>

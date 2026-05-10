@@ -27,6 +27,12 @@ const tiles = [
     description: "Afbeeldingen uploaden en beheren per pagina",
     icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2" strokeLinecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>,
   },
+  {
+    href: '/admin/voordelen',
+    label: 'Voordelen',
+    description: '"Werken bij ons" lijst beheren op de Over ons pagina',
+    icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
+  },
 ];
 
 export default function AdminDashboard() {
