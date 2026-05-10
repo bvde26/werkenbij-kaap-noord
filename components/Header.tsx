@@ -108,6 +108,29 @@ export default function Header({ active = '' }: { active?: string }) {
         .nav-panel.open .nav-link-item:nth-child(2) { transition-delay: 0.13s; }
         .nav-panel.open .nav-link-item:nth-child(3) { transition-delay: 0.18s; }
         .nav-panel.open .nav-link-item:nth-child(4) { transition-delay: 0.23s; }
+        .nav-social-item {
+          opacity: 0;
+          transform: translateX(20px);
+          transition: opacity 0.28s ease-out, transform 0.28s cubic-bezier(0.23, 1, 0.32, 1);
+          transition-delay: 0.30s;
+        }
+        .nav-panel.open .nav-social-item { opacity: 1; transform: translateX(0); }
+        .nav-social-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 16px;
+          border-radius: 999px;
+          border: 1.5px solid rgba(59,105,109,0.35);
+          color: #3b696d;
+          font-family: 'Kodchasan', sans-serif;
+          font-size: 14px;
+          font-weight: 600;
+          text-decoration: none;
+          transition: background-color 0.18s ease, border-color 0.18s ease;
+          background: transparent;
+        }
+        .nav-social-btn:hover { background: rgba(59,105,109,0.08); border-color: #3b696d; }
         @media (prefers-reduced-motion: reduce) {
           .nav-panel { transition: none; }
           .nav-backdrop { transition: none; }
@@ -181,6 +204,36 @@ export default function Header({ active = '' }: { active?: string }) {
             </li>
           ))}
         </ul>
+
+        {/* Sociale links */}
+        <div className="nav-social-item" style={{ borderTop: '1px solid rgba(59,105,109,0.2)', paddingTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <a
+            href="https://www.instagram.com/kaapnoord_texel"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-social-btn"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+            Instagram
+          </a>
+          <a
+            href="https://strandpaviljoenkaapnoord.nl"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-social-btn"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            Kaap Noord
+          </a>
+        </div>
       </nav>
     </>
   );
