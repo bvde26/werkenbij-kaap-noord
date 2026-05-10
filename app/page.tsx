@@ -295,7 +295,7 @@ export default function Home() {
           <h1 className="text-4xl md:text-7xl uppercase mb-4 md:mb-5"
             style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, letterSpacing: '0.03em', color: '#3b696d', lineHeight: 1.05 }}>
             {(siteContent['hero_title'] || 'Werken bij\nKaap Noord')
-              .split('\n')
+              .split(/\\n|\n/)
               .map((line, i, arr) => (
                 <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
               ))}
