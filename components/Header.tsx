@@ -31,13 +31,14 @@ export default function Header({ active = '' }: { active?: string }) {
           border: none !important;
           box-shadow: none !important;
           cursor: pointer;
-          width: 28px;
-          height: 28px;
+          width: 44px;
+          height: 44px;
           display: flex;
           align-items: center;
           justify-content: center;
           padding: 0;
           flex-shrink: 0;
+          color: #3b696d;
         }
         .hamburger-btn:focus-visible {
           outline: 2px solid #3b696d;
@@ -140,10 +141,10 @@ export default function Header({ active = '' }: { active?: string }) {
 
       {/* Header bar */}
       <header className="sticky top-0 z-[200]" style={{ backgroundColor: '#bdeffc' }}>
-        <div className="px-5 h-[48px] md:h-[64px] flex items-center">
-          <Link href="/" className="mr-auto hover:opacity-80 transition-opacity" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+        <div className="px-5 md:px-8 h-[48px] md:h-[64px] flex items-center">
+          <Link href="/" className="mr-auto hover:opacity-80 transition-opacity" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(8px, 1.5vw, 14px)', textDecoration: 'none' }}>
             <img src="/logo-header.svg" alt="" className="h-[30px] md:h-[40px] w-auto" aria-hidden="true" />
-            <span style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, fontSize: 'clamp(1rem, 3vw, 1.35rem)', color: '#3b696d', letterSpacing: '0.04em', lineHeight: 1 }}>
+            <span style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, fontSize: 'clamp(1.1rem, 3.5vw, 1.6rem)', color: '#3b696d', letterSpacing: '0.04em', lineHeight: 1 }}>
               Kaap Noord
             </span>
           </Link>
@@ -155,11 +156,11 @@ export default function Header({ active = '' }: { active?: string }) {
             aria-controls="nav-panel"
           >
             {open ? (
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
                 <path d="M18 6L6 18M6 6l12 12" />
               </svg>
             ) : (
-              <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="#3b696d" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+              <svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
                 <line x1="0" y1="2" x2="28" y2="2" />
                 <line x1="0" y1="11" x2="28" y2="11" />
                 <line x1="0" y1="20" x2="28" y2="20" />
@@ -181,7 +182,7 @@ export default function Header({ active = '' }: { active?: string }) {
       >
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '40px' }}>
           <button className="hamburger-btn" onClick={() => setOpen(false)} aria-label="Menu sluiten">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
               <path d="M18 6L6 18M6 6l12 12" />
             </svg>
           </button>
