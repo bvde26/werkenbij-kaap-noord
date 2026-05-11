@@ -6,6 +6,8 @@ import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 
+const SITE_URL = 'https://werkenbijkaapnoord.nl';
+
 interface Vacature {
   id: string;
   title: string;
@@ -15,6 +17,14 @@ interface Vacature {
   image_url: string | null;
   published: boolean;
   created_at: string;
+  slug: string | null;
+}
+
+function toSlug(title: string) {
+  return title.toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
 }
 
 function compressImage(f: File): Promise<Blob> {
@@ -41,6 +51,7 @@ const emptyForm = () => ({
   extended_description: '',
   image_url: null as string | null,
   published: false,
+  slug: '',
 });
 
 export default function AdminVacatures() {
@@ -52,6 +63,7 @@ export default function AdminVacatures() {
   const [saving, setSaving] = useState(false);
   const [uploadStatus, setUploadStatus] = useState('');
   const [error, setError] = useState('');
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const descRef = useRef<HTMLTextAreaElement>(null);
   const extRef = useRef<HTMLTextAreaElement>(null);
 
@@ -89,11 +101,17 @@ export default function AdminVacatures() {
     });
   };
 
+  const copyLink = (slug: string) => {
+    navigator.clipboard.writeText(`${SITE_URL}/vacatures/${slug}`);
+    setCopiedId(slug);
+    setTimeout(() => setCopiedId(id => id === slug ? null : id), 2000);
+  };
+
   const load = async () => {
     setLoading(true);
     const { data } = await supabase
       .from('vacatures')
-      .select('id, title, uren_display, description, extended_description, image_url, published, created_at')
+      .select('id, title, uren_display, description, extended_description, image_url, published, created_at, slug')
       .order('created_at', { ascending: false });
     setVacatures(data || []);
     setLoading(false);
@@ -119,6 +137,7 @@ export default function AdminVacatures() {
       extended_description: v.extended_description || '',
       image_url: v.image_url,
       published: v.published,
+      slug: v.slug || '',
     });
     setShowForm(true);
     setError('');
@@ -168,6 +187,7 @@ export default function AdminVacatures() {
       extended_description: form.extended_description?.trim() || null,
       image_url: form.image_url || null,
       published: form.published,
+      slug: form.slug.trim() || null,
       updated_at: new Date().toISOString(),
     };
 
@@ -244,6 +264,35 @@ export default function AdminVacatures() {
                   style={{ borderColor: '#bdeffc', fontFamily: "'Kodchasan', sans-serif" }}
                   placeholder="bijv. Zelfstandig werkend kok"
                 />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-1" style={{ color: '#3b696d' }}>
+                  Deelbare link (slug)
+                </label>
+                <p className="text-xs mb-1" style={{ color: '#9ca3af' }}>
+                  Kort en leesbaar, bijv. <code>kok</code> of <code>bediening</code>. Wordt de URL:{' '}
+                  <span style={{ color: '#3b696d' }}>werkenbijkaapnoord.nl/vacatures/</span>
+                  <strong>{form.slug || '…'}</strong>
+                </p>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={form.slug}
+                    onChange={e => setForm(f => ({ ...f, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/--+/g, '-') }))}
+                    className="flex-1 px-3 py-2 border rounded text-sm outline-none"
+                    style={{ borderColor: '#bdeffc', fontFamily: 'monospace' }}
+                    placeholder="bijv. kok"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setForm(f => ({ ...f, slug: toSlug(f.title) }))}
+                    className="px-3 py-2 text-xs font-semibold rounded border"
+                    style={{ borderColor: '#bdeffc', color: '#3b696d', backgroundColor: '#f0fafe', fontFamily: "'Kodchasan', sans-serif", whiteSpace: 'nowrap' }}
+                  >
+                    Genereer
+                  </button>
+                </div>
               </div>
 
               <div>
@@ -475,6 +524,23 @@ export default function AdminVacatures() {
                       style={{ color: '#3b696d' }}>
                       Bewerken
                     </button>
+                    {v.slug && (
+                      <button
+                        onClick={() => copyLink(v.slug!)}
+                        className="px-3 py-1 text-xs font-semibold rounded-full border transition-colors"
+                        style={{
+                          borderColor: copiedId === v.slug ? '#16a34a' : '#bdeffc',
+                          color: copiedId === v.slug ? '#16a34a' : '#3b696d',
+                          backgroundColor: copiedId === v.slug ? '#f0fdf4' : '#f0fafe',
+                        }}>
+                        {copiedId === v.slug ? '✓ Gekopieerd!' : '🔗 Kopieer link'}
+                      </button>
+                    )}
+                    {!v.slug && (
+                      <span className="px-3 py-1 text-xs" style={{ color: '#d1d5db' }}>
+                        Geen slug — geen link
+                      </span>
+                    )}
                     <button
                       onClick={() => remove(v.id, v.title)}
                       className="px-3 py-1 text-xs font-semibold hover:underline text-red-500">
