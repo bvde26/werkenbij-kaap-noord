@@ -15,13 +15,15 @@ const EMAIL = 'mailto:info@kaapnoord.nl';
 
 async function getVacature(slug: string) {
   const sb = createClient(supabaseUrl, supabaseKey);
+  const { data: all } = await sb.from('vacatures').select('title, slug');
+  console.error('[vacature] all slugs:', JSON.stringify(all?.map(v => ({ t: v.title, s: v.slug }))));
   const { data, error } = await sb
     .from('vacatures')
     .select('id, title, uren_display, description, extended_description, image_url, slug')
     .eq('slug', slug)
     .single();
-  if (error) console.error('[vacature]', error.code, error.message, '| slug:', slug);
-  else console.log('[vacature] found:', data?.title, '| slug:', slug);
+  if (error) console.error('[vacature]', error.code, error.message, '| looking for:', slug);
+  else console.log('[vacature] found:', data?.title);
   return data;
 }
 
