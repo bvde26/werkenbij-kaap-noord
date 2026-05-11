@@ -128,7 +128,7 @@ export default function OverOns() {
             {c('over_ons_h1', 'Over ons')}
           </h1>
           <p className="text-xl md:text-2xl" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, maxWidth: '42ch' }}>
-            Dit is Kaap Noord. Dit zijn wij. Dit zoeken we.
+            {c('over_ons_subtitel', 'Dit is Kaap Noord. Dit zijn wij. Dit zoeken we.')}
           </p>
         </div>
       </section>

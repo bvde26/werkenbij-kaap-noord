@@ -6,6 +6,7 @@ import Link from 'next/link'
 
 const FIELDS = [
   { key: 'over_ons_h1',        label: 'Pagina kop',      hint: 'Grote kop bovenaan de pagina' },
+  { key: 'over_ons_subtitel',  label: 'Subtitel',         hint: 'Kleine tekst onder de pagina kop' },
   { key: 'over_ons_tekst_1',   label: 'Tekst blok 1',    hint: '' },
   { key: 'over_ons_tekst_2',   label: 'Tekst blok 2',    hint: '' },
   { key: 'over_ons_tekst_3',   label: 'Tekst blok 3',    hint: '' },
@@ -59,8 +60,7 @@ export default function OverOnsContentAdminPage() {
     setSaving(key)
     const { error } = await supabase
       .from('site_content')
-      .update({ value: values[key] ?? '', updated_at: new Date().toISOString() })
-      .eq('key', key)
+      .upsert({ key, value: values[key] ?? '', page: 'over-ons', updated_at: new Date().toISOString() }, { onConflict: 'key' })
     if (error) setError(error.message)
     else {
       setSaved(prev => ({ ...prev, [key]: values[key] ?? '' }))
