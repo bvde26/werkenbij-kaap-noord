@@ -45,7 +45,7 @@ export default function Home() {
       const { data } = await supabase
         .from('site_content')
         .select('key, value')
-        .in('key', ['hero_title', 'hero_subtitle', 'urgency_starburst', 'urgency_sticky', 'hero_cta_balloon']);
+        .in('key', ['hero_title', 'hero_subtitle', 'urgency_starburst', 'urgency_sticky', 'hero_cta_balloon', 'home_intro_text']);
       if (data) {
         const map: Record<string, string> = {};
         data.forEach(item => { map[item.key] = item.value; });
@@ -387,34 +387,22 @@ export default function Home() {
           </svg>
         </div>
       </div>
-      {/* Intro quote */}
-      <section className="py-16" style={{ backgroundColor: '#bdeffc', position: 'relative' }}>
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}>
+      {/* Intro tekst — klein als leeg, vol als gevuld */}
+      <section style={{ backgroundColor: '#bdeffc', padding: siteContent['home_intro_text'] ? '4rem 0' : '14px 0' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: siteContent['home_intro_text'] ? '32px' : '0' }}>
           <svg width="320" height="28" viewBox="0 0 320 28" fill="none" aria-hidden="true">
-            <path
-              d="M0,14 C26,4 53,24 80,14 C107,4 134,24 160,14 C186,4 213,24 240,14 C267,4 294,24 320,14"
-              stroke="#3b696d"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              fill="none"
-              opacity="0.6"
-            />
-            <path
-              d="M40,20 C54,13 67,22 80,20 C93,18 106,14 120,20 C134,26 147,18 160,20 C173,22 186,15 200,20 C214,25 227,18 240,20"
-              stroke="#3b696d"
-              strokeWidth="1"
-              strokeLinecap="round"
-              fill="none"
-              opacity="0.3"
-            />
+            <path d="M0,14 C26,4 53,24 80,14 C107,4 134,24 160,14 C186,4 213,24 240,14 C267,4 294,24 320,14" stroke="#3b696d" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.6" />
+            <path d="M40,20 C54,13 67,22 80,20 C93,18 106,14 120,20 C134,26 147,18 160,20 C173,22 186,15 200,20 C214,25 227,18 240,20" stroke="#3b696d" strokeWidth="1" strokeLinecap="round" fill="none" opacity="0.3" />
           </svg>
         </div>
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <p className="text-xl md:text-2xl leading-relaxed"
-            style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif", fontWeight: 300 }}>
-            Zie jij jezelf al werken op een unieke plek met een fantastisch uitzicht? Is het helemaal jouw ding om onze gasten naar hun zin te maken en ze het huiskamer gevoel te laten beleven?
-          </p>
-        </div>
+        {siteContent['home_intro_text'] && (
+          <div className="max-w-3xl mx-auto px-4 text-center">
+            <p className="text-xl md:text-2xl leading-relaxed"
+              style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif", fontWeight: 300 }}>
+              {siteContent['home_intro_text']}
+            </p>
+          </div>
+        )}
       </section>
 
       {/* Functies — dynamisch uit Supabase */}

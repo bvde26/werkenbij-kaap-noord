@@ -4,28 +4,34 @@ import Link from 'next/link';
 
 const tiles = [
   {
+    href: '/admin/landingspagina',
+    label: 'Landingspagina',
+    description: 'Hero tekst, intro tekst en CTA beheren',
+    icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2" strokeLinecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+  },
+  {
     href: '/admin/vacatures',
     label: 'Vacatures',
     description: 'Functies toevoegen, bewerken en publiceren',
     icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2" strokeLinecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3H8a2 2 0 0 0-2 2v2h12V5a2 2 0 0 0-2-2z"/></svg>,
   },
   {
-    href: '/admin/faq',
-    label: 'FAQ',
-    description: 'Veelgestelde vragen beheren en herordenen',
-    icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.5" fill="#3b696d"/></svg>,
-  },
-  {
-    href: '/admin/content',
-    label: 'Pagina-inhoud',
-    description: 'Koppen en teksten per pagina aanpassen',
-    icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2" strokeLinecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>,
+    href: '/admin/usps',
+    label: 'Waarom Kaap Noord',
+    description: '"Waarom Kaap Noord?" lijst beheren op de homepage',
+    icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>,
   },
   {
     href: '/admin/media',
     label: "Foto's",
-    description: "Afbeeldingen uploaden en beheren per pagina",
+    description: 'Afbeeldingen uploaden en beheren per pagina',
     icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2" strokeLinecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>,
+  },
+  {
+    href: '/admin/over-ons-content',
+    label: 'Over ons',
+    description: 'Pagina kop en tekst blokken beheren',
+    icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2" strokeLinecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
   },
   {
     href: '/admin/voordelen',
@@ -34,10 +40,10 @@ const tiles = [
     icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
   },
   {
-    href: '/admin/usps',
-    label: 'Waarom Kaap Noord',
-    description: '"Waarom Kaap Noord?" lijst beheren op de homepage',
-    icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>,
+    href: '/admin/faq',
+    label: 'FAQ',
+    description: 'Veelgestelde vragen beheren en herordenen',
+    icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b696d" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.5" fill="#3b696d"/></svg>,
   },
 ];
 
