@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 
-const SITE_URL = 'https://werkenbijkaapnoord.nl';
+const SITE_URL = 'https://werkenbij.21knots.nl';
 
 interface Vacature {
   id: string;
