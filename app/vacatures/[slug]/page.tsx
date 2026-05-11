@@ -15,7 +15,8 @@ const EMAIL = 'mailto:info@kaapnoord.nl';
 
 async function getVacature(slug: string) {
   const sb = createClient(supabaseUrl, supabaseKey);
-  console.error('[vacature] env url:', supabaseUrl?.slice(0, 40), '| key prefix:', supabaseKey?.slice(0, 15));
+  const ref = supabaseUrl?.match(/https:\/\/([^.]+)/)?.[1] ?? 'MISSING';
+  console.error('[v] ref=' + ref + ' key=' + (supabaseKey?.slice(0, 8) ?? 'MISSING'));
   const { data: all } = await sb.from('vacatures').select('title, slug');
   console.error('[vacature] all slugs:', JSON.stringify(all?.map(v => ({ t: v.title, s: v.slug }))));
   const { data, error } = await sb
