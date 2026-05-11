@@ -17,6 +17,7 @@ interface Vacature {
   id: string;
   title: string;
   uren_display: string | null;
+  salary_display: string | null;
   description: string | null;
   extended_description: string | null;
   image_url: string | null;
@@ -74,7 +75,7 @@ export default function Home() {
       try {
         const { data } = await supabase
           .from('vacatures')
-          .select('id, title, uren_display, description, extended_description, image_url')
+          .select('id, title, uren_display, salary_display, description, extended_description, image_url')
           .eq('published', true)
           .order('created_at', { ascending: false });
         const list = data || [];
@@ -497,6 +498,17 @@ export default function Home() {
                             }}>
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                               {r.uren_display}
+                            </span>
+                          )}
+                          {r.salary_display && (
+                            <span className="flex items-center gap-1" style={{
+                              color: isExpanded ? '#5a8a8e' : '#fcf8bd',
+                              fontSize: '13px',
+                              fontFamily: "'Kodchasan', sans-serif",
+                              transition: 'color 0.3s ease',
+                            }}>
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                              {r.salary_display}
                             </span>
                           )}
                           <span className="flex items-center gap-1" style={{

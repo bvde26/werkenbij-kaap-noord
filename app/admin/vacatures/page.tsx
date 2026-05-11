@@ -12,6 +12,7 @@ interface Vacature {
   id: string;
   title: string;
   uren_display: string | null;
+  salary_display: string | null;
   description: string | null;
   extended_description: string | null;
   image_url: string | null;
@@ -47,6 +48,7 @@ function compressImage(f: File): Promise<Blob> {
 const emptyForm = () => ({
   title: '',
   uren_display: '',
+  salary_display: '',
   description: '',
   extended_description: '',
   image_url: null as string | null,
@@ -111,7 +113,7 @@ export default function AdminVacatures() {
     setLoading(true);
     const { data } = await supabase
       .from('vacatures')
-      .select('id, title, uren_display, description, extended_description, image_url, published, created_at, slug')
+      .select('id, title, uren_display, salary_display, description, extended_description, image_url, published, created_at, slug')
       .order('created_at', { ascending: false });
     setVacatures(data || []);
     setLoading(false);
@@ -133,6 +135,7 @@ export default function AdminVacatures() {
     setForm({
       title: v.title,
       uren_display: v.uren_display || '',
+      salary_display: v.salary_display || '',
       description: v.description || '',
       extended_description: v.extended_description || '',
       image_url: v.image_url,
@@ -183,6 +186,7 @@ export default function AdminVacatures() {
     const payload = {
       title: form.title.trim(),
       uren_display: form.uren_display?.trim() || null,
+      salary_display: form.salary_display?.trim() || null,
       description: form.description?.trim() || null,
       extended_description: form.extended_description?.trim() || null,
       image_url: form.image_url || null,
@@ -306,6 +310,20 @@ export default function AdminVacatures() {
                   className="w-full px-3 py-2 border rounded text-sm outline-none"
                   style={{ borderColor: '#bdeffc', fontFamily: "'Kodchasan', sans-serif" }}
                   placeholder="bijv. 38 uur  /  In overleg  /  Jouw uren"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-1" style={{ color: '#3b696d' }}>
+                  Salaris
+                </label>
+                <input
+                  type="text"
+                  value={form.salary_display}
+                  onChange={e => setForm(f => ({ ...f, salary_display: e.target.value }))}
+                  className="w-full px-3 py-2 border rounded text-sm outline-none"
+                  style={{ borderColor: '#bdeffc', fontFamily: "'Kodchasan', sans-serif" }}
+                  placeholder="bijv. €14 – €16 per uur  /  In overleg"
                 />
               </div>
 

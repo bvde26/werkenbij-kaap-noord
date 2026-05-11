@@ -19,7 +19,7 @@ async function getVacature(slug: string) {
   const sb = createClient(supabaseUrl, supabaseKey);
   const { data, error } = await sb
     .from('vacatures')
-    .select('id, title, uren_display, description, extended_description, image_url, slug')
+    .select('id, title, uren_display, salary_display, description, extended_description, image_url, slug')
     .eq('slug', slug)
     .single();
   if (error && error.code !== 'PGRST116') console.error('[vacature]', error.message);
@@ -101,6 +101,12 @@ export default async function VacaturePage({ params }: { params: Promise<{ slug:
               <span style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: '#fff', borderRadius: '999px', padding: '5px 14px', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif", display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 {v.uren_display}
+              </span>
+            )}
+            {v.salary_display && (
+              <span style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: '#fff', borderRadius: '999px', padding: '5px 14px', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif", display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                {v.salary_display}
               </span>
             )}
             <span style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: '#fff', borderRadius: '999px', padding: '5px 14px', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif", display: 'flex', alignItems: 'center', gap: '6px' }}>
