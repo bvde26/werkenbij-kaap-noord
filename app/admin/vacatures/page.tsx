@@ -237,8 +237,8 @@ export default function AdminVacatures() {
           {!showForm && (
             <button
               onClick={startCreate}
-              className="px-5 py-2.5 text-sm font-bold text-white flex-shrink-0 transition-opacity hover:opacity-80"
-              style={{ backgroundColor: '#3b696d', borderRadius: '8px' }}>
+              className="px-5 py-2.5 text-sm font-bold flex-shrink-0 transition-opacity hover:opacity-80"
+              style={{ backgroundColor: '#3b696d', borderRadius: '8px', color: '#ffffff' }}>
               + Nieuwe vacature
             </button>
           )}
@@ -436,8 +436,8 @@ export default function AdminVacatures() {
                 <button
                   onClick={save}
                   disabled={saving}
-                  className="px-6 py-2.5 text-sm font-bold text-white disabled:opacity-50"
-                  style={{ backgroundColor: '#3b696d' }}>
+                  className="px-6 py-2.5 text-sm font-bold disabled:opacity-50"
+                  style={{ backgroundColor: '#3b696d', color: '#ffffff' }}>
                   {saving ? 'Opslaan...' : 'Opslaan'}
                 </button>
                 <button
