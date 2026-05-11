@@ -270,7 +270,7 @@ export default function Home() {
         .video-placeholder {
           position: absolute;
           inset: 0;
-          background: #fefdf5;
+          background: #1a2e30 url('/birdview.jpg') center/cover no-repeat;
           z-index: 2;
           display: flex;
           align-items: center;
