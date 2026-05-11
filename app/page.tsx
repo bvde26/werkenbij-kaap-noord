@@ -16,6 +16,7 @@ type CardState = 'closed' | 'preview' | 'open';
 interface Vacature {
   id: string;
   title: string;
+  subtitle: string | null;
   uren_display: string | null;
   salary_display: string | null;
   description: string | null;
@@ -75,7 +76,7 @@ export default function Home() {
       try {
         const { data } = await supabase
           .from('vacatures')
-          .select('id, title, uren_display, salary_display, description, extended_description, image_url')
+          .select('id, title, subtitle, uren_display, salary_display, description, extended_description, image_url')
           .eq('published', true)
           .order('created_at', { ascending: false });
         const list = data || [];
@@ -479,7 +480,7 @@ export default function Home() {
                       aria-controls={`vacature-content-${r.id}`}
                     >
                       <div className="flex-1 min-w-0">
-                        <span className="block font-bold leading-snug mb-1"
+                        <span className="block font-bold leading-snug"
                           style={{
                             color: isExpanded ? '#3b696d' : '#ffffff',
                             fontFamily: "'Kodchasan', sans-serif",
@@ -488,6 +489,19 @@ export default function Home() {
                           }}>
                           {r.title}
                         </span>
+                        {r.subtitle && (
+                          <span className="block"
+                            style={{
+                              color: isExpanded ? '#5a8a8e' : 'rgba(255,255,255,0.65)',
+                              fontFamily: "'Kodchasan', sans-serif",
+                              fontSize: '13px',
+                              fontWeight: 400,
+                              marginBottom: '4px',
+                              transition: 'color 0.3s ease',
+                            }}>
+                            {r.subtitle}
+                          </span>
+                        )}
                         <span className="flex items-center gap-4 flex-wrap">
                           {r.uren_display && (
                             <span className="flex items-center gap-1" style={{

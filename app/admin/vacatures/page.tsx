@@ -11,6 +11,7 @@ const SITE_URL = 'https://werkenbij.21knots.nl';
 interface Vacature {
   id: string;
   title: string;
+  subtitle: string | null;
   uren_display: string | null;
   salary_display: string | null;
   description: string | null;
@@ -47,6 +48,7 @@ function compressImage(f: File): Promise<Blob> {
 
 const emptyForm = () => ({
   title: '',
+  subtitle: '',
   uren_display: '',
   salary_display: '',
   description: '',
@@ -113,7 +115,7 @@ export default function AdminVacatures() {
     setLoading(true);
     const { data } = await supabase
       .from('vacatures')
-      .select('id, title, uren_display, salary_display, description, extended_description, image_url, published, created_at, slug')
+      .select('id, title, subtitle, uren_display, salary_display, description, extended_description, image_url, published, created_at, slug')
       .order('created_at', { ascending: false });
     setVacatures(data || []);
     setLoading(false);
@@ -134,6 +136,7 @@ export default function AdminVacatures() {
     setEditId(v.id);
     setForm({
       title: v.title,
+      subtitle: v.subtitle || '',
       uren_display: v.uren_display || '',
       salary_display: v.salary_display || '',
       description: v.description || '',
@@ -185,6 +188,7 @@ export default function AdminVacatures() {
 
     const payload = {
       title: form.title.trim(),
+      subtitle: form.subtitle?.trim() || null,
       uren_display: form.uren_display?.trim() || null,
       salary_display: form.salary_display?.trim() || null,
       description: form.description?.trim() || null,
@@ -267,6 +271,20 @@ export default function AdminVacatures() {
                   className="w-full px-3 py-2 border rounded text-sm outline-none"
                   style={{ borderColor: '#bdeffc', fontFamily: "'Kodchasan', sans-serif" }}
                   placeholder="bijv. Zelfstandig werkend kok"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-1" style={{ color: '#3b696d' }}>
+                  Subtitel
+                </label>
+                <input
+                  type="text"
+                  value={form.subtitle}
+                  onChange={e => setForm(f => ({ ...f, subtitle: e.target.value }))}
+                  className="w-full px-3 py-2 border rounded text-sm outline-none"
+                  style={{ borderColor: '#bdeffc', fontFamily: "'Kodchasan', sans-serif" }}
+                  placeholder="bijv. Seizoenswerk · Zomer 2025"
                 />
               </div>
 

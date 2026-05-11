@@ -19,7 +19,7 @@ async function getVacature(slug: string) {
   const sb = createClient(supabaseUrl, supabaseKey);
   const { data, error } = await sb
     .from('vacatures')
-    .select('id, title, uren_display, salary_display, description, extended_description, image_url, slug')
+    .select('id, title, subtitle, uren_display, salary_display, description, extended_description, image_url, slug')
     .eq('slug', slug)
     .single();
   if (error && error.code !== 'PGRST116') console.error('[vacature]', error.message);
@@ -93,9 +93,14 @@ export default async function VacaturePage({ params }: { params: Promise<{ slug:
           <p style={{ fontSize: '12px', fontWeight: 600, color: '#bdeffc', letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: "'Kodchasan', sans-serif", marginBottom: '10px' }}>
             Vacature · Kaap Noord · Texel
           </p>
-          <h1 style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, fontSize: 'clamp(2.4rem, 7vw, 4rem)', color: '#ffffff', letterSpacing: '0.03em', lineHeight: 1.05, margin: '0 0 20px' }}>
+          <h1 style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, fontSize: 'clamp(2.4rem, 7vw, 4rem)', color: '#ffffff', letterSpacing: '0.03em', lineHeight: 1.05, margin: '0 0 8px' }}>
             {v.title}
           </h1>
+          {v.subtitle && (
+            <p style={{ fontFamily: "'Kodchasan', sans-serif", fontWeight: 300, fontSize: '16px', color: 'rgba(255,255,255,0.7)', margin: '0 0 16px' }}>
+              {v.subtitle}
+            </p>
+          )}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
             {v.uren_display && (
               <span style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: '#fff', borderRadius: '999px', padding: '5px 14px', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif", display: 'flex', alignItems: 'center', gap: '6px' }}>
