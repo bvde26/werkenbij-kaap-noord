@@ -38,6 +38,7 @@ export default function Home() {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [siteContent, setSiteContent] = useState<Record<string, string>>({});
   const [uspContent, setUspContent] = useState<Record<string, string>>({});
+  const [uspExpanded, setUspExpanded] = useState(false);
   const dockedSet = useRef(new Set<number>());
   const contactBarRefs = useRef<(HTMLDivElement | null)[]>([]);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -661,44 +662,58 @@ export default function Home() {
                 fill="none" stroke="currentColor" strokeWidth="1.5" />
             </svg>
           </div>
-          <div className="flex flex-col gap-6 mb-10">
-            {(() => {
-              const dynamic = Object.keys(uspContent)
-                .filter(k => /^home_usp_\d+_titel$/.test(k) && uspContent[k])
-                .map(k => parseInt(k.match(/(\d+)/)![1]))
-                .sort((a, b) => a - b)
-                .map(num => ({ title: uspContent[`home_usp_${num}_titel`], text: uspContent[`home_usp_${num}_tekst`] || '' }));
-              const items = dynamic.length > 0 ? dynamic : FALLBACK_USPS;
-              return items.map((usp, i) => (
-                <div key={i} className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="10"/>
-                      <path d="m9 12 2 2 4-4"/>
-                    </svg>
-                  </div>
-                  <div className="flex-1 pt-1">
-                    <p className="font-bold text-base mb-1" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>
-                      {usp.title}
-                    </p>
-                    {usp.text && (
-                      <p className="text-sm leading-relaxed" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>
-                        {usp.text}
-                      </p>
-                    )}
-                  </div>
+          {(() => {
+            const dynamic = Object.keys(uspContent)
+              .filter(k => /^home_usp_\d+_titel$/.test(k) && uspContent[k])
+              .map(k => parseInt(k.match(/(\d+)/)![1]))
+              .sort((a, b) => a - b)
+              .map(num => ({ title: uspContent[`home_usp_${num}_titel`], text: uspContent[`home_usp_${num}_tekst`] || '' }));
+            const items = dynamic.length > 0 ? dynamic : FALLBACK_USPS;
+            const visible = items.slice(0, 4);
+            const extra = items.slice(4);
+            const UspItem = ({ usp, i }: { usp: { title: string; text: string }; i: number }) => (
+              <div key={i} className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: '#bdeffc', color: '#3b696d' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
+                  </svg>
                 </div>
-              ));
-            })()}
-          </div>
-          <div className="text-center">
-            <Link href="/voor-jou"
-              className="inline-block px-8 py-3 font-semibold text-sm uppercase tracking-wider transition-opacity hover:opacity-85"
-              style={{ backgroundColor: '#3b696d', color: '#ffffff' }}>
-              Alle voordelen →
-            </Link>
-          </div>
+                <div className="flex-1 pt-1">
+                  <p className="font-bold text-base mb-1" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>{usp.title}</p>
+                  {usp.text && (
+                    <p className="text-sm leading-relaxed" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>{usp.text}</p>
+                  )}
+                </div>
+              </div>
+            );
+            return (
+              <>
+                <div className="flex flex-col gap-6 mb-6">
+                  {visible.map((usp, i) => <UspItem key={i} usp={usp} i={i} />)}
+                </div>
+                {extra.length > 0 && (
+                  <>
+                    <div style={{ display: 'grid', gridTemplateRows: uspExpanded ? '1fr' : '0fr', transition: 'grid-template-rows 0.3s cubic-bezier(0.23, 1, 0.32, 1)' }}>
+                      <div style={{ overflow: 'hidden' }}>
+                        <div className="flex flex-col gap-6 mb-6">
+                          {extra.map((usp, i) => <UspItem key={i + 4} usp={usp} i={i + 4} />)}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <button
+                        onClick={() => setUspExpanded(v => !v)}
+                        className="text-sm font-semibold"
+                        style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif", background: 'none', border: 'none', cursor: 'pointer', letterSpacing: '0.02em' }}>
+                        {uspExpanded ? '↑ Minder tonen' : `↓ Nog ${extra.length} voordeel${extra.length > 1 ? 'en' : ''}`}
+                      </button>
+                    </div>
+                  </>
+                )}
+              </>
+            );
+          })()}
         </div>
       </section>
 
