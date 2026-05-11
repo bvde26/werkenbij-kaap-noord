@@ -141,8 +141,11 @@ export default function Header({ active = '' }: { active?: string }) {
       {/* Header bar */}
       <header className="sticky top-0 z-[200]" style={{ backgroundColor: '#bdeffc' }}>
         <div className="px-5 h-[48px] md:h-[64px] flex items-center">
-          <Link href="/" className="mr-auto hover:opacity-80 transition-opacity">
-            <img src="/logo.svg" alt="Kaap Noord" className="h-[30px] md:h-[40px] w-auto" />
+          <Link href="/" className="mr-auto hover:opacity-80 transition-opacity" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+            <img src="/logo-header.svg" alt="" className="h-[30px] md:h-[40px] w-auto" aria-hidden="true" />
+            <span style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, fontSize: 'clamp(1rem, 3vw, 1.35rem)', color: '#3b696d', letterSpacing: '0.04em', lineHeight: 1 }}>
+              Kaap Noord
+            </span>
           </Link>
           <button
             className="hamburger-btn"
