@@ -110,7 +110,7 @@ export default async function VacaturePage({ params }: { params: Promise<{ slug:
             )}
             {v.salary_display && (
               <span style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: '#fff', borderRadius: '999px', padding: '5px 14px', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif", display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
                 {v.salary_display}
               </span>
             )}
