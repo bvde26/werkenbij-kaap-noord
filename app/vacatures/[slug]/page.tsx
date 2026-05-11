@@ -19,7 +19,6 @@ async function getVacature(slug: string) {
     .from('vacatures')
     .select('id, title, uren_display, description, extended_description, image_url, slug')
     .eq('slug', slug)
-    .eq('published', true)
     .single();
   return data;
 }
