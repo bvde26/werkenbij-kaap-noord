@@ -26,8 +26,9 @@ async function getVacature(slug: string) {
   return data ?? null;
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const v = await getVacature(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const v = await getVacature(slug);
   if (!v) return { title: 'Vacature — Werken bij Kaap Noord' };
 
   const desc = (v.description || '')
@@ -53,8 +54,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function VacaturePage({ params }: { params: { slug: string } }) {
-  const v = await getVacature(params.slug);
+export default async function VacaturePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const v = await getVacature(slug);
   if (!v) notFound();
 
   return (
