@@ -1,3 +1,4 @@
+import { unstable_noStore as noStore } from 'next/cache';
 import { createClient } from '@supabase/supabase-js';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -14,19 +15,15 @@ const WHATSAPP = 'https://wa.me/31623823324?text=Hoi!%20Ik%20wil%20graag%20solli
 const EMAIL = 'mailto:info@kaapnoord.nl';
 
 async function getVacature(slug: string) {
+  noStore();
   const sb = createClient(supabaseUrl, supabaseKey);
-  const ref = supabaseUrl?.match(/https:\/\/([^.]+)/)?.[1] ?? 'MISSING';
-  console.error('[v] ref=' + ref + ' key=' + (supabaseKey?.slice(0, 8) ?? 'MISSING'));
-  const { data: all } = await sb.from('vacatures').select('title, slug');
-  console.error('[vacature] all slugs:', JSON.stringify(all?.map(v => ({ t: v.title, s: v.slug }))));
   const { data, error } = await sb
     .from('vacatures')
     .select('id, title, uren_display, description, extended_description, image_url, slug')
     .eq('slug', slug)
     .single();
-  if (error) console.error('[vacature]', error.code, error.message, '| looking for:', slug);
-  else console.log('[vacature] found:', data?.title);
-  return data;
+  if (error && error.code !== 'PGRST116') console.error('[vacature]', error.message);
+  return data ?? null;
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
