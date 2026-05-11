@@ -22,7 +22,7 @@ async function getVacature(slug: string) {
     .select('id, title, uren_display, description, extended_description, image_url, slug')
     .eq('slug', slug)
     .single();
-  console.error('[v]', 'slug='+slug, 'data='+JSON.stringify(data?.title), 'err='+error?.code);
+  if (error && error.code !== 'PGRST116') console.error('[vacature]', error.message);
   return data ?? null;
 }
 
