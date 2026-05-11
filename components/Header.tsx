@@ -144,7 +144,7 @@ export default function Header({ active = '' }: { active?: string }) {
         <div className="px-5 md:px-8 h-[48px] md:h-[64px] flex items-center">
           <Link href="/" className="mr-auto hover:opacity-80 transition-opacity" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(8px, 1.5vw, 14px)', textDecoration: 'none' }}>
             <img src="/logo-header.svg" alt="" className="h-[30px] md:h-[40px] w-auto" aria-hidden="true" />
-            <span style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, fontSize: 'clamp(1.875rem, 4vw, 2.5rem)', color: '#3b696d', letterSpacing: '0.04em', lineHeight: 1 }}>
+            <span style={{ fontFamily: "'Pana Summer', serif", fontWeight: 400, fontSize: 'clamp(1.2rem, 2.4vw, 1.5rem)', color: '#3b696d', letterSpacing: '0.04em', lineHeight: 1, display: 'flex', alignItems: 'center' }}>
               Kaap Noord
             </span>
           </Link>
@@ -156,11 +156,11 @@ export default function Header({ active = '' }: { active?: string }) {
             aria-controls="nav-panel"
           >
             {open ? (
-              <svg className="h-[30px] md:h-[40px] w-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+              <svg className="h-[22px] md:h-[28px] w-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
                 <path d="M18 6L6 18M6 6l12 12" />
               </svg>
             ) : (
-              <svg className="h-[30px] md:h-[40px] w-auto" viewBox="0 0 28 22" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+              <svg className="h-[22px] md:h-[28px] w-auto" viewBox="0 0 28 22" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
                 <line x1="0" y1="2" x2="28" y2="2" />
                 <line x1="0" y1="11" x2="28" y2="11" />
                 <line x1="0" y1="20" x2="28" y2="20" />
