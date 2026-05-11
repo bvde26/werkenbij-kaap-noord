@@ -706,7 +706,7 @@ export default function Home() {
                         onClick={() => setUspExpanded(v => !v)}
                         className="text-sm font-semibold"
                         style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif", background: 'none', border: 'none', cursor: 'pointer', letterSpacing: '0.02em', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                        {uspExpanded ? 'Minder tonen' : `Nog ${extra.length} voordeel${extra.length > 1 ? 'en' : ''}`}
+                        {uspExpanded ? 'Minder tonen' : 'Nog meer voordelen'}
                         <svg fill="none" strokeWidth="2.5" viewBox="0 0 24 24" stroke="currentColor"
                           style={{ width: '16px', height: '16px', transition: 'transform 0.3s ease', transform: uspExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}>
                           <path d="M19 9l-7 7-7-7" />
