@@ -71,7 +71,6 @@ export const DEFAULT_CONFIG: WizardConfig = {
       id: 'categorie',
       type: 'category',
       field: 'categorie',
-      subtitle: 'Hallo daar 👋',
       title: 'Wat zou je graag willen doen bij Kaap Noord?',
     },
     {
