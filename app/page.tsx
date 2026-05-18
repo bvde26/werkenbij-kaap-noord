@@ -368,14 +368,12 @@ export default function Home() {
             </Link>
             <button
               onClick={() => setWizard({})}
-              className="font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-90"
-              style={{ backgroundColor: '#3b696d', color: '#fefdf5', border: '2px solid #3b696d', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 24px', fontFamily: "'Kodchasan', sans-serif" }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                <polyline points="14 2 14 8 20 8" />
-                <path d="m9 15 2 2 4-4" />
+              className="transition-opacity hover:opacity-70"
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px 0', color: '#3b696d', fontFamily: "'Kodchasan', sans-serif", fontSize: '14px', fontWeight: 600, textDecoration: 'underline', textUnderlineOffset: '3px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              Of solliciteer direct online
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
-              Solliciteer direct online
             </button>
           </div>
         </div>
