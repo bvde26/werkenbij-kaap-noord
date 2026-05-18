@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import {
   getWizardConfig,
   saveWizardConfig,
@@ -40,6 +40,33 @@ const btn: React.CSSProperties = {
 const card: React.CSSProperties = {
   backgroundColor: '#fff', borderRadius: '12px', border: '2px solid #bdeffc', padding: '20px',
 };
+
+// Eigen tekstvak dat de ruwe tekst (incl. lege regels/Enter) lokaal bewaart
+// terwijl je typt. De parent parset pas naar een lijst — zonder dat de
+// textarea bij elke toets opnieuw uit de opgeschoonde lijst wordt opgebouwd.
+function MultilineField({
+  initial,
+  onText,
+  minHeight,
+}: {
+  initial: string;
+  onText: (v: string) => void;
+  minHeight: number;
+}) {
+  const [t, setT] = useState(initial);
+  const dirty = useRef(false);
+  useEffect(() => {
+    if (!dirty.current) setT(initial);
+  }, [initial]);
+  return (
+    <textarea
+      style={{ ...input, minHeight: `${minHeight}px`, resize: 'vertical' }}
+      value={t}
+      onChange={e => { dirty.current = true; setT(e.target.value); onText(e.target.value); }}
+      onBlur={() => { dirty.current = false; }}
+    />
+  );
+}
 
 export default function SollicitatieAdminPage() {
   const [cfg, setCfg] = useState<WizardConfig | null>(null);
@@ -133,10 +160,11 @@ export default function SollicitatieAdminPage() {
             {cfg.categories.map(c => (
               <div key={c.id}>
                 <label style={lbl}>{c.label} <span style={{ color: '#9ca3af' }}>({c.id})</span></label>
-                <textarea style={{ ...input, minHeight: '90px', resize: 'vertical' }}
-                  value={(cfg.functions[c.id] || []).join('\n')}
-                  onChange={e => update(cf => { cf.functions[c.id] = lines(e.target.value); return cf; })}
-                  placeholder="Eén functie per regel" />
+                <MultilineField
+                  initial={(cfg.functions[c.id] || []).join('\n')}
+                  minHeight={90}
+                  onText={v => update(cf => { cf.functions[c.id] = lines(v); return cf; })}
+                />
               </div>
             ))}
           </div>
@@ -186,10 +214,6 @@ export default function SollicitatieAdminPage() {
                               {STEP_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
                             </select>
                           </div>
-                          <div style={{ flex: '1 1 160px' }}>
-                            <label style={lbl}>OPSLAGSLEUTEL (field)</label>
-                            <input style={input} value={s.field || ''} onChange={e => edit({ field: e.target.value.trim() || undefined })} placeholder="bv. ervaring" />
-                          </div>
                         </div>
                         <div>
                           <label style={lbl}>VRAAG / TITEL</label>
@@ -209,33 +233,39 @@ export default function SollicitatieAdminPage() {
                         {(s.type === 'single' || s.type === 'multi') && (
                           <div>
                             <label style={lbl}>KEUZE-OPTIES (één per regel)</label>
-                            <textarea style={{ ...input, minHeight: '90px', resize: 'vertical' }}
-                              value={(s.options || []).join('\n')}
-                              onChange={e => edit({ options: lines(e.target.value) })} />
+                            <MultilineField
+                              initial={(s.options || []).join('\n')}
+                              minHeight={90}
+                              onText={v => edit({ options: lines(v) })}
+                            />
                           </div>
                         )}
 
                         {s.type === 'rating' && (
                           <div>
                             <label style={lbl}>ITEMS OM TE BEOORDELEN (één per regel)</label>
-                            <textarea style={{ ...input, minHeight: '70px', resize: 'vertical' }}
-                              value={(s.ratingItems || []).join('\n')}
-                              onChange={e => edit({ ratingItems: lines(e.target.value) })} />
+                            <MultilineField
+                              initial={(s.ratingItems || []).join('\n')}
+                              minHeight={70}
+                              onText={v => edit({ ratingItems: lines(v) })}
+                            />
                           </div>
                         )}
 
                         {s.type === 'text' && (
                           <div>
                             <label style={lbl}>INVOERVELDEN — formaat per regel: sleutel | Label | placeholder | type(text/tel/email)</label>
-                            <textarea style={{ ...input, minHeight: '90px', resize: 'vertical' }}
-                              value={(s.fields || []).map(f => [f.key, f.label, f.placeholder || '', f.inputType || 'text'].join(' | ')).join('\n')}
-                              onChange={e => edit({
-                                fields: lines(e.target.value).map(row => {
-                                  const [key, label, placeholder, t] = row.split('|').map(x => x.trim());
-                                  const it = (['text', 'tel', 'email'].includes(t) ? t : 'text') as 'text' | 'tel' | 'email';
+                            <MultilineField
+                              initial={(s.fields || []).map(f => [f.key, f.label, f.placeholder || '', f.inputType || 'text'].join(' | ')).join('\n')}
+                              minHeight={90}
+                              onText={v => edit({
+                                fields: lines(v).map(row => {
+                                  const [key, label, placeholder, tp] = row.split('|').map(x => x.trim());
+                                  const it = (['text', 'tel', 'email'].includes(tp) ? tp : 'text') as 'text' | 'tel' | 'email';
                                   return { key: key || 'veld', label: label || key || 'Veld', placeholder: placeholder || undefined, inputType: it };
                                 }),
-                              })} />
+                              })}
+                            />
                           </div>
                         )}
 
@@ -278,7 +308,8 @@ export default function SollicitatieAdminPage() {
           </div>
           <button
             onClick={() => update(cf => {
-              cf.steps.push({ id: 'stap-' + Date.now(), type: 'single', title: 'Nieuwe vraag', options: [] });
+              const uid = Date.now();
+              cf.steps.push({ id: 'stap-' + uid, type: 'single', title: 'Nieuwe vraag', field: 'veld_' + uid, options: [] });
               return cf;
             })}
             style={{ ...btn, backgroundColor: '#eef6f6', color: TEAL, marginTop: '14px' }}>

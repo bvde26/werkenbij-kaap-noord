@@ -92,6 +92,9 @@ export default function SollicitatieWizard({
 
   if (!open || !step) return null;
 
+  // Opslagsleutel wordt automatisch beheerd: expliciet veld, anders de stap-id.
+  const fk = step.field || step.id;
+
   const set = (k: string, v: any) => setData(d => ({ ...d, [k]: v }));
 
   const goNext = async () => {
@@ -205,13 +208,13 @@ export default function SollicitatieWizard({
     }
 
     case 'single':
-      body = renderOptions(step.options || [], step.field!, true);
+      body = renderOptions(step.options || [], fk, true);
       break;
 
     case 'multi':
-      body = renderOptions(step.options || [], step.field!, false, true);
+      body = renderOptions(step.options || [], fk, false, true);
       showNext = true;
-      nextDisabled = step.required ? !(Array.isArray(data[step.field!]) && data[step.field!].length) : false;
+      nextDisabled = step.required ? !(Array.isArray(data[fk]) && data[fk].length) : false;
       break;
 
     case 'text':
@@ -253,17 +256,17 @@ export default function SollicitatieWizard({
             min={14}
             max={99}
             placeholder="Typ hier je leeftijd"
-            value={data[step.field!] || ''}
-            onChange={e => set(step.field!, e.target.value)}
+            value={data[fk] || ''}
+            onChange={e => set(fk, e.target.value)}
           />
         </label>
       );
       showNext = true;
-      nextDisabled = step.required ? !(Number(data[step.field!]) > 0) : false;
+      nextDisabled = step.required ? !(Number(data[fk]) > 0) : false;
       break;
 
     case 'rating': {
-      const scores = data[step.field!] || {};
+      const scores = data[fk] || {};
       body = (
         <div className="kw-rating-grid">
           {(step.ratingItems || []).map(item => (
@@ -276,7 +279,7 @@ export default function SollicitatieWizard({
                     type="button"
                     aria-label={`${item}: ${n} van 5`}
                     className={`kw-star ${(scores[item] || 0) >= n ? 'on' : ''}`}
-                    onClick={() => set(step.field!, { ...scores, [item]: n })}
+                    onClick={() => set(fk, { ...scores, [item]: n })}
                   >
                     ★
                   </button>
@@ -295,21 +298,21 @@ export default function SollicitatieWizard({
         <div className="kw-avail">
           <button
             type="button"
-            className={`kw-opt ${data[step.field!] === 'direct' ? 'sel' : ''}`}
-            onClick={() => { set(step.field!, 'direct'); set('beschikbaarDatum', null); setTimeout(goNext, 140); }}
+            className={`kw-opt ${data[fk] === 'direct' ? 'sel' : ''}`}
+            onClick={() => { set(fk, 'direct'); set('beschikbaarDatum', null); setTimeout(goNext, 140); }}
           >
             Per direct
-            {data[step.field!] === 'direct' && <span className="kw-check">✓</span>}
+            {data[fk] === 'direct' && <span className="kw-check">✓</span>}
           </button>
           <button
             type="button"
-            className={`kw-opt ${data[step.field!] === 'vanaf' ? 'sel' : ''}`}
-            onClick={() => set(step.field!, 'vanaf')}
+            className={`kw-opt ${data[fk] === 'vanaf' ? 'sel' : ''}`}
+            onClick={() => set(fk, 'vanaf')}
           >
             Vanaf een datum
-            {data[step.field!] === 'vanaf' && <span className="kw-check">✓</span>}
+            {data[fk] === 'vanaf' && <span className="kw-check">✓</span>}
           </button>
-          {data[step.field!] === 'vanaf' && (
+          {data[fk] === 'vanaf' && (
             <input
               className="kw-input"
               type="date"
@@ -320,14 +323,14 @@ export default function SollicitatieWizard({
           )}
         </div>
       );
-      if (data[step.field!] === 'vanaf') {
+      if (data[fk] === 'vanaf') {
         showNext = true;
         nextDisabled = !data.beschikbaarDatum;
       }
       break;
 
     case 'file': {
-      const f = data[step.field!] as File | undefined;
+      const f = data[fk] as File | undefined;
       body = (
         <div className="kw-cv">
           <label className="kw-cv-drop">
@@ -337,7 +340,7 @@ export default function SollicitatieWizard({
               type="file"
               accept=".pdf,.doc,.docx"
               style={{ display: 'none' }}
-              onChange={e => { const file = e.target.files?.[0]; if (file) set(step.field!, file); }}
+              onChange={e => { const file = e.target.files?.[0]; if (file) set(fk, file); }}
             />
           </label>
           {f && <p className="kw-cv-name">✓ {f.name}</p>}
