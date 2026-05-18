@@ -226,4 +226,21 @@ export async function submitWizardApplication(s: WizardSubmission) {
     },
   ]);
   if (error) throw error;
+
+  // Mailnotificatie (best-effort — de inzending staat al veilig in de DB).
+  try {
+    const { cv: _cv, ...mailAnswers } = s.answers as Record<string, unknown>;
+    void _cv;
+    await fetch('/api/sollicitatie', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        answers: mailAnswers,
+        vacatureTitle: s.vacatureTitle ?? null,
+        cvPath: cv_url,
+      }),
+    });
+  } catch {
+    /* mail mag falen zonder de sollicitatie te blokkeren */
+  }
 }

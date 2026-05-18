@@ -119,7 +119,11 @@ export default function SollicitatieWizard({
       await submitWizardApplication({
         vacatureId: prefill?.vacatureId ?? null,
         vacatureTitle: prefill?.vacatureTitle ?? null,
-        answers: { ...data, vacature: prefill?.vacatureTitle ?? null },
+        answers: {
+          ...data,
+          categorieLabel: config.categories.find(c => c.id === data.categorie)?.label || data.categorie,
+          vacature: prefill?.vacatureTitle ?? null,
+        },
         cvFile: (data.cv as File) || null,
       });
     } catch {
