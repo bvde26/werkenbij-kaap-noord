@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import RichText from '@/components/RichText';
+import WizardApplyButton from '@/components/WizardApplyButton';
 import Link from 'next/link';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -172,6 +173,8 @@ export default async function VacaturePage({ params }: { params: Promise<{ slug:
           </p>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}>
+            <WizardApplyButton vacatureId={v.id} vacatureTitle={v.title} />
+
             <a href={PHONE} className="vd-btn" style={{ backgroundColor: '#3b696d', color: '#ffffff' }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.9 13.72 19.79 19.79 0 0 1 1.83 5.1 2 2 0 0 1 3.8 2.9h3a2 2 0 0 1 2 1.72c.127.96.362 1.902.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.908.338 1.85.574 2.81.7A2 2 0 0 1 22 16.92z"/>

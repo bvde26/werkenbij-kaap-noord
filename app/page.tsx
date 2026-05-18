@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FloatingButtons from '@/components/FloatingButtons';
+import SollicitatieWizard from '@/components/SollicitatieWizard';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import RichText from '@/components/RichText';
@@ -39,6 +40,7 @@ export default function Home() {
   const [siteContent, setSiteContent] = useState<Record<string, string>>({});
   const [uspContent, setUspContent] = useState<Record<string, string>>({});
   const [uspExpanded, setUspExpanded] = useState(false);
+  const [wizard, setWizard] = useState<{ vacatureId?: string; vacatureTitle?: string } | null>(null);
   const dockedSet = useRef(new Set<number>());
   const contactBarRefs = useRef<(HTMLDivElement | null)[]>([]);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -364,6 +366,17 @@ export default function Home() {
               style={{ borderColor: '#3b696d', color: '#3b696d', display: 'inline-block', padding: '10px 24px' }}>
               Vertel me eerst meer
             </Link>
+            <button
+              onClick={() => setWizard({})}
+              className="font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-90"
+              style={{ backgroundColor: '#3b696d', color: '#fefdf5', border: '2px solid #3b696d', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 24px', fontFamily: "'Kodchasan', sans-serif" }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <path d="m9 15 2 2 4-4" />
+              </svg>
+              Solliciteer direct online
+            </button>
           </div>
         </div>
       </div>
@@ -625,9 +638,25 @@ export default function Home() {
                                 <path d="M11.5 2C6.262 2 2 6.262 2 11.5c0 1.687.435 3.272 1.197 4.653L2 22l5.998-1.172A9.45 9.45 0 0 0 11.5 21c5.238 0 9.5-4.262 9.5-9.5S16.738 2 11.5 2zm0 17.3a7.792 7.792 0 0 1-3.976-1.083l-.285-.169-2.955.577.6-2.883-.186-.295A7.793 7.793 0 0 1 3.7 11.5C3.7 7.198 7.198 3.7 11.5 3.7S19.3 7.198 19.3 11.5 15.802 19.3 11.5 19.3z"/>
                               </svg>
                             </button>
-                            <span style={{ color: '#3b696d', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif", lineHeight: '1.3', flex: 1 }}>
-                              Reageer direct<br />op deze vacature
-                            </span>
+                            <button
+                              className="flex items-center gap-2"
+                              style={{ flex: 1, background: 'none', border: 'none', cursor: 'pointer', padding: 0, textAlign: 'left' }}
+                              onClick={e => { e.stopPropagation(); setWizard({ vacatureId: r.id, vacatureTitle: r.title }); }}
+                            >
+                              <span
+                                className="float-btn flex-shrink-0"
+                                style={{ backgroundColor: '#3b696d', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', animationDelay: '1s' }}
+                              >
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                  <polyline points="14 2 14 8 20 8" />
+                                  <path d="m9 15 2 2 4-4" />
+                                </svg>
+                              </span>
+                              <span style={{ color: '#3b696d', fontSize: '13px', fontFamily: "'Kodchasan', sans-serif", fontWeight: 600, lineHeight: '1.3' }}>
+                                Solliciteer direct<br />online
+                              </span>
+                            </button>
                             <button
                               className="flex-shrink-0 flex items-center justify-center transition-opacity hover:opacity-60"
                               style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#9ca3af', padding: '8px' }}
@@ -720,6 +749,12 @@ export default function Home() {
           })()}
         </div>
       </section>
+
+      <SollicitatieWizard
+        open={!!wizard}
+        onClose={() => setWizard(null)}
+        prefill={wizard || undefined}
+      />
 
       <Footer />
     </div>
