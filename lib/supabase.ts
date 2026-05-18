@@ -1,9 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
+import { createBrowserClient } from '@supabase/ssr';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key';
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Browser client: stores the session in cookies so the middleware can read it server-side.
+export const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
 
 export const getServiceSupabase = () => {
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';

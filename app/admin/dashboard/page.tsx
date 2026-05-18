@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { signOut } from '@/lib/auth';
 
 const tiles = [
   {
@@ -48,11 +50,29 @@ const tiles = [
 ];
 
 export default function AdminDashboard() {
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await signOut();
+    router.replace('/admin/login');
+  };
+
   return (
     <div className="min-h-screen p-4 sm:p-8" style={{ backgroundColor: '#f7faf9' }}>
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-1" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>Admin</h1>
-        <p className="text-sm mb-10" style={{ color: '#6b7280' }}>Kaap Noord — beheer</p>
+        <div className="flex items-start justify-between mb-10">
+          <div>
+            <h1 className="text-3xl font-bold mb-1" style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}>Admin</h1>
+            <p className="text-sm" style={{ color: '#6b7280' }}>Kaap Noord — beheer</p>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="text-sm px-4 py-2 rounded-lg border-2 transition-colors hover:bg-white"
+            style={{ borderColor: '#bdeffc', color: '#3b696d' }}
+          >
+            Uitloggen
+          </button>
+        </div>
         <div className="grid sm:grid-cols-2 gap-4">
           {tiles.map((tile) => (
             <Link key={tile.href} href={tile.href}

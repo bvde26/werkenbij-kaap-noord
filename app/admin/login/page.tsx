@@ -1,6 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { signInWithMagicLink } from '@/lib/auth';
+
+const ERROR_MESSAGES: Record<string, string> = {
+  'no-access': 'Dit e-mailadres heeft geen toegang tot het beheer.',
+  'invalid-link': 'Deze loginlink is ongeldig of verlopen. Vraag een nieuwe aan.',
+};
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -8,61 +14,79 @@ export default function AdminLogin() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('error');
+    if (code && ERROR_MESSAGES[code]) setError(ERROR_MESSAGES[code]);
+  }, []);
+
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     setMessage('');
 
-    try {
-      const { supabase } = await import('@/lib/supabase');
-      const { error: signInError } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: `${window.location.origin}/admin/dashboard`,
-        },
-      });
+    const { error: signInError } = await signInWithMagicLink(email.trim());
 
-      if (signInError) {
-        setError(signInError.message);
-      } else {
-        setMessage(`✅ Check je email! Link naar dashboard is verstuurd naar ${email}`);
-        setEmail('');
-      }
-    } catch (err) {
-      setError('Er is een fout opgetreden. Probeer opnieuw.');
+    // Neutral response: never reveal whether an address has access (no user enumeration).
+    if (signInError && /rate|limit|too many/i.test(signInError.message)) {
+      setError('Te veel pogingen. Wacht even en probeer opnieuw.');
+    } else {
+      setMessage(
+        'Als dit e-mailadres toegang heeft, is er een loginlink gestuurd. Check je inbox.',
+      );
+      setEmail('');
     }
     setLoading(false);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow">
-        <h1 className="text-2xl font-bold mb-6 text-center">Admin Login</h1>
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+      style={{ backgroundColor: '#f7faf9' }}
+    >
+      <div
+        className="w-full max-w-md p-8 bg-white rounded-xl border-2"
+        style={{ borderColor: '#bdeffc' }}
+      >
+        <h1
+          className="text-2xl font-bold mb-1 text-center"
+          style={{ color: '#3b696d', fontFamily: "'Kodchasan', sans-serif" }}
+        >
+          Beheer Kaap Noord
+        </h1>
+        <p className="text-sm mb-6 text-center" style={{ color: '#6b7280' }}>
+          Log in met je e-mailadres
+        </p>
 
         <form onSubmit={handleSignIn} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Email
+            <label
+              className="block text-sm font-medium mb-2"
+              style={{ color: '#3b696d' }}
+            >
+              E-mailadres
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="je-email@example.com"
+              placeholder="jij@voorbeeld.nl"
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 outline-none"
+              autoComplete="email"
+              className="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2"
+              style={{ borderColor: '#bdeffc' }}
             />
           </div>
 
           {error && (
-            <div className="p-4 bg-red-50 text-red-700 rounded text-sm">
+            <div className="p-4 bg-red-50 text-red-700 rounded-lg text-sm">
               {error}
             </div>
           )}
 
           {message && (
-            <div className="p-4 bg-green-50 text-green-700 rounded text-sm">
+            <div className="p-4 bg-green-50 text-green-700 rounded-lg text-sm">
               {message}
             </div>
           )}
@@ -70,14 +94,15 @@ export default function AdminLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
+            className="w-full py-2 px-4 rounded-lg text-white font-medium transition-colors disabled:opacity-60"
+            style={{ backgroundColor: '#3b696d' }}
           >
-            {loading ? 'Sending...' : 'Sign in with Magic Link'}
+            {loading ? 'Versturen…' : 'Stuur loginlink'}
           </button>
         </form>
 
-        <p className="text-center text-gray-500 text-sm mt-6">
-          We sturen je een loginlink per email (geen wachtwoord nodig)
+        <p className="text-center text-sm mt-6" style={{ color: '#6b7280' }}>
+          Je ontvangt een eenmalige loginlink per e-mail — geen wachtwoord nodig.
         </p>
       </div>
     </div>
