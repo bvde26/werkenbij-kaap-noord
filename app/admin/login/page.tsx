@@ -94,8 +94,8 @@ export default function AdminLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 px-4 rounded-lg text-white font-medium transition-colors disabled:opacity-60"
-            style={{ backgroundColor: '#3b696d' }}
+            className="w-full py-2 px-4 font-medium transition-colors disabled:opacity-60"
+            style={{ backgroundColor: '#3b696d', color: '#ffffff', borderRadius: '8px', border: 'none' }}
           >
             {loading ? 'Versturen…' : 'Stuur loginlink'}
           </button>
