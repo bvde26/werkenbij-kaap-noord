@@ -380,15 +380,31 @@ export default function SollicitatieWizard({
   return (
     <div className="kw-overlay" role="dialog" aria-modal="true" aria-label="Sollicitatieformulier">
       <style>{`
-        .kw-overlay{position:fixed;inset:0;z-index:9999;background:rgba(20,40,42,0.55);
-          display:flex;align-items:center;justify-content:center;padding:0;
-          font-family:'Kodchasan',sans-serif;-webkit-tap-highlight-color:transparent;}
-        .kw-modal{background:${CREAM};width:560px;max-width:100vw;height:100dvh;max-height:100dvh;
-          display:flex;flex-direction:column;color:${TEAL};}
-        @media (min-width:600px){.kw-modal{height:auto;max-height:92vh;border-radius:18px;
-          box-shadow:0 30px 70px rgba(0,0,0,0.4);}}
+        .kw-overlay{position:fixed;inset:0;z-index:9999;background:rgba(20,40,42,0.5);
+          display:flex;align-items:flex-end;justify-content:center;padding:0;
+          font-family:'Kodchasan',sans-serif;-webkit-tap-highlight-color:transparent;
+          animation:kwFade .25s ease;}
+        @keyframes kwFade{from{background:rgba(20,40,42,0);}to{background:rgba(20,40,42,0.5);}}
+        .kw-modal{background:${CREAM};width:560px;max-width:100vw;height:auto;
+          max-height:90dvh;display:flex;flex-direction:column;color:${TEAL};
+          border-radius:22px 22px 0 0;box-shadow:0 -12px 44px rgba(0,0,0,0.28);
+          animation:kwUp .34s cubic-bezier(.23,1,.32,1);}
+        @keyframes kwUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+        @media (min-width:600px){
+          .kw-overlay{align-items:center;}
+          .kw-modal{max-height:88vh;border-radius:18px;
+            box-shadow:0 30px 70px rgba(0,0,0,0.4);
+            animation:kwPop .26s cubic-bezier(.23,1,.32,1);}
+          .kw-grab{display:none;}
+        }
+        @keyframes kwPop{from{opacity:0;transform:scale(.96);}to{opacity:1;transform:scale(1);}}
+        @media (prefers-reduced-motion:reduce){
+          .kw-modal,.kw-overlay{animation:none;}
+        }
+        .kw-grab{width:42px;height:4px;border-radius:999px;
+          background:rgba(59,105,109,0.22);margin:9px auto 0;flex-shrink:0;}
         .kw-head{display:flex;align-items:center;justify-content:space-between;
-          padding:16px 20px 12px;flex-shrink:0;}
+          padding:12px 20px 12px;flex-shrink:0;}
         .kw-brand{display:flex;align-items:center;gap:9px;}
         .kw-brand img{height:30px;width:auto;}
         .kw-brand span{font-family:'Pana Summer',serif;font-size:20px;letter-spacing:0.03em;
@@ -456,6 +472,7 @@ export default function SollicitatieWizard({
       `}</style>
 
       <div className="kw-modal">
+        <div className="kw-grab" aria-hidden="true" />
         <div className="kw-head">
           <div className="kw-brand">
             <img src="/logo-header.svg" alt="" aria-hidden="true" />
